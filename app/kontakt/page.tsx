@@ -22,6 +22,7 @@ export default function KontaktPage() {
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -31,6 +32,15 @@ export default function KontaktPage() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!isContactModalOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isContactModalOpen]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -92,6 +102,12 @@ export default function KontaktPage() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const openContactModal = () => {
+    setFormError("");
+    setFormSuccess("");
+    setIsContactModalOpen(true);
   };
 
   return (
@@ -227,99 +243,40 @@ export default function KontaktPage() {
               Javite se direktno, odgovaramo brzo i precizno.
             </p>
 
-            <form onSubmit={handleSubmit} className="mt-8 space-y-4">
-              <div>
-                <label htmlFor="contact-title" className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
-                  Naslov upita
-                </label>
-                <input
-                  id="contact-title"
-                  name="title"
-                  value={title}
-                  onChange={(event) => setTitle(event.target.value)}
-                  maxLength={120}
-                  required
-                  className="w-full rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3 text-gray-900 outline-none transition-all focus:border-[#4a6bfe] focus:ring-2 focus:ring-[#4a6bfe]/20"
-                  placeholder="Npr. Upit za personalizirani automiris"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="contact-description" className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
-                  Opis upita
-                </label>
-                <textarea
-                  id="contact-description"
-                  name="description"
-                  value={description}
-                  onChange={(event) => setDescription(event.target.value)}
-                  required
-                  rows={5}
-                  className="w-full resize-none rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3 text-gray-900 outline-none transition-all focus:border-[#4a6bfe] focus:ring-2 focus:ring-[#4a6bfe]/20"
-                  placeholder="Napisite detalje upita..."
-                />
-              </div>
-
-              <div>
-                <label htmlFor="contact-reply-email" className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
-                  Email za odgovor
-                </label>
-                <input
-                  id="contact-reply-email"
-                  name="replyEmail"
-                  type="email"
-                  value={replyEmail}
-                  onChange={(event) => setReplyEmail(event.target.value)}
-                  required
-                  className="w-full rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3 text-gray-900 outline-none transition-all focus:border-[#4a6bfe] focus:ring-2 focus:ring-[#4a6bfe]/20"
-                  placeholder="vas@email.com"
-                />
-              </div>
-
-              <label className="flex items-start gap-3 rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3">
-                <input
-                  type="checkbox"
-                  checked={consent}
-                  onChange={(event) => setConsent(event.target.checked)}
-                  className="mt-1 h-4 w-4 rounded border-gray-300 text-[#4a6bfe] focus:ring-[#4a6bfe]/30"
-                />
-                <span className="text-sm leading-relaxed text-gray-600">
-                  Pristajem na obradu i prikupljanje mojih podataka radi odgovora na upit.
-                </span>
-              </label>
-
-              {formError ? (
-                <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
-                  {formError}
-                </p>
-              ) : null}
-
-              {formSuccess ? (
-                <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
-                  {formSuccess}
-                </p>
-              ) : null}
-
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="group inline-flex items-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3b5af0] disabled:cursor-not-allowed disabled:opacity-70"
-                >
-                  {isSubmitting ? "Slanje..." : "Posalji upit"}
-                  <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
-                <a
-                  href="https://instagram.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-3 font-semibold text-gray-700 transition-all duration-300 hover:border-[#4a6bfe]/40 hover:text-[#4a6bfe]"
-                >
-                  <Instagram size={16} />
-                  Instagram
+            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div className="rounded-2xl border border-gray-100 bg-[#F9FAFB] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Email</p>
+                <a href="mailto:info@nikotrade.hr" className="mt-2 block text-lg font-bold text-[#4a6bfe]">
+                  info@nikotrade.hr
                 </a>
               </div>
-            </form>
+              <div className="rounded-2xl border border-gray-100 bg-[#F9FAFB] p-4">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Telefon</p>
+                <a href="tel:+38598241285" className="mt-2 block text-lg font-bold text-[#4a6bfe]">
+                  +385 98 241 285
+                </a>
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3 pt-1">
+              <button
+                type="button"
+                onClick={openContactModal}
+                className="group inline-flex items-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3b5af0]"
+              >
+                Otvori upit formu
+                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </button>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-5 py-3 font-semibold text-gray-700 transition-all duration-300 hover:border-[#4a6bfe]/40 hover:text-[#4a6bfe]"
+              >
+                <Instagram size={16} />
+                Instagram
+              </a>
+            </div>
           </motion.section>
 
           <motion.section
@@ -339,7 +296,7 @@ export default function KontaktPage() {
               </span>
             </div>
 
-            <div className="relative space-y-6">
+            <div className="relative space-y-5">
               <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">Niko Trade d.o.o.</h2>
 
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
@@ -368,10 +325,165 @@ export default function KontaktPage() {
                   </div>
                 </div>
               </div>
+
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">Email</p>
+                  <a href="mailto:info@nikotrade.hr" className="mt-2 block text-base font-bold text-blue-100">
+                    info@nikotrade.hr
+                  </a>
+                </div>
+                <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">Telefon</p>
+                  <a href="tel:+38598241285" className="mt-2 block text-base font-bold text-blue-100">
+                    +385 98 241 285
+                  </a>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
+                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">Proces upita</p>
+                <div className="mt-3 space-y-2 text-sm text-blue-100/90">
+                  <p>1. Posaljete upit kroz popup formu.</p>
+                  <p>2. Pregledamo detalje i javimo se na vas email.</p>
+                  <p>3. Potvrdjujemo narudzbu i rok isporuke.</p>
+                </div>
+              </div>
             </div>
           </motion.section>
         </div>
       </main>
+
+      <AnimatePresence>
+        {isContactModalOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/50 px-4 py-8 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 20, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 20, scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              className="w-full max-w-2xl rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.28)] sm:p-8"
+            >
+              <div className="mb-6 flex items-start justify-between gap-4">
+                <div>
+                  <p className="inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#4a6bfe]">
+                    Kontakt forma
+                  </p>
+                  <h3 className="mt-3 text-3xl font-black tracking-tighter text-gray-900">Posaljite upit</h3>
+                  <p className="mt-2 text-sm text-gray-500">
+                    Unesite osnovne informacije i odgovor cete dobiti na email koji navedete.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsContactModalOpen(false)}
+                  className="rounded-xl border border-gray-200 p-2 text-gray-500 transition hover:bg-gray-50 hover:text-gray-900"
+                  aria-label="Zatvori kontakt formu"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label htmlFor="contact-title" className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
+                    Naslov upita
+                  </label>
+                  <input
+                    id="contact-title"
+                    name="title"
+                    value={title}
+                    onChange={(event) => setTitle(event.target.value)}
+                    maxLength={120}
+                    required
+                    className="w-full rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3 text-gray-900 outline-none transition-all focus:border-[#4a6bfe] focus:ring-2 focus:ring-[#4a6bfe]/20"
+                    placeholder="Npr. Upit za personalizirani automiris"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="contact-description" className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
+                    Opis upita
+                  </label>
+                  <textarea
+                    id="contact-description"
+                    name="description"
+                    value={description}
+                    onChange={(event) => setDescription(event.target.value)}
+                    required
+                    rows={5}
+                    className="w-full resize-none rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3 text-gray-900 outline-none transition-all focus:border-[#4a6bfe] focus:ring-2 focus:ring-[#4a6bfe]/20"
+                    placeholder="Napisite detalje upita..."
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="contact-reply-email" className="mb-2 block text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">
+                    Email za odgovor
+                  </label>
+                  <input
+                    id="contact-reply-email"
+                    name="replyEmail"
+                    type="email"
+                    value={replyEmail}
+                    onChange={(event) => setReplyEmail(event.target.value)}
+                    required
+                    className="w-full rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3 text-gray-900 outline-none transition-all focus:border-[#4a6bfe] focus:ring-2 focus:ring-[#4a6bfe]/20"
+                    placeholder="vas@email.com"
+                  />
+                </div>
+
+                <label className="flex items-start gap-3 rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3">
+                  <input
+                    type="checkbox"
+                    checked={consent}
+                    onChange={(event) => setConsent(event.target.checked)}
+                    className="mt-1 h-4 w-4 rounded border-gray-300 text-[#4a6bfe] focus:ring-[#4a6bfe]/30"
+                  />
+                  <span className="text-sm leading-relaxed text-gray-600">
+                    Pristajem na obradu i prikupljanje mojih podataka radi odgovora na upit.
+                  </span>
+                </label>
+
+                {formError ? (
+                  <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+                    {formError}
+                  </p>
+                ) : null}
+
+                {formSuccess ? (
+                  <p className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
+                    {formSuccess}
+                  </p>
+                ) : null}
+
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="group inline-flex items-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3b5af0] disabled:cursor-not-allowed disabled:opacity-70"
+                  >
+                    {isSubmitting ? "Slanje..." : "Posalji upit"}
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsContactModalOpen(false)}
+                    className="inline-flex items-center rounded-xl border border-gray-200 bg-white px-5 py-3 font-semibold text-gray-700 transition-all duration-300 hover:border-gray-300 hover:bg-gray-50"
+                  >
+                    Zatvori
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <footer className="w-full border-t border-white/10 bg-[#0A0A0A] px-4 pb-10 pt-16">
         <div className="mx-auto max-w-7xl">
