@@ -8,6 +8,8 @@ type ContactPayload = {
   description?: unknown;
   replyEmail?: unknown;
   consent?: unknown;
+  productSlug?: unknown;
+  productName?: unknown;
 };
 
 const CONTACT_RECEIVER = process.env.CONTACT_RECEIVER_EMAIL ?? "nikoivancic2801@gmail.com";
@@ -23,6 +25,8 @@ export async function POST(request: Request) {
     const description = typeof body.description === "string" ? body.description.trim() : "";
     const replyEmail = typeof body.replyEmail === "string" ? body.replyEmail.trim() : "";
     const consent = body.consent === true;
+    const productSlug = typeof body.productSlug === "string" ? body.productSlug.trim() : "";
+    const productName = typeof body.productName === "string" ? body.productName.trim() : "";
 
     if (title.length < 3 || title.length > 120) {
       return NextResponse.json(
@@ -81,20 +85,26 @@ export async function POST(request: Request) {
       from: `"NikoTrade Kontakt Forma" <${smtpUser}>`,
       to: CONTACT_RECEIVER,
       replyTo: replyEmail,
-      subject: `[NikoTrade upit] ${title}`,
+      subject: `[NikoTrade upit] ${productName ? `${productName} | ` : ""}${title}`,
       text: [
         `Novi upit sa kontakt forme`,
         ``,
         `Naslov: ${title}`,
+        productName ? `Proizvod: ${productName}` : null,
+        productSlug ? `Slug proizvoda: ${productSlug}` : null,
         `Email za odgovor: ${replyEmail}`,
         `Privola: DA`,
         ``,
         `Opis:`,
         description,
-      ].join("\n"),
+      ]
+        .filter(Boolean)
+        .join("\n"),
       html: `
         <h2>Novi upit sa kontakt forme</h2>
         <p><strong>Naslov:</strong> ${title}</p>
+        ${productName ? `<p><strong>Proizvod:</strong> ${productName}</p>` : ""}
+        ${productSlug ? `<p><strong>Slug proizvoda:</strong> ${productSlug}</p>` : ""}
         <p><strong>Email za odgovor:</strong> ${replyEmail}</p>
         <p><strong>Privola:</strong> DA</p>
         <hr />

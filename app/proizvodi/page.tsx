@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { ArrowRight, CircleDot, Database, Filter, Shirt, Wine } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { ProductInquiryModal } from "@/components/product-inquiry-modal";
 import { getAllProducts, type ProductCategory } from "@/lib/products-db";
 
 const categoryOptions: Array<"Sve" | ProductCategory> = [
@@ -95,10 +97,10 @@ export default function ProductsPage() {
                   <button
                     key={category}
                     onClick={() => setActiveCategory(category)}
-                    className={`rounded-xl px-3 py-2 text-sm font-semibold transition-all ${
+                    className={`rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-300 ${
                       activeCategory === category
                         ? "bg-[#4a6bfe] text-white shadow-[0_10px_20px_rgba(74,107,254,0.25)]"
-                        : "border border-gray-200 bg-white text-gray-700 hover:border-[#4a6bfe]/40 hover:text-[#4a6bfe]"
+                        : "border border-gray-200 bg-white text-gray-700 hover:-translate-y-0.5 hover:border-[#4a6bfe]/40 hover:text-[#4a6bfe] hover:shadow-[0_8px_20px_rgba(15,23,42,0.08)]"
                     }`}
                   >
                     {category}
@@ -114,10 +116,10 @@ export default function ProductsPage() {
                 <button
                   key={sortOption}
                   onClick={() => setSortBy(sortOption)}
-                  className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-all ${
+                  className={`rounded-lg px-3 py-1.5 text-sm font-semibold transition-all duration-300 ${
                     sortBy === sortOption
                       ? "bg-gray-900 text-white"
-                      : "border border-gray-200 text-gray-600 hover:border-gray-300 hover:text-gray-900"
+                      : "border border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900"
                   }`}
                 >
                   {sortLabels[sortOption]}
@@ -135,18 +137,44 @@ export default function ProductsPage() {
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: Math.min(index * 0.06, 0.3) }}
-                  className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border p-7 transition-all duration-300 ${
+                  className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border p-7 transition-all duration-500 ${
                     featuredCard
-                      ? "border-gray-800 bg-gray-900 text-white shadow-2xl hover:-translate-y-1 hover:shadow-[0_16px_50px_rgba(15,23,42,0.35)]"
-                      : "border-gray-100 bg-white text-gray-900 shadow-[0_10px_35px_rgba(15,23,42,0.08)] hover:-translate-y-1 hover:shadow-[0_16px_45px_rgba(15,23,42,0.16)]"
+                      ? "border-gray-800 bg-gray-900 text-white shadow-2xl hover:-translate-y-2 hover:shadow-[0_22px_60px_rgba(15,23,42,0.45)]"
+                      : "border-gray-100 bg-white text-gray-900 shadow-[0_10px_35px_rgba(15,23,42,0.08)] hover:-translate-y-2 hover:shadow-[0_18px_50px_rgba(15,23,42,0.18)]"
                   }`}
                 >
-                  {featuredCard ? (
-                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#4a6bfe]/20 via-blue-900/10 to-transparent opacity-80"></div>
-                  ) : null}
+                  <div
+                    className={`pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
+                      featuredCard
+                        ? "bg-gradient-to-br from-[#4a6bfe]/20 via-blue-900/15 to-transparent"
+                        : "bg-gradient-to-br from-blue-100/80 via-transparent to-transparent"
+                    }`}
+                  ></div>
+
+                  <div
+                    className={`relative -mx-7 -mt-7 mb-6 overflow-hidden border-b ${
+                      featuredCard ? "border-white/10" : "border-gray-100"
+                    }`}
+                  >
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      width={1200}
+                      height={900}
+                      className="h-52 w-full object-cover"
+                    />
+                    <div
+                      className={`pointer-events-none absolute inset-0 ${
+                        featuredCard
+                          ? "bg-gradient-to-t from-gray-900/80 via-gray-900/25 to-transparent"
+                          : "bg-gradient-to-t from-white/80 via-white/10 to-transparent"
+                      }`}
+                    ></div>
+                  </div>
+
                   <div className="relative mb-6 flex items-center justify-between">
                     <div
-                      className={`rounded-2xl p-4 ${
+                      className={`rounded-2xl p-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-105 ${
                         featuredCard
                           ? "border border-[#4a6bfe]/30 bg-[#4a6bfe]/20"
                           : "border border-blue-100 bg-blue-50"
@@ -168,7 +196,7 @@ export default function ProductsPage() {
                   <div className="relative flex-1">
                     <h3 className="text-3xl font-black tracking-tight">{product.name}</h3>
                     <p
-                      className={`mt-4 leading-relaxed ${
+                      className={`mt-4 min-h-[74px] leading-relaxed ${
                         featuredCard ? "text-blue-100/85" : "text-gray-600"
                       }`}
                     >
@@ -183,7 +211,7 @@ export default function ProductsPage() {
                             : "border-gray-100 bg-[#F9FAFB] text-gray-700"
                         }`}
                       >
-                        Cijena: <span className="font-bold">{product.priceEur.toFixed(2)} EUR</span>
+                        Stanje: <span className="font-bold">{product.stock}</span>
                       </div>
                       <div
                         className={`rounded-xl border px-3 py-2 ${
@@ -192,20 +220,55 @@ export default function ProductsPage() {
                             : "border-gray-100 bg-[#F9FAFB] text-gray-700"
                         }`}
                       >
-                        Stanje: <span className="font-bold">{product.stock}</span>
+                        Sifra: <span className="font-bold">#{product.id}</span>
                       </div>
                     </div>
                   </div>
 
-                  <Link
-                    href={`/proizvodi/${product.slug}`}
-                    className={`relative mt-7 inline-flex items-center gap-2 font-bold transition-all ${
-                      featuredCard ? "text-white hover:text-blue-200" : "text-[#4a6bfe] hover:text-[#2c49d8]"
-                    }`}
-                  >
-                    Pogledaj detalje
-                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
+                  <div className="relative mt-7">
+                    <div
+                      className={`rounded-2xl border px-4 py-3 ${
+                        featuredCard
+                          ? "border-white/15 bg-white/5"
+                          : "border-blue-100 bg-blue-50/70"
+                      }`}
+                    >
+                      <p
+                        className={`text-xs font-semibold uppercase tracking-[0.14em] ${
+                          featuredCard ? "text-blue-100/70" : "text-gray-500"
+                        }`}
+                      >
+                        Cijena proizvoda
+                      </p>
+                      <p className="mt-1 text-2xl font-black tracking-tight">
+                        {product.priceEur.toFixed(2)} EUR
+                      </p>
+                    </div>
+
+                    <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                      <Link
+                        href={`/proizvodi/${product.slug}`}
+                        className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-all duration-300 ${
+                          featuredCard
+                            ? "border border-white/20 bg-white/5 text-white hover:border-blue-300/70 hover:bg-white/10 hover:text-blue-100"
+                            : "border border-[#4a6bfe]/20 bg-[#4a6bfe]/10 text-[#2d4ed8] hover:border-[#4a6bfe]/40 hover:bg-[#4a6bfe]/15"
+                        }`}
+                      >
+                        Pogledaj detalje
+                        <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      </Link>
+                      <ProductInquiryModal
+                        productSlug={product.slug}
+                        productName={product.name}
+                        triggerLabel="Posalji upit"
+                        triggerClassName={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-all duration-300 ${
+                          featuredCard
+                            ? "bg-[#4a6bfe] text-white shadow-[0_12px_30px_rgba(74,107,254,0.3)] hover:bg-[#3b5af0]"
+                            : "bg-gray-900 text-white shadow-[0_12px_30px_rgba(15,23,42,0.2)] hover:bg-gray-800"
+                        }`}
+                      />
+                    </div>
+                  </div>
                 </motion.article>
               );
             })}

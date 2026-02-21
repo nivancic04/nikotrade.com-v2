@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Instagram,
   MapPin,
@@ -11,8 +12,10 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { getProductBySlug } from "@/lib/products-db";
 
 export default function KontaktPage() {
+  const searchParams = useSearchParams();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -23,6 +26,9 @@ export default function KontaktPage() {
   const [formSuccess, setFormSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [selectedProductSlug, setSelectedProductSlug] = useState("");
+  const [selectedProductName, setSelectedProductName] = useState("");
+  const [prefilledProductSlug, setPrefilledProductSlug] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,6 +47,33 @@ export default function KontaktPage() {
       document.body.style.overflow = previousOverflow;
     };
   }, [isContactModalOpen]);
+
+  useEffect(() => {
+    const productSlugFromUrl = searchParams.get("product");
+    if (!productSlugFromUrl || productSlugFromUrl === prefilledProductSlug) return;
+
+    const productFromTable = getProductBySlug(productSlugFromUrl);
+    const productName = productFromTable?.name ?? productSlugFromUrl.replace(/-/g, " ");
+    const shouldOpenModal = searchParams.get("open") !== "0";
+
+    setPrefilledProductSlug(productSlugFromUrl);
+    setSelectedProductSlug(productSlugFromUrl);
+    setSelectedProductName(productName);
+    setTitle((current) =>
+      current.trim().length > 0 ? current : `Upit za proizvod: ${productName}`
+    );
+    setDescription((current) =>
+      current.trim().length > 0
+        ? current
+        : `Pozdrav, zanima me proizvod "${productName}". Molim vise informacija o dostupnosti, personalizaciji i roku isporuke.`
+    );
+
+    if (shouldOpenModal) {
+      setFormError("");
+      setFormSuccess("");
+      setIsContactModalOpen(true);
+    }
+  }, [prefilledProductSlug, searchParams]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -83,6 +116,8 @@ export default function KontaktPage() {
           description: normalizedDescription,
           replyEmail: normalizedReplyEmail,
           consent,
+          productSlug: selectedProductSlug || undefined,
+          productName: selectedProductName || undefined,
         }),
       });
 
@@ -264,7 +299,7 @@ export default function KontaktPage() {
                 onClick={openContactModal}
                 className="group inline-flex items-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3b5af0]"
               >
-                Otvori upit formu
+                {selectedProductName ? "Otvori upit za proizvod" : "Otvori upit formu"}
                 <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>
               <a
@@ -378,6 +413,11 @@ export default function KontaktPage() {
                   <p className="mt-2 text-sm text-gray-500">
                     Unesite osnovne informacije i odgovor cete dobiti na email koji navedete.
                   </p>
+                  {selectedProductName ? (
+                    <p className="mt-3 inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-[#4a6bfe]">
+                      Proizvod: {selectedProductName}
+                    </p>
+                  ) : null}
                 </div>
                 <button
                   type="button"
@@ -402,7 +442,11 @@ export default function KontaktPage() {
                     maxLength={120}
                     required
                     className="w-full rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3 text-gray-900 outline-none transition-all focus:border-[#4a6bfe] focus:ring-2 focus:ring-[#4a6bfe]/20"
-                    placeholder="Npr. Upit za personalizirani automiris"
+                    placeholder={
+                      selectedProductName
+                        ? `Upit za ${selectedProductName}`
+                        : "Npr. Upit za personalizirani automiris"
+                    }
                   />
                 </div>
 
@@ -418,7 +462,11 @@ export default function KontaktPage() {
                     required
                     rows={5}
                     className="w-full resize-none rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3 text-gray-900 outline-none transition-all focus:border-[#4a6bfe] focus:ring-2 focus:ring-[#4a6bfe]/20"
-                    placeholder="Napisite detalje upita..."
+                    placeholder={
+                      selectedProductName
+                        ? `Zanima me ${selectedProductName}. Molim detalje o dostupnosti i isporuci.`
+                        : "Napisite detalje upita..."
+                    }
                   />
                 </div>
 
