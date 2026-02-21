@@ -166,9 +166,7 @@ export default function Home() {
               className="text-6xl sm:text-7xl md:text-8xl font-black text-white tracking-tighter leading-[1.1] mb-8 drop-shadow-[0_0_30px_rgba(74,107,254,0.4)]"
             >
               Mirisi <br />u bojama <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-white drop-shadow-[0_0_40px_rgba(147,197,253,0.5)]">
-                vaših najdražih.
-              </span>
+              vaših najdražih.
             </motion.h1>
             <motion.p
               variants={fadeUp}
