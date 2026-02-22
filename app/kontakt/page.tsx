@@ -270,7 +270,6 @@ function KontaktPageContent() {
             transition={{ duration: 0.7, ease: "easeOut" }}
             className="relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 sm:p-10 shadow-[0_10px_35px_rgba(15,23,42,0.08)]"
           >
-            <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-blue-50"></div>
             <p className="relative mb-5 inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#4a6bfe]">
               Kontakt
             </p>

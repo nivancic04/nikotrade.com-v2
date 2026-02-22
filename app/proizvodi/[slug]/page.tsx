@@ -19,6 +19,11 @@ function CategoryIcon({ category }: { category: ProductCategory }) {
   return <Wine size={24} className="text-blue-400" />;
 }
 
+function getCategoryLabel(category: ProductCategory) {
+  if (category === "Case") return "Čaše";
+  return category;
+}
+
 function getAvailability(stock: number) {
   if (stock > 5) {
     return {
@@ -88,7 +93,7 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
                   <CategoryIcon category={product.category} />
                 </div>
                 <span className="rounded-full border border-gray-200 bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-[0.12em] text-gray-500">
-                  {product.category}
+                  {getCategoryLabel(product.category)}
                 </span>
               </div>
 
@@ -194,7 +199,7 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
                       <CategoryIcon category={item.category} />
                     </div>
                     <span className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-gray-500">
-                      {item.category}
+                      {getCategoryLabel(item.category)}
                     </span>
                   </div>
 
