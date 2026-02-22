@@ -1,33 +1,4 @@
 {
-  "inquiries": [
-    {
-      "id": "fe66bcf6-06f2-4ac8-9c42-77c0d2b2e4b6",
-      "title": "Upit za proizvod: Dinamo Plavi Automiris",
-      "description": "Pozdrav, zanima me proizvod \"Dinamo Plavi Automiris\". Molim vise informacija o dostupnosti, personalizaciji i roku isporuke.",
-      "replyEmail": "nikoivancic2801@gmail.com",
-      "productSlug": "dinamo-plavi-automiris",
-      "productName": "Dinamo Plavi Automiris",
-      "status": "novo",
-      "consentAt": "2026-02-22T01:12:49.278Z",
-      "createdAt": "2026-02-22T01:12:49.278Z"
-    }
-  ],
-  "accessTokens": [
-    {
-      "id": "a52e9e06-a464-4993-a35b-9e7a3dd8e53f",
-      "email": "nikoivancic2801@gmail.com",
-      "tokenHash": "18fe5b76f216a8dd364156ff354f713ff8a37af7258179e2da6e7efa6863e439",
-      "createdAt": "2026-02-22T01:13:21.075Z",
-      "expiresAt": "2026-02-22T01:43:21.075Z",
-      "usedAt": "2026-02-22T01:14:03.459Z"
-    },
-    {
-      "id": "c639d1d9-f19a-44ef-9302-a4fba9fb770a",
-      "email": "nikoivancic2801@gmail.com",
-      "tokenHash": "224087bd922d9a635e87ea08cc8b0d736bc29c0da07b0d8e042f2a4000bf6ccc",
-      "createdAt": "2026-02-22T01:32:20.175Z",
-      "expiresAt": "2026-02-22T02:02:20.175Z",
-      "usedAt": "2026-02-22T01:32:33.482Z"
-    }
-  ]
+  "inquiries": [],
+  "accessTokens": []
 }

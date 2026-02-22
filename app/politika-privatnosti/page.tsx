@@ -14,8 +14,9 @@ import { SiteFooter } from "@/components/site-footer";
 const retentionRules = [
   {
     title: "Kontakt upiti",
-    value: "do 24 mjeseca",
-    description: "Cuvanje radi pracenja komunikacije, kvalitete usluge i zastite od zloupotrebe.",
+    value: "do 30 dana",
+    description:
+      "Upite cuvamo najduze mjesec dana radi odgovora i osnovne evidencije, osim kada je dulje cuvanje potrebno zbog pravnih zahtjeva, zastite pravnih interesa ili sluzbenog postupka.",
   },
   {
     title: "Tehnicki logovi",

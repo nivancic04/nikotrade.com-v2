@@ -141,9 +141,10 @@ export default function Home() {
             src="/img/hero-bg.png"
             alt="Hero Background"
             fill
+            sizes="100vw"
             className="object-cover object-center scale-105"
             priority
-            quality={90}
+            quality={75}
           />
           <div className="absolute inset-0 bg-gradient-to-tr from-gray-900/90 via-[#4a6bfe]/80 to-blue-500/50 mix-blend-multiply"></div>
           {/* Subtle animated glow overlay */}
@@ -341,6 +342,7 @@ export default function Home() {
                     src="/img/dinamozagreb.png"
                     alt="GNK Dinamo Zagreb Logo"
                     fill
+                    sizes="(min-width: 640px) 224px, 192px"
                     className="object-contain filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 ease-in-out drop-shadow-sm group-hover:drop-shadow-xl"
                   />
                 </div>
@@ -375,6 +377,7 @@ export default function Home() {
                     src="/img/SlavenBelupo.png"
                     alt="NK Slaven Belupo Logo"
                     fill
+                    sizes="(min-width: 640px) 224px, 192px"
                     className="object-contain filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 ease-in-out drop-shadow-sm group-hover:drop-shadow-xl"
                   />
                 </div>
