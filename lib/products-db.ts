@@ -5,8 +5,8 @@ export type ProductRecord = {
   slug: string;
   name: string;
   category: ProductCategory;
-  // Putanja slike iz /public direktorija (npr. /img/products/moj-proizvod.jpg)
-  image: string;
+  // Putanje slika iz /public direktorija (npr. /img/products/moj-proizvod.jpg)
+  images: string[];
   shortDescription: string;
   description: string;
   scent: string;
@@ -17,6 +17,12 @@ export type ProductRecord = {
   featured: boolean;
 };
 
+const TEMPLATE_PRODUCT_IMAGES = [
+  "/img/products/placeholder-product.svg",
+  "/img/products/placeholder-product-alt.svg",
+  "/img/products/placeholder-product-tertiary.svg",
+];
+
 // Testna "tablica" proizvoda. Kasnije se moze zamijeniti SQL/Prisma bazom.
 export const PRODUCTS_TABLE: ProductRecord[] = [
   {
@@ -24,7 +30,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "dinamo-plavi-automiris",
     name: "Dinamo Plavi Automiris",
     category: "Automirisi",
-    image: "/img/products/placeholder-product.svg",
+    images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Personalizirani dres automiris u plavoj varijanti.",
     description:
       "Premium automiris u obliku dresa kluba, sa postojanim mirisom i jacom zasicenoscu boje za dugotrajan vizualni dojam.",
@@ -40,7 +46,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "slaven-belupo-automiris",
     name: "Slaven Belupo Automiris",
     category: "Automirisi",
-    image: "/img/products/placeholder-product.svg",
+    images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Klupski automiris sa prepoznatljivim detaljima.",
     description:
       "Automiris dizajniran za navijace koji zele klupski identitet u automobilu. Vizual i miris ostaju stabilni kroz duzi period.",
@@ -56,7 +62,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "personalizirani-dres-automiris",
     name: "Personalizirani Dres Automiris",
     category: "Automirisi",
-    image: "/img/products/placeholder-product.svg",
+    images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Model sa custom imenom i brojem.",
     description:
       "Potpuno personaliziran model automirisa: birate boje, ime i broj. Idealan kao poklon ili promo artikl za timove.",
@@ -72,7 +78,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "sport-majica-performance",
     name: "Sport Majica Performance",
     category: "Sportska oprema",
-    image: "/img/products/placeholder-product.svg",
+    images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Lagana i prozracna majica za trening.",
     description:
       "Majica od brzosuseceg materijala sa ergonomskim krojem. Namijenjena za intenzivne treninge i svakodnevno nosenje.",
@@ -88,7 +94,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "sportski-ruksak-team",
     name: "Sportski Ruksak Team",
     category: "Sportska oprema",
-    image: "/img/products/placeholder-product.svg",
+    images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Ruksak s vise pretinaca i jacim dnom.",
     description:
       "Praktican ruksak za trening i putovanja. Ojacao podlogu, bocne dzepove i prostor za osnovnu opremu.",
@@ -104,7 +110,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "fitness-boca-pro",
     name: "Fitness Boca Pro",
     category: "Sportska oprema",
-    image: "/img/products/placeholder-product.svg",
+    images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Izolirana boca za trening i teretanu.",
     description:
       "Kompaktna i cvrsta boca sa sigurnim zatvaranjem i minimalistickim izgledom. Lako odrzavanje i dugotrajna upotreba.",
@@ -120,7 +126,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "gravirana-casa-classic",
     name: "Gravirana Casa Classic",
     category: "Case",
-    image: "/img/products/placeholder-product.svg",
+    images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Staklena casa sa personaliziranom gravurom.",
     description:
       "Elegantna casa sa preciznom gravurom po zelji. Pogodna za poklone, evente i posebne prigode.",
@@ -136,7 +142,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "gravirana-casa-deluxe",
     name: "Gravirana Casa Deluxe",
     category: "Case",
-    image: "/img/products/placeholder-product.svg",
+    images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Deblje staklo i detaljna personalizacija.",
     description:
       "Model vise klase sa jacim staklom i finijom obradom gravure. Namijenjen za premium poklone i setove.",
@@ -152,7 +158,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "gravirani-set-case-2x",
     name: "Gravirani Set Casa 2x",
     category: "Case",
-    image: "/img/products/placeholder-product.svg",
+    images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Set od dvije case sa custom natpisom.",
     description:
       "Par case sa uskladjenom gravurom, idealan za poklon set. Moguce kombinirati logo, ime i datum.",
@@ -171,4 +177,18 @@ export function getAllProducts() {
 
 export function getProductBySlug(slug: string) {
   return PRODUCTS_TABLE.find((product) => product.slug === slug);
+}
+
+const FALLBACK_PRODUCT_IMAGE = "/img/products/placeholder-product.svg";
+
+export function getProductImages(product: ProductRecord) {
+  const normalized = product.images
+    .map((imagePath) => imagePath.trim())
+    .filter((imagePath) => imagePath.length > 0);
+
+  return normalized.length > 0 ? normalized : [FALLBACK_PRODUCT_IMAGE];
+}
+
+export function getPrimaryProductImage(product: ProductRecord) {
+  return getProductImages(product)[0];
 }
