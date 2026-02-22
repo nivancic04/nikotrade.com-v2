@@ -7,7 +7,7 @@ import { useMemo, useState } from "react";
 import { ArrowRight, Database, Filter, Shirt, SprayCan, Wine } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { getAllProducts, type ProductCategory } from "@/lib/products-db";
+import { getAllProducts, getPrimaryProductImage, type ProductCategory } from "@/lib/products-db";
 
 const categoryOptions: Array<"Sve" | ProductCategory> = [
   "Sve",
@@ -157,7 +157,7 @@ export default function ProductsPage() {
                           className="relative -mx-5 -mt-5 mb-5 overflow-hidden border-b border-gray-100 sm:-mx-6 sm:-mt-6"
                         >
                           <Image
-                            src={product.image}
+                            src={getPrimaryProductImage(product)}
                             alt={product.name}
                             width={1200}
                             height={900}
