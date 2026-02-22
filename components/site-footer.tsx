@@ -54,11 +54,6 @@ export function SiteFooter({ active }: SiteFooterProps) {
                 </Link>
               </li>
               <li>
-                <Link href="/dostava" className="transition-colors hover:text-white">
-                  Dostava i povrat
-                </Link>
-              </li>
-              <li>
                 <Link href="/politika-privatnosti" className="transition-colors hover:text-white">
                   Politika privatnosti
                 </Link>

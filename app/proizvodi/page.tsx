@@ -34,6 +34,23 @@ export default function ProductsPage() {
   const products = getAllProducts();
   const [activeCategory, setActiveCategory] = useState<"Sve" | ProductCategory>("Sve");
   const [sortBy, setSortBy] = useState<SortOption>("featured");
+  const gridVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: 0.05,
+      },
+    },
+  };
+  const cardVariants = {
+    hidden: { opacity: 0, y: 18 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] as const },
+    },
+  };
 
   const filteredProducts = useMemo(() => {
     const byCategory =
@@ -127,14 +144,17 @@ export default function ProductsPage() {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {filteredProducts.map((product, index) => {
+          <motion.div
+            variants={gridVariants}
+            initial="hidden"
+            animate="visible"
+            className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3"
+          >
+            {filteredProducts.map((product) => {
               return (
                 <motion.article
                   key={product.id}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.45, delay: Math.min(index * 0.06, 0.3) }}
+                  variants={cardVariants}
                   className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white p-5 text-gray-900 shadow-[0_10px_35px_rgba(15,23,42,0.08)] transition-all duration-300 hover:border-blue-100 hover:shadow-[0_18px_50px_rgba(15,23,42,0.18)] sm:p-6"
                 >
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-100/80 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
@@ -197,7 +217,7 @@ export default function ProductsPage() {
                 </motion.article>
               );
             })}
-          </div>
+          </motion.div>
         </section>
       </main>
 

@@ -486,17 +486,31 @@ export default function KontaktPage() {
                   />
                 </div>
 
-                <label className="flex items-start gap-3 rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3">
-                  <input
-                    type="checkbox"
-                    checked={consent}
-                    onChange={(event) => setConsent(event.target.checked)}
-                    className="mt-1 h-4 w-4 rounded border-gray-300 text-[#4a6bfe] focus:ring-[#4a6bfe]/30"
-                  />
-                  <span className="text-sm leading-relaxed text-gray-600">
-                    Pristajem na obradu i prikupljanje mojih podataka radi odgovora na upit.
-                  </span>
-                </label>
+                <div className="rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3">
+                  <div className="flex items-start gap-3">
+                    <input
+                      id="contact-consent"
+                      type="checkbox"
+                      checked={consent}
+                      onChange={(event) => setConsent(event.target.checked)}
+                      className="mt-1 h-4 w-4 rounded border-gray-300 text-[#4a6bfe] focus:ring-[#4a6bfe]/30"
+                    />
+                    <label htmlFor="contact-consent" className="text-sm leading-relaxed text-gray-600">
+                      Pristajem na obradu i prikupljanje mojih podataka radi odgovora na upit,
+                      sukladno{" "}
+                      <Link
+                        href="/politika-privatnosti"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-semibold text-[#3555f6] underline decoration-[#3555f6]/40 underline-offset-4 hover:text-[#2d4ed8]"
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        politici privatnosti
+                      </Link>
+                      .
+                    </label>
+                  </div>
+                </div>
 
                 {formError ? (
                   <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
@@ -571,11 +585,6 @@ export default function KontaktPage() {
                 <li>
                   <Link href="/kontakt" className="transition-colors hover:text-white">
                     Kontakt
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/dostava" className="transition-colors hover:text-white">
-                    Dostava i povrat
                   </Link>
                 </li>
                 <li>
