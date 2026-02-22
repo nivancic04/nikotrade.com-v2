@@ -1,11 +1,10 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
-  AlertTriangle,
   ArrowRight,
   Clock3,
   KeyRound,
@@ -193,7 +192,7 @@ function MyInquiriesPageContent() {
         | null;
 
       if (!response.ok) {
-        setRequestError(payload?.error ?? "Neuspjesno slanje pristupnog linka.");
+        setRequestError(payload?.error ?? "Neuspješno slanje pristupnog linka.");
         return;
       }
 
@@ -204,7 +203,7 @@ function MyInquiriesPageContent() {
       setEmail("");
       setWebsite("");
     } catch {
-      setRequestError("Slanje trenutno nije dostupno. Pokusajte ponovno.");
+      setRequestError("Slanje trenutno nije dostupno. Pokušajte ponovno.");
     } finally {
       setIsRequestingLink(false);
     }
@@ -215,7 +214,7 @@ function MyInquiriesPageContent() {
     setIsAuthenticated(false);
     setViewerEmail("");
     setInquiries([]);
-    setRequestSuccess("Sesija je zavrsena. Za novi pristup zatrazite novi link.");
+    setRequestSuccess("Sesija je završena. Za novi pristup zatražite novi link.");
   };
 
   return (
@@ -249,15 +248,7 @@ function MyInquiriesPageContent() {
                 politici privatnosti
               </Link>
               .
-            </div>
-            <div className="mt-4 inline-flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
-              <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
-              <span>
-                Podsjetnik: za stabilan produkcijski rad preporučena je implementacija prave baze
-                podataka za upite.
-              </span>
-            </div>
-          </motion.div>
+            </div>          </motion.div>
 
           {isBootstrapping ? (
             <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-gray-100 bg-white p-8 shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
@@ -329,7 +320,7 @@ function MyInquiriesPageContent() {
                   disabled={isRequestingLink}
                   className="group inline-flex items-center gap-2 rounded-xl bg-[#4a6bfe] px-5 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:bg-[#3b5af0] disabled:cursor-not-allowed disabled:opacity-70"
                 >
-                  {isRequestingLink ? "Slanje..." : "Posalji pristupni link"}
+                  {isRequestingLink ? "Slanje..." : "Pošalji pristupni link"}
                   <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                 </button>
               </form>
@@ -450,3 +441,4 @@ export default function MyInquiriesPage() {
     </Suspense>
   );
 }
+
