@@ -69,8 +69,20 @@ export async function POST(request: Request) {
       );
     }
 
-    const userInquiries = await listInquiriesByEmail(email);
-    if (userInquiries.length === 0) {
+    let userInquiriesCount = 0;
+    try {
+      const userInquiries = await listInquiriesByEmail(email);
+      userInquiriesCount = userInquiries.length;
+    } catch (error) {
+      console.error("Dohvat upita za request-link nije uspio:", error);
+      return NextResponse.json({
+        ok: true,
+        message:
+          "Pregled upita je trenutno privremeno nedostupan. Pokusajte ponovno malo kasnije.",
+      });
+    }
+
+    if (userInquiriesCount === 0) {
       return NextResponse.json({
         ok: true,
         message:
@@ -87,7 +99,18 @@ export async function POST(request: Request) {
       });
     }
 
-    const tokenPayload = await createInquiryAccessToken(email);
+    let tokenPayload: { token: string; expiresAt: string };
+    try {
+      tokenPayload = await createInquiryAccessToken(email);
+    } catch (error) {
+      console.error("Kreiranje access tokena nije uspjelo:", error);
+      return NextResponse.json({
+        ok: true,
+        message:
+          "Pregled upita je trenutno privremeno nedostupan. Pokusajte ponovno malo kasnije.",
+      });
+    }
+
     const baseUrl = resolveAppBaseUrl(request);
     const magicLink = `${baseUrl}/moji-upiti?token=${encodeURIComponent(tokenPayload.token)}`;
 

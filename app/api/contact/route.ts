@@ -108,14 +108,23 @@ export async function POST(request: Request) {
       );
     }
 
-    const inquiry = await createInquiryRecord({
-      title,
-      description,
-      replyEmail,
-      consent,
-      productSlug,
-      productName,
-    });
+    let inquiryId: string | null = null;
+    let inquiryStored = false;
+
+    try {
+      const inquiry = await createInquiryRecord({
+        title,
+        description,
+        replyEmail,
+        consent,
+        productSlug,
+        productName,
+      });
+      inquiryId = inquiry.id;
+      inquiryStored = true;
+    } catch (error) {
+      console.error("Spremanje upita u local store nije uspjelo:", error);
+    }
 
     const smtpClient = createSmtpTransporter();
     let mailSent = false;
@@ -130,7 +139,7 @@ export async function POST(request: Request) {
           text: [
             `Novi upit sa kontakt forme`,
             ``,
-            `ID upita: ${inquiry.id}`,
+            `ID upita: ${inquiryId ?? "N/A"}`,
             `Naslov: ${title}`,
             productName ? `Proizvod: ${productName}` : null,
             productSlug ? `Slug proizvoda: ${productSlug}` : null,
@@ -144,7 +153,7 @@ export async function POST(request: Request) {
             .join("\n"),
           html: `
             <h2>Novi upit sa kontakt forme</h2>
-            <p><strong>ID upita:</strong> ${escapeHtml(inquiry.id)}</p>
+            <p><strong>ID upita:</strong> ${escapeHtml(inquiryId ?? "N/A")}</p>
             <p><strong>Naslov:</strong> ${escapeHtml(title)}</p>
             ${productName ? `<p><strong>Proizvod:</strong> ${escapeHtml(productName)}</p>` : ""}
             ${productSlug ? `<p><strong>Slug proizvoda:</strong> ${escapeHtml(productSlug)}</p>` : ""}
@@ -162,9 +171,17 @@ export async function POST(request: Request) {
       }
     }
 
+    if (!mailSent && !inquiryStored) {
+      return NextResponse.json(
+        { error: "Upit nije moguce obraditi. Pokusajte ponovno malo kasnije." },
+        { status: 500 }
+      );
+    }
+
     return NextResponse.json({
       ok: true,
-      inquiryId: inquiry.id,
+      inquiryId,
+      inquiryStored,
       mailSent,
     });
   } catch {

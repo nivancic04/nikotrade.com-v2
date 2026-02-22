@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import {
+  AlertTriangle,
   ArrowRight,
   Clock3,
   KeyRound,
@@ -248,6 +249,13 @@ function MyInquiriesPageContent() {
                 politici privatnosti
               </Link>
               .
+            </div>
+            <div className="mt-4 inline-flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
+              <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+              <span>
+                Podsjetnik: za stabilan produkcijski rad preporucena je implementacija prave baze
+                podataka za upite.
+              </span>
             </div>
           </motion.div>
 
