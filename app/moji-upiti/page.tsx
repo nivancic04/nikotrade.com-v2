@@ -239,12 +239,12 @@ function MyInquiriesPageContent() {
             </p>
             <h1 className="mt-4 text-4xl font-black tracking-tight sm:text-5xl">Moji upiti</h1>
             <p className="mt-4 max-w-3xl text-gray-600 sm:text-lg">
-              Radi zastite privatnosti, pregled upita je dostupan iskljucivo putem sigurnog
-              magic-link pristupa. Link saljemo na email koji je koristen kod slanja upita.
+              Radi zaštite privatnosti, pregled upita je dostupan isključivo putem sigurnog
+              magic-link pristupa. Link šaljemo na email koji je korišten kod slanja upita.
             </p>
             <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-gray-500">
               <LockKeyhole className="h-4 w-4 text-[#4a6bfe]" />
-              Podaci se obraduju sukladno{" "}
+              Podaci se obrađuju sukladno{" "}
               <Link href="/politika-privatnosti" className="font-semibold text-[#3555f6] hover:text-[#2d4ed8]">
                 politici privatnosti
               </Link>
@@ -253,7 +253,7 @@ function MyInquiriesPageContent() {
             <div className="mt-4 inline-flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-800">
               <AlertTriangle className="mt-0.5 h-3.5 w-3.5 shrink-0" />
               <span>
-                Podsjetnik: za stabilan produkcijski rad preporucena je implementacija prave baze
+                Podsjetnik: za stabilan produkcijski rad preporučena je implementacija prave baze
                 podataka za upite.
               </span>
             </div>
@@ -263,7 +263,7 @@ function MyInquiriesPageContent() {
             <div className="flex min-h-[220px] items-center justify-center rounded-3xl border border-gray-100 bg-white p-8 shadow-[0_10px_30px_rgba(15,23,42,0.08)]">
               <p className="inline-flex items-center gap-2 text-sm font-semibold text-gray-600">
                 <Loader2 className="h-4 w-4 animate-spin text-[#4a6bfe]" />
-                Ucitavanje upita...
+                Učitavanje upita...
               </p>
             </div>
           ) : null}
@@ -281,7 +281,7 @@ function MyInquiriesPageContent() {
                   Pristup putem emaila
                 </p>
                 <h2 className="mt-4 text-2xl font-black tracking-tight text-gray-900">
-                  Zatrazite link za pregled svojih upita
+                  Zatražite link za pregled svojih upita
                 </h2>
                 <p className="mt-2 text-gray-600">
                   Unesite istu email adresu koju ste koristili kod slanja upita.
@@ -369,7 +369,7 @@ function MyInquiriesPageContent() {
                       {viewerEmail}
                     </p>
                     <p className="mt-3 text-sm text-gray-600">
-                      Pronasli smo <span className="font-bold text-gray-900">{summaryLabel}</span>.
+                      Pronašli smo <span className="font-bold text-gray-900">{summaryLabel}</span>.
                     </p>
                   </div>
 
@@ -388,7 +388,7 @@ function MyInquiriesPageContent() {
                 <div className="rounded-3xl border border-gray-100 bg-white p-8 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
                   <p className="text-lg font-bold text-gray-900">Nema evidentiranih upita</p>
                   <p className="mt-2 text-gray-600">
-                    Ako ste upravo poslali upit, pokusajte osvjeziti stranicu za nekoliko sekundi.
+                    Ako ste upravo poslali upit, pokušajte osvježiti stranicu za nekoliko sekundi.
                   </p>
                 </div>
               ) : (

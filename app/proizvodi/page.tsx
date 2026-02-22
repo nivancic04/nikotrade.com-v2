@@ -20,13 +20,20 @@ type SortOption = "featured" | "priceAsc" | "priceDesc";
 
 const sortLabels: Record<SortOption, string> = {
   featured: "Istaknuti",
-  priceAsc: "Cijena: niza",
-  priceDesc: "Cijena: visa",
+  priceAsc: "Cijena: niža",
+  priceDesc: "Cijena: viša",
 };
+
+function getCategoryLabel(category: "Sve" | ProductCategory) {
+  if (category === "Case") return "Čaše";
+  return category;
+}
 
 function CategoryIcon({ category }: { category: ProductCategory }) {
   if (category === "Automirisi") return <SprayCan size={22} className="text-blue-400" />;
   if (category === "Sportska oprema") return <Shirt size={22} className="text-blue-400" />;
+  if (category === "Case") return <Wine size={22} className="text-blue-400" />;
+
   return <Wine size={22} className="text-blue-400" />;
 }
 
@@ -104,7 +111,7 @@ export default function ProductsPage() {
                           : "border-gray-200 bg-white text-gray-700 hover:border-[#4a6bfe]/40 hover:text-[#4a6bfe]"
                       }`}
                     >
-                      {category}
+                      {getCategoryLabel(category)}
                     </button>
                   ))}
                 </div>
@@ -179,7 +186,7 @@ export default function ProductsPage() {
                         <span
                           className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-gray-500"
                         >
-                          {product.category}
+                          {getCategoryLabel(product.category)}
                         </span>
                       </div>
 
