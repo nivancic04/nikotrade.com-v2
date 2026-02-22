@@ -4,10 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
-import { ArrowRight, CircleDot, Database, Filter, Shirt, Wine } from "lucide-react";
+import { ArrowRight, Database, Filter, Shirt, SprayCan, Wine } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { ProductInquiryModal } from "@/components/product-inquiry-modal";
 import { getAllProducts, type ProductCategory } from "@/lib/products-db";
 
 const categoryOptions: Array<"Sve" | ProductCategory> = [
@@ -26,7 +25,7 @@ const sortLabels: Record<SortOption, string> = {
 };
 
 function CategoryIcon({ category }: { category: ProductCategory }) {
-  if (category === "Automirisi") return <CircleDot size={22} className="text-blue-400" />;
+  if (category === "Automirisi") return <SprayCan size={22} className="text-blue-400" />;
   if (category === "Sportska oprema") return <Shirt size={22} className="text-blue-400" />;
   return <Wine size={22} className="text-blue-400" />;
 }
@@ -128,116 +127,56 @@ export default function ProductsPage() {
             </div>
           </motion.div>
 
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
             {filteredProducts.map((product, index) => {
-              const featuredCard = product.featured;
               return (
                 <motion.article
                   key={product.id}
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.45, delay: Math.min(index * 0.06, 0.3) }}
-                  className={`group relative flex h-full flex-col overflow-hidden rounded-3xl border p-7 transition-all duration-500 ${
-                    featuredCard
-                      ? "border-gray-800 bg-gray-900 text-white shadow-2xl hover:-translate-y-2 hover:shadow-[0_22px_60px_rgba(15,23,42,0.45)]"
-                      : "border-gray-100 bg-white text-gray-900 shadow-[0_10px_35px_rgba(15,23,42,0.08)] hover:-translate-y-2 hover:shadow-[0_18px_50px_rgba(15,23,42,0.18)]"
-                  }`}
+                  className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white p-5 text-gray-900 shadow-[0_10px_35px_rgba(15,23,42,0.08)] transition-all duration-300 hover:border-blue-100 hover:shadow-[0_18px_50px_rgba(15,23,42,0.18)] sm:p-6"
                 >
-                  <div
-                    className={`pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 ${
-                      featuredCard
-                        ? "bg-gradient-to-br from-[#4a6bfe]/20 via-blue-900/15 to-transparent"
-                        : "bg-gradient-to-br from-blue-100/80 via-transparent to-transparent"
-                    }`}
-                  ></div>
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-100/80 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
 
                   <div
-                    className={`relative -mx-7 -mt-7 mb-6 overflow-hidden border-b ${
-                      featuredCard ? "border-white/10" : "border-gray-100"
-                    }`}
+                    className="relative -mx-5 -mt-5 mb-5 overflow-hidden border-b border-gray-100 sm:-mx-6 sm:-mt-6"
                   >
                     <Image
                       src={product.image}
                       alt={product.name}
                       width={1200}
                       height={900}
-                      className="h-52 w-full object-cover"
+                      className="h-64 w-full object-cover sm:h-72"
                     />
-                    <div
-                      className={`pointer-events-none absolute inset-0 ${
-                        featuredCard
-                          ? "bg-gradient-to-t from-gray-900/80 via-gray-900/25 to-transparent"
-                          : "bg-gradient-to-t from-white/80 via-white/10 to-transparent"
-                      }`}
-                    ></div>
+                    <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/80 via-white/10 to-transparent"></div>
                   </div>
 
-                  <div className="relative mb-6 flex items-center justify-between">
+                  <div className="relative mb-4 flex items-center justify-between">
                     <div
-                      className={`rounded-2xl p-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-105 ${
-                        featuredCard
-                          ? "border border-[#4a6bfe]/30 bg-[#4a6bfe]/20"
-                          : "border border-blue-100 bg-blue-50"
-                      }`}
+                      className="rounded-2xl border border-blue-100 bg-blue-50 p-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-105"
                     >
                       <CategoryIcon category={product.category} />
                     </div>
                     <span
-                      className={`rounded-full px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] ${
-                        featuredCard
-                          ? "bg-[#4a6bfe] text-white"
-                          : "border border-gray-200 bg-white text-gray-500"
-                      }`}
+                      className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-gray-500"
                     >
                       {product.category}
                     </span>
                   </div>
 
                   <div className="relative flex-1">
-                    <h3 className="text-3xl font-black tracking-tight">{product.name}</h3>
+                    <h3 className="text-2xl font-black tracking-tight sm:text-3xl">{product.name}</h3>
                     <p
-                      className={`mt-4 min-h-[74px] leading-relaxed ${
-                        featuredCard ? "text-blue-100/85" : "text-gray-600"
-                      }`}
+                      className="mt-3 min-h-[64px] text-sm leading-relaxed text-gray-600 sm:text-base"
                     >
                       {product.shortDescription}
                     </p>
-
-                    <div className="mt-6 grid grid-cols-2 gap-3 text-sm">
-                      <div
-                        className={`rounded-xl border px-3 py-2 ${
-                          featuredCard
-                            ? "border-white/10 bg-white/5 text-blue-100"
-                            : "border-gray-100 bg-[#F9FAFB] text-gray-700"
-                        }`}
-                      >
-                        Stanje: <span className="font-bold">{product.stock}</span>
-                      </div>
-                      <div
-                        className={`rounded-xl border px-3 py-2 ${
-                          featuredCard
-                            ? "border-white/10 bg-white/5 text-blue-100"
-                            : "border-gray-100 bg-[#F9FAFB] text-gray-700"
-                        }`}
-                      >
-                        Sifra: <span className="font-bold">#{product.id}</span>
-                      </div>
-                    </div>
                   </div>
 
-                  <div className="relative mt-7">
-                    <div
-                      className={`rounded-2xl border px-4 py-3 ${
-                        featuredCard
-                          ? "border-white/15 bg-white/5"
-                          : "border-blue-100 bg-blue-50/70"
-                      }`}
-                    >
-                      <p
-                        className={`text-xs font-semibold uppercase tracking-[0.14em] ${
-                          featuredCard ? "text-blue-100/70" : "text-gray-500"
-                        }`}
-                      >
+                  <div className="relative mt-5">
+                    <div className="rounded-2xl border border-blue-100 bg-blue-50/70 px-4 py-3">
+                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
                         Cijena proizvoda
                       </p>
                       <p className="mt-1 text-2xl font-black tracking-tight">
@@ -245,28 +184,14 @@ export default function ProductsPage() {
                       </p>
                     </div>
 
-                    <div className="mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                    <div className="mt-3">
                       <Link
                         href={`/proizvodi/${product.slug}`}
-                        className={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-all duration-300 ${
-                          featuredCard
-                            ? "border border-white/20 bg-white/5 text-white hover:border-blue-300/70 hover:bg-white/10 hover:text-blue-100"
-                            : "border border-[#4a6bfe]/20 bg-[#4a6bfe]/10 text-[#2d4ed8] hover:border-[#4a6bfe]/40 hover:bg-[#4a6bfe]/15"
-                        }`}
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#4a6bfe]/20 bg-[#4a6bfe]/10 px-4 py-3 text-sm font-bold text-[#2d4ed8] transition-all duration-300 hover:border-[#4a6bfe]/40 hover:bg-[#4a6bfe]/15"
                       >
                         Pogledaj detalje
                         <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                       </Link>
-                      <ProductInquiryModal
-                        productSlug={product.slug}
-                        productName={product.name}
-                        triggerLabel="Posalji upit"
-                        triggerClassName={`inline-flex items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-all duration-300 ${
-                          featuredCard
-                            ? "bg-[#4a6bfe] text-white shadow-[0_12px_30px_rgba(74,107,254,0.3)] hover:bg-[#3b5af0]"
-                            : "bg-gray-900 text-white shadow-[0_12px_30px_rgba(15,23,42,0.2)] hover:bg-gray-800"
-                        }`}
-                      />
                     </div>
                   </div>
                 </motion.article>

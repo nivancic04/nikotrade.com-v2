@@ -21,7 +21,7 @@ export function ProductInquiryModal({
   triggerLabel = "Posalji upit",
   triggerClassName,
 }: ProductInquiryModalProps) {
-  const defaultTitle = useMemo(() => `Upit za proizvod: ${productName}`, [productName]);
+  const fixedTitle = useMemo(() => `Upit za proizvod: ${productName}`, [productName]);
   const defaultDescription = useMemo(
     () =>
       `Pozdrav, zanima me proizvod "${productName}". Molim vise informacija o dostupnosti, personalizaciji i roku isporuke.`,
@@ -29,7 +29,6 @@ export function ProductInquiryModal({
   );
 
   const [isOpen, setIsOpen] = useState(false);
-  const [title, setTitle] = useState(defaultTitle);
   const [description, setDescription] = useState(defaultDescription);
   const [replyEmail, setReplyEmail] = useState("");
   const [consent, setConsent] = useState(false);
@@ -38,9 +37,8 @@ export function ProductInquiryModal({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    setTitle(defaultTitle);
     setDescription(defaultDescription);
-  }, [defaultDescription, defaultTitle]);
+  }, [defaultDescription]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -54,7 +52,6 @@ export function ProductInquiryModal({
   const openModal = () => {
     setFormError("");
     setFormSuccess("");
-    setTitle(defaultTitle);
     setDescription(defaultDescription);
     setIsOpen(true);
   };
@@ -68,7 +65,7 @@ export function ProductInquiryModal({
     setFormError("");
     setFormSuccess("");
 
-    const normalizedTitle = title.trim();
+    const normalizedTitle = fixedTitle.trim();
     const normalizedDescription = description.trim();
     const normalizedReplyEmail = replyEmail.trim();
 
@@ -182,11 +179,12 @@ export function ProductInquiryModal({
                   <input
                     id={`product-inquiry-title-${productSlug}`}
                     name="title"
-                    value={title}
-                    onChange={(event) => setTitle(event.target.value)}
+                    value={fixedTitle}
+                    readOnly
+                    aria-readonly="true"
                     maxLength={120}
                     required
-                    className="w-full rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3 text-gray-900 outline-none transition-all focus:border-[#4a6bfe] focus:ring-2 focus:ring-[#4a6bfe]/20"
+                    className="w-full cursor-not-allowed rounded-xl border border-gray-200 bg-gray-100 px-4 py-3 text-gray-700 outline-none"
                   />
                 </div>
 

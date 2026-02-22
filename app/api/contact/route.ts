@@ -21,12 +21,13 @@ function isValidEmail(email: string) {
 export async function POST(request: Request) {
   try {
     const body = (await request.json()) as ContactPayload;
-    const title = typeof body.title === "string" ? body.title.trim() : "";
+    const inputTitle = typeof body.title === "string" ? body.title.trim() : "";
     const description = typeof body.description === "string" ? body.description.trim() : "";
     const replyEmail = typeof body.replyEmail === "string" ? body.replyEmail.trim() : "";
     const consent = body.consent === true;
     const productSlug = typeof body.productSlug === "string" ? body.productSlug.trim() : "";
     const productName = typeof body.productName === "string" ? body.productName.trim() : "";
+    const title = productName ? `Upit za proizvod: ${productName}` : inputTitle;
 
     if (title.length < 3 || title.length > 120) {
       return NextResponse.json(
