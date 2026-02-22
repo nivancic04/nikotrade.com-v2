@@ -7,11 +7,10 @@ import { SiteFooter } from "@/components/site-footer";
 import { ProductImageGallery } from "@/components/product-image-gallery";
 import { ProductInquiryModal } from "@/components/product-inquiry-modal";
 import {
-  getAllProducts,
   getPrimaryProductImage,
-  getProductBySlug,
   type ProductCategory,
 } from "@/lib/products-db";
+import { getAllProductsFromStore, getProductBySlugFromStore } from "@/lib/products-store";
 
 function CategoryIcon({ category }: { category: ProductCategory }) {
   if (category === "Automirisi") return <SprayCan size={24} className="text-blue-400" />;
@@ -54,13 +53,13 @@ type ProductDetailsPageProps = {
 
 export default async function ProductDetailsPage({ params }: ProductDetailsPageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlugFromStore(slug);
 
   if (!product) {
     notFound();
   }
 
-  const relatedProducts = getAllProducts()
+  const relatedProducts = (await getAllProductsFromStore())
     .filter((item) => item.category === product.category && item.slug !== product.slug)
     .slice(0, 3);
   const availability = getAvailability(product.stock);

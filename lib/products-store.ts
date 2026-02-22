@@ -1,0 +1,121 @@
+import type { ProductRecord } from "@/lib/products-db";
+import { PRODUCTS_TABLE } from "@/lib/products-db";
+
+type ProductRow = {
+  id: number;
+  slug: string;
+  name: string;
+  category: ProductRecord["category"];
+  shortDescription: string;
+  description: string;
+  scent: string;
+  material: string;
+  duration: string;
+  priceEur: string | number;
+  stock: number;
+  featured: boolean;
+};
+
+type ProductImageRow = {
+  productId: number;
+  imageUrl: string;
+};
+
+const FALLBACK_PRODUCT_IMAGE = "/img/products/placeholder-product.svg";
+
+function withImages(product: ProductRecord, imagesByProduct: Map<number, string[]>) {
+  const dbImages = imagesByProduct.get(product.id) ?? [];
+  const normalizedImages = dbImages
+    .map((imageUrl) => imageUrl.trim())
+    .filter((imageUrl) => imageUrl.length > 0);
+
+  return {
+    ...product,
+    images: normalizedImages.length > 0 ? normalizedImages : [FALLBACK_PRODUCT_IMAGE],
+  };
+}
+
+function mapProductRow(row: ProductRow): ProductRecord {
+  return {
+    id: row.id,
+    slug: row.slug,
+    name: row.name,
+    category: row.category,
+    images: [],
+    shortDescription: row.shortDescription,
+    description: row.description,
+    scent: row.scent,
+    material: row.material,
+    duration: row.duration,
+    priceEur: Number(row.priceEur),
+    stock: row.stock,
+    featured: row.featured,
+  };
+}
+
+async function getSqlClient() {
+  const url = process.env.DATABASE_URL?.trim();
+  if (!url) return null;
+  const { sql } = await import("@/lib/db");
+  return sql;
+}
+
+async function readProductsFromDb(): Promise<ProductRecord[] | null> {
+  const sql = await getSqlClient();
+  if (!sql) return null;
+
+  const productRows = await sql<ProductRow[]>`
+    select
+      id,
+      slug,
+      name,
+      category,
+      short_description as "shortDescription",
+      description,
+      scent,
+      material,
+      duration,
+      price_eur as "priceEur",
+      stock,
+      featured
+    from products
+    order by id asc
+  `;
+
+  if (productRows.length === 0) return [];
+
+  const ids = productRows.map((row) => row.id);
+  const imageRows = await sql<ProductImageRow[]>`
+    select
+      product_id as "productId",
+      image_url as "imageUrl"
+    from product_images
+    where product_id = any(${ids})
+    order by product_id asc, sort_order asc
+  `;
+
+  const imagesByProduct = new Map<number, string[]>();
+  for (const imageRow of imageRows) {
+    const existing = imagesByProduct.get(imageRow.productId) ?? [];
+    existing.push(imageRow.imageUrl);
+    imagesByProduct.set(imageRow.productId, existing);
+  }
+
+  return productRows.map((row) => withImages(mapProductRow(row), imagesByProduct));
+}
+
+export async function getAllProductsFromStore(): Promise<ProductRecord[]> {
+  try {
+    const fromDb = await readProductsFromDb();
+    if (fromDb) return fromDb;
+  } catch {
+    // Keep storefront available with local fallback if DB is temporarily unavailable.
+  }
+
+  return PRODUCTS_TABLE;
+}
+
+export async function getProductBySlugFromStore(slug: string): Promise<ProductRecord | undefined> {
+  const products = await getAllProductsFromStore();
+  return products.find((product) => product.slug === slug);
+}
