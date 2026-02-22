@@ -165,7 +165,7 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
         {relatedProducts.length > 0 ? (
           <section className="mx-auto mt-12 max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mb-6 flex items-center justify-between">
-              <h3 className="text-3xl font-black tracking-tight text-gray-900">Slicni proizvodi</h3>
+              <h3 className="text-3xl font-black tracking-tight text-gray-900">Slični proizvodi</h3>
               <Link href="/proizvodi" className="font-semibold text-[#4a6bfe] hover:text-[#2d4ed8]">
                 Pogledaj sve
               </Link>

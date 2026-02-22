@@ -19,13 +19,13 @@ function isValidEmail(email: string) {
 export function ProductInquiryModal({
   productSlug,
   productName,
-  triggerLabel = "Posalji upit",
+  triggerLabel = "Pošalji upit",
   triggerClassName,
 }: ProductInquiryModalProps) {
   const fixedTitle = useMemo(() => `Upit za proizvod: ${productName}`, [productName]);
   const defaultDescription = useMemo(
     () =>
-      `Pozdrav, zanima me proizvod "${productName}". Molim vise informacija o dostupnosti, personalizaciji i roku isporuke.`,
+      `Pozdrav, zanima me proizvod "${productName}". Molim više informacija o dostupnosti, personalizaciji i roku isporuke.`,
     [productName]
   );
 
@@ -111,16 +111,16 @@ export function ProductInquiryModal({
 
       const payload = await response.json();
       if (!response.ok) {
-        setFormError(payload?.error ?? "Dogodila se greska pri slanju upita.");
+        setFormError(payload?.error ?? "Dogodila se greška pri slanju upita.");
         return;
       }
 
-      setFormSuccess("Upit je uspjesno poslan. Odgovorit cemo vam uskoro.");
+      setFormSuccess("Upit je uspješno poslan. Odgovorit ćemo vam uskoro.");
       setReplyEmail("");
       setWebsite("");
       setConsent(false);
     } catch {
-      setFormError("Slanje trenutno nije dostupno. Pokusajte ponovno.");
+      setFormError("Slanje trenutno nije dostupno. Pokušajte ponovno.");
     } finally {
       setIsSubmitting(false);
     }
@@ -154,10 +154,10 @@ export function ProductInquiryModal({
                     Upit za proizvod
                   </p>
                   <h3 className="mt-3 text-3xl font-black tracking-tighter text-gray-900">
-                    Posaljite upit
+                    Pošaljite upit
                   </h3>
                   <p className="mt-2 text-sm text-gray-500">
-                    Unesite osnovne informacije i odgovor cete dobiti na email koji navedete.
+                    Unesite osnovne informacije i odgovor ćete dobiti na email koji navedete.
                   </p>
                   <p className="mt-3 inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-[#4a6bfe]">
                     Proizvod: {productName}

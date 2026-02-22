@@ -24,7 +24,7 @@ export function SiteFooter({ active }: SiteFooterProps) {
             <ul className="space-y-3 text-sm text-gray-400">
               <li>
                 <Link href="/" className="transition-colors hover:text-white">
-                  Pocetna stranica
+                  Početna stranica
                 </Link>
               </li>
               <li>
@@ -46,7 +46,7 @@ export function SiteFooter({ active }: SiteFooterProps) {
             </ul>
           </div>
           <div>
-            <h5 className="mb-5 font-bold tracking-tight text-white">Podrska</h5>
+            <h5 className="mb-5 font-bold tracking-tight text-white">Podrška</h5>
             <ul className="space-y-3 text-sm text-gray-400">
               <li>
                 <Link href="/kontakt" className="transition-colors hover:text-white">
@@ -70,7 +70,7 @@ export function SiteFooter({ active }: SiteFooterProps) {
         <div className="mb-8 h-px w-full bg-white/10"></div>
 
         <div className="flex flex-col items-center justify-between gap-4 text-xs font-medium text-gray-500 md:flex-row">
-          <p>© 2026 Nikotrade WebShop. Sva prava pridrzana.</p>
+          <p>© 2004 Nikotrade WebShop. Sva prava pridržana.</p>
           <span>Made with passion in Croatia</span>
         </div>
       </div>

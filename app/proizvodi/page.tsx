@@ -20,13 +20,15 @@ type SortOption = "featured" | "priceAsc" | "priceDesc";
 
 const sortLabels: Record<SortOption, string> = {
   featured: "Istaknuti",
-  priceAsc: "Cijena: niza",
-  priceDesc: "Cijena: visa",
+  priceAsc: "Cijena: niža",
+  priceDesc: "Cijena: viša",
 };
 
 function CategoryIcon({ category }: { category: ProductCategory }) {
   if (category === "Automirisi") return <SprayCan size={22} className="text-blue-400" />;
   if (category === "Sportska oprema") return <Shirt size={22} className="text-blue-400" />;
+  if (category === "Case") return <Wine size={22} className="text-blue-400" />;
+
   return <Wine size={22} className="text-blue-400" />;
 }
 

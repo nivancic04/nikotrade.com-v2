@@ -16,28 +16,28 @@ const retentionRules = [
     title: "Kontakt upiti",
     value: "do 30 dana",
     description:
-      "Upite cuvamo najduze mjesec dana radi odgovora i osnovne evidencije, osim kada je dulje cuvanje potrebno zbog pravnih zahtjeva, zastite pravnih interesa ili sluzbenog postupka.",
+      "Upite čuvamo najduže mjesec dana radi odgovora i osnovne evidencije, osim kada je dulje čuvanje potrebno zbog pravnih zahtjeva, zastite pravnih interesa ili službenog postupka.",
   },
   {
-    title: "Tehnicki logovi",
+    title: "Tehnički logovi",
     value: "do 12 mjeseci",
     description: "Svrha je sigurnost sustava i analiza eventualnih incidenata.",
   },
   {
     title: "Zakonski rokovi",
     value: "prema propisima",
-    description: "Ako je obrada povezana s pravnim obvezama, podatke cuvamo koliko zakon trazi.",
+    description: "Ako je obrada povezana s pravnim obvezama, podatke čuvamo koliko zakon traži.",
   },
 ];
 
 const rights = [
   "pravo na pristup osobnim podacima",
-  "pravo na ispravak netocnih podataka",
+  "pravo na ispravak netočnih podataka",
   "pravo na brisanje (ako nema pravne osnove za daljnju obradu)",
-  "pravo na ogranicenje obrade",
+  "pravo na ograničenje obrade",
   "pravo na prenosivost podataka",
   "pravo na prigovor obradi kada je osnova legitimni interes",
-  "pravo na povlacenje privole bez utjecaja na zakonitost prethodne obrade",
+  "pravo na povlačenje privole bez utjecaja na zakonitost prethodne obrade",
 ];
 
 export default function PrivacyPolicyPage() {
@@ -62,12 +62,12 @@ export default function PrivacyPolicyPage() {
                   Politika privatnosti i obrada osobnih podataka
                 </h1>
                 <p className="mt-5 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
-                  Ova politika detaljno objasnjava kako Niko Trade obraduje osobne podatke, posebno
+                  Ova politika detaljno objašnjava kako Niko Trade obraduje osobne podatke, posebno
                   podatke iz kontakt upita. Cilj je potpuna transparentnost, zakonitost obrade i
-                  zastita vasih prava u skladu s GDPR uredbom.
+                  zaštita vasih prava u skladu s GDPR uredbom.
                 </p>
                 <p className="mt-4 text-sm font-semibold text-gray-500">
-                  Zadnje azuriranje: 22.02.2026.
+                  Zadnje ažuriranje: 22.02.2026.
                 </p>
               </div>
             </div>
@@ -80,15 +80,15 @@ export default function PrivacyPolicyPage() {
                     Koje podatke prikupljamo
                   </h2>
                   <p className="mt-3 text-gray-600">
-                    Kod slanja upita mozemo obradivati: email adresu za odgovor, naslov upita,
-                    sadrzaj poruke i (ako postoji) oznaku proizvoda na koji se upit odnosi.
+                    Kod slanja upita možemo obrađivati: email adresu za odgovor, naslov upita,
+                    sadržaj poruke i (ako postoji) oznaku proizvoda na koji se upit odnosi.
                   </p>
                 </article>
 
                 <article className="rounded-2xl border border-gray-100 bg-white p-6">
                   <h2 className="flex items-center gap-2 text-xl font-black tracking-tight text-gray-900">
                     <Mail className="h-5 w-5 text-[#4a6bfe]" />
-                    Zasto koristimo email podatke
+                    Zašto koristimo email podatke
                   </h2>
                   <div className="mt-4 space-y-3 text-gray-600">
                     <p>
@@ -96,16 +96,16 @@ export default function PrivacyPolicyPage() {
                       status komunikacije i osigurali da odgovor stigne pravoj osobi.
                     </p>
                     <p>
-                      Bez email adrese ne mozemo ispuniti osnovnu svrhu kontakt forme:
-                      pravovremenu i tocnu poslovnu komunikaciju.
+                      Bez email adrese ne možemo ispuniti osnovnu svrhu kontakt forme:
+                      pravovremenu i točnu poslovnu komunikaciju.
                     </p>
                     <p>
-                      U slucaju sigurnosnih incidenata ili sporova, podaci o komunikaciji sluze i
+                      U slučaju sigurnosnih incidenata ili sporova, podaci o komunikaciji služe i
                       kao dokaz zakonitog i profesionalnog postupanja.
                     </p>
                     <p>
-                      Email podatke ne koristimo za slanje marketinskih poruka bez vase izricite
-                      privole i obrada je ogranicena na svrhu odgovora na upit, sigurnost i
+                      Email podatke ne koristimo za slanje marketinških poruka bez vaše izričite
+                      privole i obrada je ograničena na svrhu odgovora na upit, sigurnost i
                       potrebnu poslovnu evidenciju.
                     </p>
                   </div>
@@ -122,12 +122,12 @@ export default function PrivacyPolicyPage() {
                       na email adresu koju ste naveli kod slanja upita.
                     </p>
                     <p>
-                      Nakon potvrde linka postavlja se sigurnosni sesijski kolacic iskljucivo radi
-                      prikaza vasih upita. Kolacic ne koristimo za oglasavanje niti profiliranje.
+                      Nakon potvrde linka postavlja se sigurnosni sesijski kolačić isključivo radi
+                      prikaza vasih upita. Kolačić ne koristimo za oglašavanje niti profiliranje.
                     </p>
                     <p>
-                      Pristupni token i sesija imaju vremensko ogranicenje i sluze samo zastiti
-                      podataka od neovlastenog pregleda.
+                      Pristupni token i sesija imaju vremensko ograničenje i služe samo za zaštitu
+                      podataka od neovlaštenog pregleda.
                     </p>
                   </div>
                 </article>
@@ -135,7 +135,7 @@ export default function PrivacyPolicyPage() {
                 <article className="rounded-2xl border border-gray-100 bg-white p-6">
                   <h2 className="flex items-center gap-2 text-xl font-black tracking-tight text-gray-900">
                     <TimerReset className="h-5 w-5 text-[#4a6bfe]" />
-                    Rokovi cuvanja podataka
+                    Rokovi čuvanja podataka
                   </h2>
                   <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
                     {retentionRules.map((rule) => (
@@ -158,7 +158,7 @@ export default function PrivacyPolicyPage() {
                     Voditelj obrade
                   </p>
                   <p className="mt-2 text-lg font-black text-gray-900">Niko Trade d.o.o.</p>
-                  <p className="mt-2 text-sm text-gray-700">Vatroslava Lisinskog 17, 42233 Sveti Durd</p>
+                  <p className="mt-2 text-sm text-gray-700">Vatroslava Lisinskog 17, 42233 Sveti Đurđ, Hrvatska</p>
                   <p className="mt-1 text-sm text-gray-700">Email: xxx@xxxx.xx</p>
                   <p className="mt-1 text-sm text-gray-700">Telefon: xxx xxxx xxx</p>
                 </div>
@@ -169,8 +169,8 @@ export default function PrivacyPolicyPage() {
                     Vazno
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-amber-900/90">
-                    Ne saljite osjetljive osobne podatke (npr. zdravstvene podatke, OIB, broj kartice)
-                    kroz kontakt formu, osim ako to izricito ne zatrazimo iz zakonitog razloga.
+                    Ne šaljite osjetljive osobne podatke (npr. zdravstvene podatke, OIB, broj kartice)
+                    kroz kontakt formu, osim ako to izričito ne zatražimo iz zakonitog razloga.
                   </p>
                 </div>
 
@@ -179,7 +179,7 @@ export default function PrivacyPolicyPage() {
                     Prigovor i nadzor
                   </p>
                   <p className="mt-2 text-sm leading-relaxed text-gray-700">
-                    Ako smatrate da je obrada podataka nezakonita, mozete podnijeti prigovor izravno
+                    Ako smatrate da je obrada podataka nezakonita, možete podnijeti prigovor izravno
                     nama ili nadzornom tijelu (AZOP).
                   </p>
                   <Link
@@ -193,7 +193,7 @@ export default function PrivacyPolicyPage() {
                 <article className="rounded-2xl border border-gray-100 bg-white p-5">
                   <h2 className="flex items-center gap-2 text-xl font-black tracking-tight text-gray-900">
                     <Gavel className="h-5 w-5 text-[#4a6bfe]" />
-                    Vasa prava
+                    Vaša prava
                   </h2>
                   <ul className="mt-4 space-y-2">
                     {rights.map((right) => (

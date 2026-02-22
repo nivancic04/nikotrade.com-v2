@@ -468,7 +468,7 @@ export default function Home() {
           <div className="w-full h-px bg-white/10 mb-8"></div>
 
           <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium text-gray-500">
-            <p>© 2026 Nikotrade WebShop. Sva prava pridržana.</p>
+            <p>© 2004 Nikotrade WebShop. Sva prava pridržana.</p>
             <div className="flex gap-4">
               <span>Made with passion in Croatia</span>
             </div>

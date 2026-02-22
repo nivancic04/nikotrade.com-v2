@@ -125,18 +125,18 @@ function KontaktPageContent() {
 
       const payload = await response.json();
       if (!response.ok) {
-        setFormError(payload?.error ?? "Dogodila se greska pri slanju upita.");
+        setFormError(payload?.error ?? "Dogodila se greška pri slanju upita.");
         return;
       }
 
-      setFormSuccess("Upit je uspjesno poslan. Odgovorit cemo vam uskoro.");
+      setFormSuccess("Upit je uspješno poslan. Odgovorit ćemo vam uskoro.");
       setTitle("");
       setDescription("");
       setReplyEmail("");
       setWebsite("");
       setConsent(false);
     } catch {
-      setFormError("Slanje trenutno nije dostupno. Pokusajte ponovno.");
+      setFormError("Slanje trenutno nije dostupno. Pokušajte ponovno.");
     } finally {
       setIsSubmitting(false);
     }
@@ -178,7 +178,7 @@ function KontaktPageContent() {
               className="hidden space-x-10 font-medium tracking-tight text-gray-200 md:flex"
             >
               <Link href="/" className="relative transition-colors hover:text-white group">
-                Pocetna
+                Početna
                 <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-white transition-all group-hover:w-full"></span>
               </Link>
               <Link href="/proizvodi" className="relative transition-colors hover:text-white group">
@@ -259,7 +259,7 @@ function KontaktPageContent() {
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.08 }}
             className="mx-auto mt-5 max-w-2xl text-lg text-gray-500"
           >
-            Javi nam se za pitanja, personalizirane narudzbe i poslovnu saradnju.
+            Javi nam se za pitanja, personalizirane narudžbe i poslovnu saradnju.
           </motion.p>
         </div>
 
@@ -278,7 +278,7 @@ function KontaktPageContent() {
               Tu smo za svako pitanje i svaku personalizaciju.
             </h2>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-gray-600 sm:text-lg">
-              Treba vam posebna narudzba, timski dizajn ili pomoc oko izbora proizvoda?
+              Treba vam posebna narudžba, timski dizajn ili pomoć oko izbora proizvoda?
               Javite se direktno, odgovaramo brzo i precizno.
             </p>
 
@@ -340,7 +340,7 @@ function KontaktPageContent() {
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">Adresa</p>
                     <p className="mt-1 text-base font-semibold leading-relaxed text-blue-50">
-                      Vatroslava Lisinskog 17, 42233 Sveti Durd
+                      Vatroslava Lisinskog 17, 42233 Sveti Đurđ, Hrvatska
                     </p>
                   </div>
                 </div>
@@ -375,9 +375,9 @@ function KontaktPageContent() {
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">Proces upita</p>
                 <div className="mt-3 space-y-2 text-sm text-blue-100/90">
-                  <p>1. Posaljete upit kroz popup formu.</p>
+                  <p>1. Pošaljete upit kroz popup formu.</p>
                   <p>2. Pregledamo detalje i javimo se na vas email.</p>
-                  <p>3. Potvrdjujemo narudzbu i rok isporuke.</p>
+                  <p>3. Potvrđujemo narudžbu i rok isporuke.</p>
                 </div>
               </div>
             </div>
@@ -405,9 +405,9 @@ function KontaktPageContent() {
                   <p className="inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#4a6bfe]">
                     Kontakt forma
                   </p>
-                  <h3 className="mt-3 text-3xl font-black tracking-tighter text-gray-900">Posaljite upit</h3>
+                  <h3 className="mt-3 text-3xl font-black tracking-tighter text-gray-900">Pošaljite upit</h3>
                   <p className="mt-2 text-sm text-gray-500">
-                    Unesite osnovne informacije i odgovor cete dobiti na email koji navedete.
+                    Unesite osnovne informacije i odgovor ćete dobiti na email koji navedete.
                   </p>
                   {selectedProductName ? (
                     <p className="mt-3 inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-[#4a6bfe]">
@@ -577,7 +577,7 @@ function KontaktPageContent() {
               <ul className="space-y-3 text-sm text-gray-400">
                 <li>
                   <Link href="/" className="transition-colors hover:text-white">
-                    Pocetna stranica
+                    Početna stranica
                   </Link>
                 </li>
                 <li>
@@ -593,7 +593,7 @@ function KontaktPageContent() {
               </ul>
             </div>
             <div>
-              <h5 className="mb-5 font-bold tracking-tight text-white">Podrska</h5>
+              <h5 className="mb-5 font-bold tracking-tight text-white">Podrška</h5>
               <ul className="space-y-3 text-sm text-gray-400">
                 <li>
                   <Link href="/kontakt" className="transition-colors hover:text-white">
@@ -617,7 +617,7 @@ function KontaktPageContent() {
           <div className="mb-8 h-px w-full bg-white/10"></div>
 
           <div className="flex flex-col items-center justify-between gap-4 text-xs font-medium text-gray-500 md:flex-row">
-            <p>© 2026 Nikotrade WebShop. Sva prava pridrzana.</p>
+            <p>© 2004 Nikotrade WebShop. Sva prava pridržana.</p>
             <span>Made with passion in Croatia</span>
           </div>
         </div>

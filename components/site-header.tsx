@@ -12,7 +12,7 @@ type SiteHeaderProps = {
 };
 
 const navItems: Array<{ key: NavKey; href: string; label: string }> = [
-  { key: "home", href: "/", label: "Pocetna" },
+  { key: "home", href: "/", label: "Početna" },
   { key: "products", href: "/proizvodi", label: "Proizvodi" },
   { key: "contact", href: "/kontakt", label: "Kontakt" },
 ];
