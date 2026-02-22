@@ -47,6 +47,10 @@ export function resolveAppBaseUrl(request: Request) {
     }
   }
 
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("APP_BASE_URL mora biti validno postavljen u produkciji.");
+  }
+
   const forwardedHost = request.headers.get("x-forwarded-host");
   const host = (forwardedHost ?? request.headers.get("host") ?? "").replace(/[\r\n]/g, "");
   const forwardedProtocol = request.headers.get("x-forwarded-proto");

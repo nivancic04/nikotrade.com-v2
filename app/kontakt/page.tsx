@@ -21,6 +21,7 @@ function KontaktPageContent() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [replyEmail, setReplyEmail] = useState("");
+  const [website, setWebsite] = useState("");
   const [consent, setConsent] = useState(false);
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
@@ -116,6 +117,7 @@ function KontaktPageContent() {
           description: normalizedDescription,
           replyEmail: normalizedReplyEmail,
           consent,
+          website,
           productSlug: selectedProductSlug || undefined,
           productName: selectedProductName || undefined,
         }),
@@ -131,6 +133,7 @@ function KontaktPageContent() {
       setTitle("");
       setDescription("");
       setReplyEmail("");
+      setWebsite("");
       setConsent(false);
     } catch {
       setFormError("Slanje trenutno nije dostupno. Pokusajte ponovno.");
@@ -142,6 +145,7 @@ function KontaktPageContent() {
   const openContactModal = () => {
     setFormError("");
     setFormSuccess("");
+    setWebsite("");
     setIsContactModalOpen(true);
   };
 
@@ -467,6 +471,23 @@ function KontaktPageContent() {
                         ? `Zanima me ${selectedProductName}. Molim detalje o dostupnosti i isporuci.`
                         : "Napisite detalje upita..."
                     }
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="contact-website" className="sr-only">
+                    Website
+                  </label>
+                  <input
+                    id="contact-website"
+                    name="website"
+                    type="text"
+                    value={website}
+                    onChange={(event) => setWebsite(event.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                    aria-hidden="true"
                   />
                 </div>
 

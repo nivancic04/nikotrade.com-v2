@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { createInquiryAccessToken, listInquiriesByEmail } from "@/lib/inquiries-store";
+import { applyRateLimit, resolveClientIp } from "@/lib/rate-limit";
 import { createSmtpTransporter, resolveAppBaseUrl } from "@/lib/smtp";
 
 export const runtime = "nodejs";
 
 type RequestPayload = {
   email?: unknown;
+  website?: unknown;
 };
 
 function isValidEmail(email: string) {
@@ -14,13 +16,56 @@ function isValidEmail(email: string) {
 
 export async function POST(request: Request) {
   try {
+    const clientIp = resolveClientIp(request);
+    const requestLimitByIp = applyRateLimit({
+      key: `request-link:ip:${clientIp}`,
+      maxRequests: 8,
+      windowMs: 10 * 60 * 1000,
+    });
+
+    if (!requestLimitByIp.allowed) {
+      return NextResponse.json(
+        { error: "Previse zahtjeva. Pokusajte ponovno malo kasnije." },
+        {
+          status: 429,
+          headers: { "Retry-After": String(requestLimitByIp.retryAfterSeconds) },
+        }
+      );
+    }
+
     const body = (await request.json()) as RequestPayload;
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const website = typeof body.website === "string" ? body.website.trim() : "";
+
+    // Honeypot polje: ako je popunjeno, ignoriramo zahtjev.
+    if (website.length > 0) {
+      return NextResponse.json({
+        ok: true,
+        message:
+          "Ako postoji upit vezan uz ovu email adresu, poslan je link za siguran pregled upita.",
+      });
+    }
 
     if (!isValidEmail(email)) {
       return NextResponse.json(
         { error: "Unesite ispravnu email adresu." },
         { status: 400 }
+      );
+    }
+
+    const requestLimitByEmail = applyRateLimit({
+      key: `request-link:email:${email}`,
+      maxRequests: 5,
+      windowMs: 10 * 60 * 1000,
+    });
+
+    if (!requestLimitByEmail.allowed) {
+      return NextResponse.json(
+        { error: "Previse zahtjeva za ovu email adresu. Pokusajte ponovno kasnije." },
+        {
+          status: 429,
+          headers: { "Retry-After": String(requestLimitByEmail.retryAfterSeconds) },
+        }
       );
     }
 
@@ -35,10 +80,11 @@ export async function POST(request: Request) {
 
     const smtpClient = createSmtpTransporter();
     if (!smtpClient) {
-      return NextResponse.json(
-        { error: "Mail servis nije konfiguriran. Provjerite SMTP varijable." },
-        { status: 500 }
-      );
+      return NextResponse.json({
+        ok: true,
+        message:
+          "Ako postoji upit vezan uz ovu email adresu, poslan je link za siguran pregled upita.",
+      });
     }
 
     const tokenPayload = await createInquiryAccessToken(email);
@@ -84,4 +130,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

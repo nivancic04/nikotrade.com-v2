@@ -85,6 +85,7 @@ function MyInquiriesPageContent() {
   const tokenFromUrl = searchParams.get("token");
 
   const [email, setEmail] = useState("");
+  const [website, setWebsite] = useState("");
   const [isRequestingLink, setIsRequestingLink] = useState(false);
   const [requestError, setRequestError] = useState("");
   const [requestSuccess, setRequestSuccess] = useState("");
@@ -183,7 +184,7 @@ function MyInquiriesPageContent() {
       const response = await fetch("/api/inquiries/request-link", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: normalizedEmail }),
+        body: JSON.stringify({ email: normalizedEmail, website }),
       });
 
       const payload = (await response.json().catch(() => null)) as
@@ -200,6 +201,7 @@ function MyInquiriesPageContent() {
           "Ako postoji upit za ovu adresu, poslali smo vam link za siguran pregled upita."
       );
       setEmail("");
+      setWebsite("");
     } catch {
       setRequestError("Slanje trenutno nije dostupno. Pokusajte ponovno.");
     } finally {
@@ -279,6 +281,23 @@ function MyInquiriesPageContent() {
               </div>
 
               <form onSubmit={handleRequestLink} className="space-y-4">
+                <div>
+                  <label htmlFor="inquiry-access-website" className="sr-only">
+                    Website
+                  </label>
+                  <input
+                    id="inquiry-access-website"
+                    type="text"
+                    name="website"
+                    value={website}
+                    onChange={(event) => setWebsite(event.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                    aria-hidden="true"
+                  />
+                </div>
+
                 <div>
                   <label
                     htmlFor="inquiry-access-email"

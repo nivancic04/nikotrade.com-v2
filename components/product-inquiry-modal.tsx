@@ -32,6 +32,7 @@ export function ProductInquiryModal({
   const [isOpen, setIsOpen] = useState(false);
   const [description, setDescription] = useState(defaultDescription);
   const [replyEmail, setReplyEmail] = useState("");
+  const [website, setWebsite] = useState("");
   const [consent, setConsent] = useState(false);
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
@@ -54,6 +55,7 @@ export function ProductInquiryModal({
     setFormError("");
     setFormSuccess("");
     setDescription(defaultDescription);
+    setWebsite("");
     setIsOpen(true);
   };
 
@@ -101,6 +103,7 @@ export function ProductInquiryModal({
           description: normalizedDescription,
           replyEmail: normalizedReplyEmail,
           consent,
+          website,
           productSlug,
           productName,
         }),
@@ -114,6 +117,7 @@ export function ProductInquiryModal({
 
       setFormSuccess("Upit je uspjesno poslan. Odgovorit cemo vam uskoro.");
       setReplyEmail("");
+      setWebsite("");
       setConsent(false);
     } catch {
       setFormError("Slanje trenutno nije dostupno. Pokusajte ponovno.");
@@ -204,6 +208,23 @@ export function ProductInquiryModal({
                     required
                     rows={5}
                     className="w-full resize-none rounded-xl border border-gray-200 bg-[#F9FAFB] px-4 py-3 text-gray-900 outline-none transition-all focus:border-[#4a6bfe] focus:ring-2 focus:ring-[#4a6bfe]/20"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor={`product-inquiry-website-${productSlug}`} className="sr-only">
+                    Website
+                  </label>
+                  <input
+                    id={`product-inquiry-website-${productSlug}`}
+                    name="website"
+                    type="text"
+                    value={website}
+                    onChange={(event) => setWebsite(event.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                    className="absolute -left-[9999px] h-0 w-0 opacity-0"
+                    aria-hidden="true"
                   />
                 </div>
 
