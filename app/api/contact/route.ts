@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { createInquiryRecord } from "@/lib/inquiries-store";
+import { createSmtpTransporter, getContactReceiverEmail } from "@/lib/smtp";
 
 export const runtime = "nodejs";
 
@@ -12,10 +13,19 @@ type ContactPayload = {
   productName?: unknown;
 };
 
-const CONTACT_RECEIVER = process.env.CONTACT_RECEIVER_EMAIL ?? "nikoivancic2801@gmail.com";
+const CONTACT_RECEIVER = getContactReceiverEmail();
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
 }
 
 export async function POST(request: Request) {
@@ -57,64 +67,65 @@ export async function POST(request: Request) {
       );
     }
 
-    const smtpHost = process.env.SMTP_HOST ?? "smtp.gmail.com";
-    const smtpPort = Number(process.env.SMTP_PORT ?? 465);
-    const smtpSecure = process.env.SMTP_SECURE
-      ? process.env.SMTP_SECURE === "true"
-      : smtpPort === 465;
-    const smtpUser = process.env.SMTP_USER;
-    const smtpAppPassword = process.env.SMTP_APP_PASSWORD;
+    const inquiry = await createInquiryRecord({
+      title,
+      description,
+      replyEmail,
+      consent,
+      productSlug,
+      productName,
+    });
 
-    if (!smtpUser || !smtpAppPassword) {
-      return NextResponse.json(
-        { error: "Mail servis nije konfiguriran. Provjerite .env varijable." },
-        { status: 500 }
-      );
+    const smtpClient = createSmtpTransporter();
+    let mailSent = false;
+
+    if (smtpClient) {
+      try {
+        await smtpClient.transporter.sendMail({
+          from: `"NikoTrade Kontakt Forma" <${smtpClient.smtpUser}>`,
+          to: CONTACT_RECEIVER,
+          replyTo: replyEmail,
+          subject: `[NikoTrade upit] ${productName ? `${productName} | ` : ""}${title}`,
+          text: [
+            `Novi upit sa kontakt forme`,
+            ``,
+            `ID upita: ${inquiry.id}`,
+            `Naslov: ${title}`,
+            productName ? `Proizvod: ${productName}` : null,
+            productSlug ? `Slug proizvoda: ${productSlug}` : null,
+            `Email za odgovor: ${replyEmail}`,
+            `Privola: DA`,
+            ``,
+            `Opis:`,
+            description,
+          ]
+            .filter(Boolean)
+            .join("\n"),
+          html: `
+            <h2>Novi upit sa kontakt forme</h2>
+            <p><strong>ID upita:</strong> ${escapeHtml(inquiry.id)}</p>
+            <p><strong>Naslov:</strong> ${escapeHtml(title)}</p>
+            ${productName ? `<p><strong>Proizvod:</strong> ${escapeHtml(productName)}</p>` : ""}
+            ${productSlug ? `<p><strong>Slug proizvoda:</strong> ${escapeHtml(productSlug)}</p>` : ""}
+            <p><strong>Email za odgovor:</strong> ${escapeHtml(replyEmail)}</p>
+            <p><strong>Privola:</strong> DA</p>
+            <hr />
+            <p><strong>Opis upita:</strong></p>
+            <p>${escapeHtml(description).replace(/\n/g, "<br />")}</p>
+          `,
+        });
+
+        mailSent = true;
+      } catch (error) {
+        console.error("Slanje notifikacijskog emaila nije uspjelo:", error);
+      }
     }
 
-    const transporter = nodemailer.createTransport({
-      host: smtpHost,
-      port: smtpPort,
-      secure: smtpSecure,
-      auth: {
-        user: smtpUser,
-        pass: smtpAppPassword,
-      },
+    return NextResponse.json({
+      ok: true,
+      inquiryId: inquiry.id,
+      mailSent,
     });
-
-    await transporter.sendMail({
-      from: `"NikoTrade Kontakt Forma" <${smtpUser}>`,
-      to: CONTACT_RECEIVER,
-      replyTo: replyEmail,
-      subject: `[NikoTrade upit] ${productName ? `${productName} | ` : ""}${title}`,
-      text: [
-        `Novi upit sa kontakt forme`,
-        ``,
-        `Naslov: ${title}`,
-        productName ? `Proizvod: ${productName}` : null,
-        productSlug ? `Slug proizvoda: ${productSlug}` : null,
-        `Email za odgovor: ${replyEmail}`,
-        `Privola: DA`,
-        ``,
-        `Opis:`,
-        description,
-      ]
-        .filter(Boolean)
-        .join("\n"),
-      html: `
-        <h2>Novi upit sa kontakt forme</h2>
-        <p><strong>Naslov:</strong> ${title}</p>
-        ${productName ? `<p><strong>Proizvod:</strong> ${productName}</p>` : ""}
-        ${productSlug ? `<p><strong>Slug proizvoda:</strong> ${productSlug}</p>` : ""}
-        <p><strong>Email za odgovor:</strong> ${replyEmail}</p>
-        <p><strong>Privola:</strong> DA</p>
-        <hr />
-        <p><strong>Opis upita:</strong></p>
-        <p>${description.replace(/\n/g, "<br />")}</p>
-      `,
-    });
-
-    return NextResponse.json({ ok: true });
   } catch {
     return NextResponse.json(
       { error: "Doslo je do greske pri slanju upita." },

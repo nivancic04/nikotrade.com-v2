@@ -54,6 +54,11 @@ export function SiteFooter({ active }: SiteFooterProps) {
                 </Link>
               </li>
               <li>
+                <Link href="/moji-upiti" className="transition-colors hover:text-white">
+                  Moji upiti
+                </Link>
+              </li>
+              <li>
                 <Link href="/politika-privatnosti" className="transition-colors hover:text-white">
                   Politika privatnosti
                 </Link>

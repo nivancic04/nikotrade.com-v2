@@ -11,10 +11,10 @@ import {
   X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { getProductBySlug } from "@/lib/products-db";
 
-export default function KontaktPage() {
+function KontaktPageContent() {
   const searchParams = useSearchParams();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -588,6 +588,11 @@ export default function KontaktPage() {
                   </Link>
                 </li>
                 <li>
+                  <Link href="/moji-upiti" className="transition-colors hover:text-white">
+                    Moji upiti
+                  </Link>
+                </li>
+                <li>
                   <Link href="/politika-privatnosti" className="transition-colors hover:text-white">
                     Politika privatnosti
                   </Link>
@@ -605,5 +610,13 @@ export default function KontaktPage() {
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function KontaktPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-[#F9FAFB]" />}>
+      <KontaktPageContent />
+    </Suspense>
   );
 }

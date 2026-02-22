@@ -112,6 +112,27 @@ export default function PrivacyPolicyPage() {
 
                 <article className="rounded-2xl border border-gray-100 bg-white p-6">
                   <h2 className="flex items-center gap-2 text-xl font-black tracking-tight text-gray-900">
+                    <ShieldCheck className="h-5 w-5 text-[#4a6bfe]" />
+                    Pregled vlastitih upita (siguran pristup)
+                  </h2>
+                  <div className="mt-4 space-y-3 text-gray-600">
+                    <p>
+                      Za stranicu &quot;Moji upiti&quot; koristimo jednokratni pristupni link poslan
+                      na email adresu koju ste naveli kod slanja upita.
+                    </p>
+                    <p>
+                      Nakon potvrde linka postavlja se sigurnosni sesijski kolacic iskljucivo radi
+                      prikaza vasih upita. Kolacic ne koristimo za oglasavanje niti profiliranje.
+                    </p>
+                    <p>
+                      Pristupni token i sesija imaju vremensko ogranicenje i sluze samo zastiti
+                      podataka od neovlastenog pregleda.
+                    </p>
+                  </div>
+                </article>
+
+                <article className="rounded-2xl border border-gray-100 bg-white p-6">
+                  <h2 className="flex items-center gap-2 text-xl font-black tracking-tight text-gray-900">
                     <TimerReset className="h-5 w-5 text-[#4a6bfe]" />
                     Rokovi cuvanja podataka
                   </h2>

@@ -456,6 +456,7 @@ export default function Home() {
               <h5 className="text-white font-bold mb-6 tracking-tight">Podrška</h5>
               <ul className="space-y-4 text-sm text-gray-400">
                 <li><Link href="/kontakt" className="hover:text-white transition-colors">Kontakt</Link></li>
+                <li><Link href="/moji-upiti" className="hover:text-white transition-colors">Moji upiti</Link></li>
                 <li><Link href="/politika-privatnosti" className="hover:text-white transition-colors">Politika privatnosti</Link></li>
               </ul>
             </div>
