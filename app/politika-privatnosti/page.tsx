@@ -150,20 +150,6 @@ export default function PrivacyPolicyPage() {
                   </div>
                 </article>
 
-                <article className="rounded-2xl border border-gray-100 bg-white p-6">
-                  <h2 className="flex items-center gap-2 text-xl font-black tracking-tight text-gray-900">
-                    <Gavel className="h-5 w-5 text-[#4a6bfe]" />
-                    Vasa prava
-                  </h2>
-                  <ul className="mt-4 space-y-2">
-                    {rights.map((right) => (
-                      <li key={right} className="flex items-start gap-2 text-gray-600">
-                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
-                        <span>{right}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </article>
               </div>
 
               <aside className="space-y-4">
@@ -173,8 +159,8 @@ export default function PrivacyPolicyPage() {
                   </p>
                   <p className="mt-2 text-lg font-black text-gray-900">Niko Trade d.o.o.</p>
                   <p className="mt-2 text-sm text-gray-700">Vatroslava Lisinskog 17, 42233 Sveti Durd</p>
-                  <p className="mt-1 text-sm text-gray-700">Email: info@nikotrade.hr</p>
-                  <p className="mt-1 text-sm text-gray-700">Telefon: +385 98 241 285</p>
+                  <p className="mt-1 text-sm text-gray-700">Email: xxx@xxxx.xx</p>
+                  <p className="mt-1 text-sm text-gray-700">Telefon: xxx xxxx xxx</p>
                 </div>
 
                 <div className="rounded-2xl border border-amber-100 bg-amber-50 p-5">
@@ -203,6 +189,21 @@ export default function PrivacyPolicyPage() {
                     Kontakt za GDPR zahtjev
                   </Link>
                 </div>
+
+                <article className="rounded-2xl border border-gray-100 bg-white p-5">
+                  <h2 className="flex items-center gap-2 text-xl font-black tracking-tight text-gray-900">
+                    <Gavel className="h-5 w-5 text-[#4a6bfe]" />
+                    Vasa prava
+                  </h2>
+                  <ul className="mt-4 space-y-2">
+                    {rights.map((right) => (
+                      <li key={right} className="flex items-start gap-2 text-gray-600">
+                        <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-500" />
+                        <span>{right}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </article>
               </aside>
             </div>
           </div>

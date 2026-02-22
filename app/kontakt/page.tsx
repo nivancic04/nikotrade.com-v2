@@ -285,15 +285,11 @@ function KontaktPageContent() {
             <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="rounded-2xl border border-gray-100 bg-[#F9FAFB] p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Email</p>
-                <a href="mailto:info@nikotrade.hr" className="mt-2 block text-lg font-bold text-[#4a6bfe]">
-                  info@nikotrade.hr
-                </a>
+                <span className="mt-2 block text-lg font-bold text-[#4a6bfe]">xxx@xxxx.xx</span>
               </div>
               <div className="rounded-2xl border border-gray-100 bg-[#F9FAFB] p-4">
                 <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Telefon</p>
-                <a href="tel:+38598241285" className="mt-2 block text-lg font-bold text-[#4a6bfe]">
-                  +385 98 241 285
-                </a>
+                <span className="mt-2 block text-lg font-bold text-[#4a6bfe]">xxx xxxx xxx</span>
               </div>
             </div>
 
@@ -368,15 +364,11 @@ function KontaktPageContent() {
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">Email</p>
-                  <a href="mailto:info@nikotrade.hr" className="mt-2 block text-base font-bold text-blue-100">
-                    info@nikotrade.hr
-                  </a>
+                  <span className="mt-2 block text-base font-bold text-blue-100">xxx@xxxx.xx</span>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">Telefon</p>
-                  <a href="tel:+38598241285" className="mt-2 block text-base font-bold text-blue-100">
-                    +385 98 241 285
-                  </a>
+                  <span className="mt-2 block text-base font-bold text-blue-100">xxx xxxx xxx</span>
                 </div>
               </div>
 
