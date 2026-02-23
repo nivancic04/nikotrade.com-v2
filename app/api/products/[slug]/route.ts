@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getProductBySlugFromStore } from "@/lib/products-store";
 
+export const dynamic = "force-dynamic";
+
 type RouteParams = {
   params: Promise<{ slug: string }>;
 };

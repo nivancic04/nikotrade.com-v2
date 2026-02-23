@@ -9,11 +9,8 @@ type ProductRow = {
   shortDescription: string;
   description: string;
   scent: string;
-  material: string;
-  duration: string;
   priceEur: string | number;
   stock: number;
-  featured: boolean;
 };
 
 type ProductImageRow = {
@@ -45,11 +42,11 @@ function mapProductRow(row: ProductRow): ProductRecord {
     shortDescription: row.shortDescription,
     description: row.description,
     scent: row.scent,
-    material: row.material,
-    duration: row.duration,
+    material: "",
+    duration: "",
     priceEur: Number(row.priceEur),
     stock: row.stock,
-    featured: row.featured,
+    featured: false,
   };
 }
 
@@ -73,11 +70,8 @@ async function readProductsFromDb(): Promise<ProductRecord[] | null> {
       short_description as "shortDescription",
       description,
       scent,
-      material,
-      duration,
       price_eur as "priceEur",
-      stock,
-      featured
+      stock
     from products
     order by id asc
   `;
@@ -108,7 +102,8 @@ export async function getAllProductsFromStore(): Promise<ProductRecord[]> {
   try {
     const fromDb = await readProductsFromDb();
     if (fromDb) return fromDb;
-  } catch {
+  } catch (error) {
+    console.error("Failed to load products from database, falling back to local table.", error);
     // Keep storefront available with local fallback if DB is temporarily unavailable.
   }
 

@@ -24,22 +24,22 @@ export function ProductImageGallery({ productName, images }: ProductImageGallery
   const activeImage = normalizedImages[safeActiveIndex] ?? normalizedImages[0];
 
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-b from-[#f1f6ff] to-white p-3 sm:p-4">
-      <div className="mx-auto w-full max-w-[300px] overflow-hidden rounded-xl border border-blue-100 bg-[#f7faff] sm:max-w-[340px] lg:max-w-[380px] xl:max-w-[420px]">
+    <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-gradient-to-b from-[#f3f7ff] via-white to-white p-3 sm:p-4">
+      <div className="mx-auto w-full max-w-[260px] overflow-hidden rounded-2xl border border-blue-100/80 bg-[#f8fbff] shadow-[0_16px_36px_rgba(74,107,254,0.10)] sm:max-w-[300px] lg:max-w-[330px] xl:max-w-[360px]">
         <div className="relative aspect-[3/5]">
-        <Image
-          src={activeImage}
-          alt={productName}
-          width={1200}
-          height={900}
-          className="h-full w-full object-contain p-3 sm:p-4"
-        />
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/45 via-transparent to-transparent"></div>
+          <Image
+            src={activeImage}
+            alt={productName}
+            width={1200}
+            height={900}
+            className="h-full w-full object-contain p-3 sm:p-4"
+          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/45 via-transparent to-transparent"></div>
         </div>
       </div>
 
       {normalizedImages.length > 1 ? (
-        <div className="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-5">
+        <div className="mt-3 flex flex-wrap justify-center gap-2">
           {normalizedImages.map((image, index) => {
             const isActive = index === safeActiveIndex;
             return (
@@ -47,10 +47,10 @@ export function ProductImageGallery({ productName, images }: ProductImageGallery
                 key={`${image}-${index}`}
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                className={`relative overflow-hidden rounded-lg border bg-white p-1 transition-all duration-200 ${
+                className={`relative w-[68px] overflow-hidden rounded-xl border bg-white p-1 transition-all duration-200 sm:w-[78px] ${
                   isActive
-                    ? "border-[#4a6bfe] ring-2 ring-[#4a6bfe]/25"
-                    : "border-gray-200 hover:border-[#4a6bfe]/45"
+                    ? "border-[#4a6bfe] shadow-[0_8px_18px_rgba(74,107,254,0.22)] ring-2 ring-[#4a6bfe]/25"
+                    : "border-gray-200 hover:border-[#4a6bfe]/45 hover:shadow-[0_8px_18px_rgba(15,23,42,0.10)]"
                 }`}
                 aria-label={`Prikazi sliku ${index + 1} za ${productName}`}
               >
@@ -59,7 +59,7 @@ export function ProductImageGallery({ productName, images }: ProductImageGallery
                   alt={`${productName} - slika ${index + 1}`}
                   width={200}
                   height={150}
-                  className="h-16 w-full object-contain p-1 sm:h-20"
+                  className="h-14 w-full object-contain p-1 sm:h-16"
                 />
               </button>
             );
