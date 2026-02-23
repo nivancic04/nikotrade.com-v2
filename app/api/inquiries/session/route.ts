@@ -6,6 +6,7 @@ import {
   inquirySessionCookieName,
 } from "@/lib/inquiry-session";
 import { applyRateLimit, resolveClientIp } from "@/lib/rate-limit";
+import { withNoStore } from "@/lib/request-security";
 
 export const runtime = "nodejs";
 
@@ -19,28 +20,28 @@ export async function GET(request: Request) {
     });
 
     if (!limitByIp.allowed) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Previse zahtjeva. Pokusajte ponovno malo kasnije." },
         {
           status: 429,
           headers: { "Retry-After": String(limitByIp.retryAfterSeconds) },
         }
-      );
+      ));
     }
 
     const { searchParams } = new URL(request.url);
     const token = searchParams.get("token")?.trim() ?? "";
 
     if (!token) {
-      return NextResponse.json({ error: "Nedostaje pristupni token." }, { status: 400 });
+      return withNoStore(NextResponse.json({ error: "Nedostaje pristupni token." }, { status: 400 }));
     }
 
     const email = await consumeInquiryAccessToken(token);
     if (!email) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Link nije valjan ili je istekao. Zatrazi novi link." },
         { status: 400 }
-      );
+      ));
     }
 
     const sessionToken = createInquirySessionToken(email);
@@ -56,12 +57,12 @@ export async function GET(request: Request) {
       path: "/",
     });
 
-    return response;
+    return withNoStore(response);
   } catch (error) {
     console.error("Kreiranje sesije za pregled upita nije uspjelo:", error);
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       { error: "Doslo je do greske pri potvrdi pristupnog linka." },
       { status: 500 }
-    );
+    ));
   }
 }

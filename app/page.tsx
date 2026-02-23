@@ -260,25 +260,25 @@ export default function Home() {
               variants={fadeUp}
               whileHover={{ y: -8 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-gray-800 bg-gray-900 p-10 shadow-2xl group transition-[border-color,box-shadow] duration-300 ease-out hover:border-[#4a6bfe]/50 hover:shadow-[0_16px_45px_rgba(74,107,254,0.26)] hover:z-10"
+              className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-purple-100 bg-white p-10 group transition-[border-color,box-shadow,background-color] duration-300 ease-out hover:border-purple-300/60 hover:shadow-[0_14px_35px_rgba(168,85,247,0.16)] hover:z-10"
             >
               {/* Glowy gradient overlay on hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-[#4a6bfe]/30 via-blue-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+              <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-purple-100/45 via-purple-200/25 to-transparent"></div>
 
               {/* Special highlight badge */}
-              <div className="absolute top-6 right-6 bg-[#4a6bfe] text-white text-xs font-bold uppercase tracking-wider py-1.5 px-3 rounded-full shadow-lg transition-colors duration-300 group-hover:bg-blue-700">
+              <div className="absolute top-6 right-6 border border-purple-100 bg-purple-50 text-purple-700 text-xs font-bold uppercase tracking-wider py-1.5 px-3 rounded-full transition-colors duration-300 group-hover:bg-purple-100">
                 Najprodavanije
               </div>
 
-              <div className="mb-8 w-fit rounded-2xl border border-[#4a6bfe]/30 bg-[#4a6bfe]/20 p-5 text-[#4a6bfe] shadow-[0_0_24px_rgba(74,107,254,0.25)] backdrop-blur-sm transition-all duration-300 group-hover:-rotate-6 group-hover:scale-105 group-hover:bg-[#4a6bfe]/32">
-                <SprayCan size={40} className="stroke-[1.5] text-blue-300 transition-all duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_10px_rgba(74,107,254,0.45)]" />
+              <div className="mb-8 w-fit rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100/50 p-5 text-purple-600 shadow-inner transition-all duration-300 group-hover:-rotate-6 group-hover:scale-105 group-hover:bg-purple-100/80">
+                <SprayCan size={40} className="stroke-[1.5] transition-all duration-300 group-hover:text-purple-700 group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.35)]" />
               </div>
-              <h3 className="text-2xl font-black text-white mb-4 tracking-tight transition-colors duration-300 group-hover:text-[#8ea4ff]">Automirisi - Dresovi</h3>
-              <p className="text-gray-300 text-base leading-relaxed mb-6 flex-grow transition-colors duration-300 group-hover:text-blue-100">
+              <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight transition-colors duration-300 group-hover:text-purple-700">Automirisi - Dresovi</h3>
+              <p className="text-gray-500 text-base leading-relaxed mb-6 flex-grow transition-colors duration-300 group-hover:text-gray-700">
                 Apsolutni hit! Personalizirani mirisi za auto u obliku dresa Vašeg kluba. Dizajn i dugotrajnost mirisa zagarantirani.
               </p>
-              <Link href="/proizvodi" className="font-bold text-white flex items-center gap-2 transition-colors duration-300 group-hover:text-[#9bb0ff]">
-                Naruči odmah <ArrowRight className="w-4 h-4 text-[#4a6bfe] transition-transform duration-200 group-hover:translate-x-1 group-hover:text-white" />
+              <Link href="/proizvodi" className="font-bold text-purple-600 flex items-center gap-2 transition-colors duration-300 group-hover:text-purple-900">
+                Naruči odmah <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-purple-900" />
               </Link>
             </motion.div>
 
@@ -287,19 +287,19 @@ export default function Home() {
               variants={fadeUp}
               whileHover={{ y: -8 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white p-10 group transition-[border-color,box-shadow] duration-300 ease-out hover:border-purple-300/60 hover:shadow-[0_14px_35px_rgba(168,85,247,0.16)] hover:z-10"
+              className="relative flex h-full flex-col overflow-hidden rounded-3xl border border-blue-100 bg-white p-10 group transition-[border-color,box-shadow] duration-300 ease-out hover:border-blue-300/60 hover:shadow-[0_14px_35px_rgba(74,107,254,0.16)] hover:z-10"
             >
               {/* Glowy gradient overlay on hover */}
-              <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-purple-100/45 via-purple-200/25 to-transparent"></div>
-              <div className="mb-8 w-fit rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100/50 p-5 text-purple-600 shadow-inner transition-all duration-300 group-hover:-rotate-6 group-hover:scale-105 group-hover:bg-purple-100/80">
-                <Wine size={40} className="stroke-[1.5] transition-all duration-300 group-hover:text-purple-700 group-hover:drop-shadow-[0_0_8px_rgba(168,85,247,0.35)]" />
+              <div className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-br from-blue-100/45 via-blue-200/25 to-transparent"></div>
+              <div className="mb-8 w-fit rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100/50 p-5 text-[#4a6bfe] shadow-inner transition-all duration-300 group-hover:-rotate-6 group-hover:scale-105 group-hover:bg-blue-100/80">
+                <Wine size={40} className="stroke-[1.5] transition-all duration-300 group-hover:text-blue-500 group-hover:drop-shadow-[0_0_8px_rgba(74,107,254,0.3)]" />
               </div>
-              <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight transition-colors duration-300 group-hover:text-purple-700">Gravirane čaše</h3>
+              <h3 className="text-2xl font-black text-gray-900 mb-4 tracking-tight transition-colors duration-300 group-hover:text-[#4a6bfe]">Gravirane čaše</h3>
               <p className="text-gray-500 text-base leading-relaxed mb-6 flex-grow transition-colors duration-300 group-hover:text-gray-700">
                 Unikatne i personalizirane čaše visoke kvalitete. Savršen poklon za sve Vaše posebne prigode i proslave.
               </p>
-              <Link href="/proizvodi" className="font-bold text-purple-600 flex items-center gap-2 transition-colors duration-300 group-hover:text-purple-900">
-                Saznaj više <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-purple-900" />
+              <Link href="/proizvodi" className="font-bold text-[#4a6bfe] flex items-center gap-2 transition-colors duration-300 group-hover:text-blue-700">
+                Saznaj više <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-blue-700" />
               </Link>
             </motion.div>
           </motion.div>

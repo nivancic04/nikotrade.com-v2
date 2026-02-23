@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { createInquiryRecord } from "@/lib/inquiries-store";
 import { applyRateLimit, resolveClientIp } from "@/lib/rate-limit";
-import { createSmtpTransporter, getContactReceiverEmail } from "@/lib/smtp";
+import { enforcePostRequestSecurity, withNoStore } from "@/lib/request-security";
+import { createSmtpTransporter, getContactReceiverEmail, sendMailWithRetry } from "@/lib/smtp";
 
 export const runtime = "nodejs";
 
@@ -32,6 +33,9 @@ function escapeHtml(value: string) {
 
 export async function POST(request: Request) {
   try {
+    const blockedRequest = enforcePostRequestSecurity(request);
+    if (blockedRequest) return withNoStore(blockedRequest);
+
     const clientIp = resolveClientIp(request);
     const limitByIp = applyRateLimit({
       key: `contact:ip:${clientIp}`,
@@ -40,13 +44,13 @@ export async function POST(request: Request) {
     });
 
     if (!limitByIp.allowed) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Previse zahtjeva. Pokusajte ponovno malo kasnije." },
         {
           status: 429,
           headers: { "Retry-After": String(limitByIp.retryAfterSeconds) },
         }
-      );
+      ));
     }
 
     const body = (await request.json()) as ContactPayload;
@@ -61,28 +65,28 @@ export async function POST(request: Request) {
 
     // Honeypot polje: legitimni korisnici ga nikad ne popunjavaju.
     if (website.length > 0) {
-      return NextResponse.json({ ok: true });
+      return withNoStore(NextResponse.json({ ok: true }));
     }
 
     if (title.length < 3 || title.length > 120) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Naslov mora imati izmedu 3 i 120 znakova." },
         { status: 400 }
-      );
+      ));
     }
 
     if (description.length < 10 || description.length > 5000) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Opis mora imati izmedu 10 i 5000 znakova." },
         { status: 400 }
-      );
+      ));
     }
 
     if (!isValidEmail(replyEmail)) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Email za odgovor nije ispravan." },
         { status: 400 }
-      );
+      ));
     }
 
     const limitByEmail = applyRateLimit({
@@ -92,20 +96,20 @@ export async function POST(request: Request) {
     });
 
     if (!limitByEmail.allowed) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Previse zahtjeva za ovu email adresu. Pokusajte ponovno kasnije." },
         {
           status: 429,
           headers: { "Retry-After": String(limitByEmail.retryAfterSeconds) },
         }
-      );
+      ));
     }
 
     if (!consent) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Potrebna je privola za obradu podataka." },
         { status: 400 }
-      );
+      ));
     }
 
     let inquiryId: string | null = null;
@@ -131,7 +135,7 @@ export async function POST(request: Request) {
 
     if (smtpClient) {
       try {
-        await smtpClient.transporter.sendMail({
+        mailSent = await sendMailWithRetry(smtpClient, {
           from: `"NikoTrade Kontakt Forma" <${smtpClient.smtpUser}>`,
           to: CONTACT_RECEIVER,
           replyTo: replyEmail,
@@ -164,30 +168,28 @@ export async function POST(request: Request) {
             <p>${escapeHtml(description).replace(/\n/g, "<br />")}</p>
           `,
         });
-
-        mailSent = true;
       } catch (error) {
         console.error("Slanje notifikacijskog emaila nije uspjelo:", error);
       }
     }
 
     if (!mailSent && !inquiryStored) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Upit nije moguce obraditi. Pokusajte ponovno malo kasnije." },
         { status: 500 }
-      );
+      ));
     }
 
-    return NextResponse.json({
+    return withNoStore(NextResponse.json({
       ok: true,
       inquiryId,
       inquiryStored,
       mailSent,
-    });
+    }));
   } catch {
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       { error: "Doslo je do greske pri slanju upita." },
       { status: 500 }
-    );
+    ));
   }
 }
