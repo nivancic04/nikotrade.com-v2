@@ -1,5 +1,4 @@
 import nodemailer from "nodemailer";
-import type SMTPTransport from "nodemailer/lib/smtp-transport";
 
 const DEFAULT_SMTP_HOST = "smtp.gmail.com";
 const DEFAULT_SMTP_PORT = 465;
@@ -31,10 +30,13 @@ export function createSmtpTransporter() {
   };
 }
 
-type SendMailOptions = SMTPTransport.Options & {
-  to: string;
+type SendMailOptions = {
   from: string;
+  to: string;
   subject: string;
+  text?: string;
+  html?: string;
+  replyTo?: string;
 };
 
 const SMTP_SEND_TIMEOUT_MS = Number(process.env.SMTP_SEND_TIMEOUT_MS ?? 12000);
