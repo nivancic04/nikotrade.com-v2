@@ -159,8 +159,8 @@ export default function PrivacyPolicyPage() {
                   </p>
                   <p className="mt-2 text-lg font-black text-gray-900">Niko Trade d.o.o.</p>
                   <p className="mt-2 text-sm text-gray-700">Vatroslava Lisinskog 17, 42233 Sveti Đurđ, Hrvatska</p>
-                  <p className="mt-1 text-sm text-gray-700">Email: xxx@xxxx.xx</p>
-                  <p className="mt-1 text-sm text-gray-700">Telefon: xxx xxxx xxx</p>
+                  <p className="mt-1 text-sm text-gray-700">Email: info@nikotrade.hr</p>
+                  <p className="mt-1 text-sm text-gray-700">Telefon: +385 98 241 285</p>
                 </div>
 
                 <div className="rounded-2xl border border-amber-100 bg-amber-50 p-5">
