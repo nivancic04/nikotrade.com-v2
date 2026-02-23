@@ -378,11 +378,11 @@ function KontaktPageContent() {
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">Email</p>
-                  <span className="mt-2 block text-base font-bold text-blue-100">xxx@xxxx.xx</span>
+                  <a href="mailto:info@nikotrade.hr" className="mt-2 block text-base font-bold text-blue-100">info@nikotrade.hr</a>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">Telefon</p>
-                  <span className="mt-2 block text-base font-bold text-blue-100">xxx xxxx xxx</span>
+                  <a href="tel:+38598241285" className="mt-2 block text-base font-bold text-blue-100">+385 98 241 285</a>
                 </div>
               </div>
 
