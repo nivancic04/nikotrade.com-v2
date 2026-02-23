@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, ArrowUpDown, Filter, Shirt, SprayCan, Wine } from "lucide-react";
+import { ArrowRight, ArrowUpDown, Filter } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getPrimaryProductImage, type ProductCategory, type ProductRecord } from "@/lib/products-db";
@@ -29,14 +29,6 @@ function getCategoryLabel(category: "Sve" | ProductCategory) {
   return category;
 }
 
-function CategoryIcon({ category }: { category: ProductCategory }) {
-  if (category === "Automirisi") return <SprayCan size={22} className="text-blue-400" />;
-  if (category === "Sportska oprema") return <Shirt size={22} className="text-blue-400" />;
-  if (category === "Case") return <Wine size={22} className="text-blue-400" />;
-
-  return <Wine size={22} className="text-blue-400" />;
-}
-
 export default function ProductsPage() {
   const [products, setProducts] = useState<ProductRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,7 +51,7 @@ export default function ProductsPage() {
 
         if (!response.ok) {
           if (!cancelled) {
-            setLoadError(payload?.error ?? "Neuspješno učitavanje proizvoda.");
+            setLoadError(payload?.error ?? "NeuspjeĂ„Ä…Ă‹â€ˇno uÄ‚â€žÄąÂ¤itavanje proizvoda.");
             setProducts([]);
           }
           return;
@@ -70,7 +62,7 @@ export default function ProductsPage() {
         }
       } catch {
         if (!cancelled) {
-          setLoadError("Učitavanje proizvoda trenutno nije dostupno.");
+          setLoadError("UÄ‚â€žÄąÂ¤itavanje proizvoda trenutno nije dostupno.");
           setProducts([]);
         }
       } finally {
@@ -191,7 +183,7 @@ export default function ProductsPage() {
           <div>
             {isLoading ? (
               <div className="rounded-3xl border border-gray-100 bg-white p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
-                <p className="text-lg font-bold text-gray-900">Učitavanje proizvoda...</p>
+                <p className="text-lg font-bold text-gray-900">UÄ‚â€žÄąÂ¤itavanje proizvoda...</p>
               </div>
             ) : loadError ? (
               <div className="rounded-3xl border border-red-100 bg-red-50 p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
@@ -229,24 +221,15 @@ export default function ProductsPage() {
                           </span>
                         ) : null}
                       </div>
-
-                      <div className="relative mb-4 flex items-center justify-between">
-                        <div
-                          className="rounded-2xl border border-blue-100 bg-blue-50 p-4 transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:scale-105"
-                        >
-                          <CategoryIcon category={product.category} />
-                        </div>
-                        <span
-                          className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-gray-500"
-                        >
-                          {getCategoryLabel(product.category)}
-                        </span>
-                      </div>
-
                       <div className="relative flex-1">
                         <h3 className="text-2xl font-black tracking-tight sm:text-3xl">{product.name}</h3>
+                        <p className="mt-2">
+                          <span className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-gray-500">
+                            {getCategoryLabel(product.category)}
+                          </span>
+                        </p>
                         <p
-                          className="mt-3 min-h-[64px] text-sm leading-relaxed text-gray-600 sm:text-base"
+                          className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base"
                         >
                           {product.shortDescription}
                         </p>

@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 import { inquirySessionCookieName } from "@/lib/inquiry-session";
+import { enforcePostRequestSecurity, withNoStore } from "@/lib/request-security";
 
 export const runtime = "nodejs";
 
-export async function POST() {
+export async function POST(request: Request) {
+  const blockedRequest = enforcePostRequestSecurity(request);
+  if (blockedRequest) return withNoStore(blockedRequest);
+
   const response = NextResponse.json({ ok: true });
   response.cookies.set({
     name: inquirySessionCookieName,
@@ -15,6 +19,5 @@ export async function POST() {
     secure: process.env.NODE_ENV === "production",
   });
 
-  return response;
+  return withNoStore(response);
 }
-

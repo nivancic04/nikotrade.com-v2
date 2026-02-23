@@ -30,6 +30,56 @@ export function createSmtpTransporter() {
   };
 }
 
+type SendMailOptions = {
+  from: string;
+  to: string;
+  subject: string;
+  text?: string;
+  html?: string;
+  replyTo?: string;
+};
+
+const SMTP_SEND_TIMEOUT_MS = Number(process.env.SMTP_SEND_TIMEOUT_MS ?? 12000);
+const SMTP_SEND_RETRIES = Number(process.env.SMTP_SEND_RETRIES ?? 1);
+
+function sendWithTimeout(
+  sendPromise: Promise<unknown>,
+  timeoutMs: number
+): Promise<unknown> {
+  if (!Number.isFinite(timeoutMs) || timeoutMs <= 0) return sendPromise;
+
+  return Promise.race([
+    sendPromise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("SMTP send timeout exceeded.")), timeoutMs)
+    ),
+  ]);
+}
+
+export async function sendMailWithRetry(
+  transport: ReturnType<typeof createSmtpTransporter>,
+  mailOptions: SendMailOptions
+) {
+  if (!transport) return false;
+
+  const maxAttempts = Math.max(Math.floor(SMTP_SEND_RETRIES) + 1, 1);
+  let lastError: unknown = null;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
+    try {
+      await sendWithTimeout(transport.transporter.sendMail(mailOptions), SMTP_SEND_TIMEOUT_MS);
+      return true;
+    } catch (error) {
+      lastError = error;
+      if (attempt < maxAttempts) {
+        await new Promise((resolve) => setTimeout(resolve, 300));
+      }
+    }
+  }
+
+  throw lastError;
+}
+
 export function getContactReceiverEmail() {
   return process.env.CONTACT_RECEIVER_EMAIL ?? "nikoivancic2801@gmail.com";
 }

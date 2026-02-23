@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { createInquiryAccessToken, listInquiriesByEmail } from "@/lib/inquiries-store";
 import { applyRateLimit, resolveClientIp } from "@/lib/rate-limit";
-import { createSmtpTransporter, resolveAppBaseUrl } from "@/lib/smtp";
+import { enforcePostRequestSecurity, withNoStore } from "@/lib/request-security";
+import { createSmtpTransporter, resolveAppBaseUrl, sendMailWithRetry } from "@/lib/smtp";
 
 export const runtime = "nodejs";
 
@@ -16,6 +17,9 @@ function isValidEmail(email: string) {
 
 export async function POST(request: Request) {
   try {
+    const blockedRequest = enforcePostRequestSecurity(request);
+    if (blockedRequest) return withNoStore(blockedRequest);
+
     const clientIp = resolveClientIp(request);
     const requestLimitByIp = applyRateLimit({
       key: `request-link:ip:${clientIp}`,
@@ -24,13 +28,13 @@ export async function POST(request: Request) {
     });
 
     if (!requestLimitByIp.allowed) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Previse zahtjeva. Pokusajte ponovno malo kasnije." },
         {
           status: 429,
           headers: { "Retry-After": String(requestLimitByIp.retryAfterSeconds) },
         }
-      );
+      ));
     }
 
     const body = (await request.json()) as RequestPayload;
@@ -39,18 +43,18 @@ export async function POST(request: Request) {
 
     // Honeypot polje: ako je popunjeno, ignoriramo zahtjev.
     if (website.length > 0) {
-      return NextResponse.json({
+      return withNoStore(NextResponse.json({
         ok: true,
         message:
           "Ako postoji upit vezan uz ovu email adresu, poslan je link za siguran pregled upita.",
-      });
+      }));
     }
 
     if (!isValidEmail(email)) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Unesite ispravnu email adresu." },
         { status: 400 }
-      );
+      ));
     }
 
     const requestLimitByEmail = applyRateLimit({
@@ -60,13 +64,13 @@ export async function POST(request: Request) {
     });
 
     if (!requestLimitByEmail.allowed) {
-      return NextResponse.json(
+      return withNoStore(NextResponse.json(
         { error: "Previse zahtjeva za ovu email adresu. Pokusajte ponovno kasnije." },
         {
           status: 429,
           headers: { "Retry-After": String(requestLimitByEmail.retryAfterSeconds) },
         }
-      );
+      ));
     }
 
     let userInquiriesCount = 0;
@@ -75,19 +79,19 @@ export async function POST(request: Request) {
       userInquiriesCount = userInquiries.length;
     } catch (error) {
       console.error("Dohvat upita za request-link nije uspio:", error);
-      return NextResponse.json({
+      return withNoStore(NextResponse.json({
         ok: true,
         message:
           "Pregled upita je trenutno privremeno nedostupan. Pokusajte ponovno malo kasnije.",
-      });
+      }));
     }
 
     if (userInquiriesCount === 0) {
-      return NextResponse.json({
+      return withNoStore(NextResponse.json({
         ok: true,
         message:
           "Ako postoji upit vezan uz ovu email adresu, poslan je link za siguran pregled upita.",
-      });
+      }));
     }
 
     const smtpClient = createSmtpTransporter();
@@ -104,17 +108,17 @@ export async function POST(request: Request) {
       tokenPayload = await createInquiryAccessToken(email);
     } catch (error) {
       console.error("Kreiranje access tokena nije uspjelo:", error);
-      return NextResponse.json({
+      return withNoStore(NextResponse.json({
         ok: true,
         message:
           "Pregled upita je trenutno privremeno nedostupan. Pokusajte ponovno malo kasnije.",
-      });
+      }));
     }
 
     const baseUrl = resolveAppBaseUrl(request);
     const magicLink = `${baseUrl}/moji-upiti?token=${encodeURIComponent(tokenPayload.token)}`;
 
-    await smtpClient.transporter.sendMail({
+    await sendMailWithRetry(smtpClient, {
       from: `"NikoTrade Podrska" <${smtpClient.smtpUser}>`,
       to: email,
       subject: "Siguran pristup: pregled vasih upita",
@@ -141,15 +145,15 @@ export async function POST(request: Request) {
       `,
     });
 
-    return NextResponse.json({
+    return withNoStore(NextResponse.json({
       ok: true,
       message:
         "Ako postoji upit vezan uz ovu email adresu, poslan je link za siguran pregled upita.",
-    });
+    }));
   } catch {
-    return NextResponse.json(
+    return withNoStore(NextResponse.json(
       { error: "Doslo je do greske pri slanju pristupnog linka." },
       { status: 500 }
-    );
+    ));
   }
 }

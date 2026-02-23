@@ -285,7 +285,7 @@ function KontaktPageContent() {
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.08 }}
             className="mx-auto mt-5 max-w-2xl text-lg text-gray-500"
           >
-            Javi nam se za pitanja, personalizirane narudžbe i poslovnu saradnju.
+            Javi nam se za pitanja, personalizirane narudžbe i poslovnu suradnju.
           </motion.p>
         </div>
 
@@ -294,7 +294,7 @@ function KontaktPageContent() {
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut" }}
-            className="relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-8 sm:p-10 shadow-[0_10px_35px_rgba(15,23,42,0.08)]"
+            className="relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-7 sm:p-8 shadow-[0_10px_35px_rgba(15,23,42,0.08)]"
           >
             <p className="relative mb-5 inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#4a6bfe]">
               Kontakt
@@ -307,18 +307,7 @@ function KontaktPageContent() {
               Javite se direktno, odgovaramo brzo i precizno.
             </p>
 
-            <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="rounded-2xl border border-gray-100 bg-[#F9FAFB] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Email</p>
-                <span className="mt-2 block text-lg font-bold text-[#4a6bfe]">xxx@xxxx.xx</span>
-              </div>
-              <div className="rounded-2xl border border-gray-100 bg-[#F9FAFB] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-500">Telefon</p>
-                <span className="mt-2 block text-lg font-bold text-[#4a6bfe]">xxx xxxx xxx</span>
-              </div>
-            </div>
-
-            <div className="mt-8 flex flex-wrap items-center gap-3 pt-1">
+            <div className="mt-7 flex flex-wrap items-center gap-3 pt-1">
               <button
                 type="button"
                 onClick={openContactModal}
@@ -343,11 +332,11 @@ function KontaktPageContent() {
             initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.12 }}
-            className="relative flex flex-col overflow-hidden rounded-3xl border border-gray-800 bg-gray-900 p-8 sm:p-10 shadow-2xl"
+            className="relative flex flex-col overflow-hidden rounded-3xl border border-gray-800 bg-gray-900 p-7 sm:p-8 shadow-2xl"
           >
             <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#4a6bfe]/20 via-blue-900/10 to-transparent"></div>
 
-            <div className="relative mb-8 flex items-center justify-between">
+            <div className="relative mb-6 flex items-center justify-between">
               <div className="rounded-2xl border border-[#4a6bfe]/30 bg-[#4a6bfe]/20 p-4 shadow-[0_0_24px_rgba(74,107,254,0.2)]">
                 <MapPin size={28} className="text-blue-300" />
               </div>
@@ -356,7 +345,7 @@ function KontaktPageContent() {
               </span>
             </div>
 
-            <div className="relative space-y-5">
+            <div className="relative space-y-4">
               <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl">Niko Trade d.o.o.</h2>
 
               <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
@@ -397,14 +386,6 @@ function KontaktPageContent() {
                 </div>
               </div>
 
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-5">
-                <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">Proces upita</p>
-                <div className="mt-3 space-y-2 text-sm text-blue-100/90">
-                  <p>1. Pošaljete upit kroz popup formu.</p>
-                  <p>2. Pregledamo detalje i javimo se na vas email.</p>
-                  <p>3. Potvrđujemo narudžbu i rok isporuke.</p>
-                </div>
-              </div>
             </div>
           </motion.section>
         </div>
