@@ -333,21 +333,34 @@ export default function Home() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="flex flex-col items-center group cursor-pointer"
             >
-              <div className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56 mb-8 transition-transform duration-500 ease-out group-hover:-translate-y-4 group-hover:scale-105">
-                <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100"></div>
+              <a
+                href="https://shop.gnkdinamo.hr/hr/p/710/miris-za-auto-fresh"
+                aria-label="Otvori GNK Dinamo automiris"
+              >
+                <div className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56 mb-8 transition-transform duration-500 ease-out group-hover:-translate-y-4 group-hover:scale-105">
+                  <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100"></div>
 
-                {/* Visual size adjustment for Dinamo crest using scale-75 */}
-                <div className="relative w-full h-full scale-75">
-                  <Image
-                    src="/img/dinamozagreb.png"
-                    alt="GNK Dinamo Zagreb Logo"
-                    fill
-                    sizes="(min-width: 640px) 224px, 192px"
-                    className="object-contain filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 ease-in-out drop-shadow-sm group-hover:drop-shadow-xl"
-                  />
+                  {/* Visual size adjustment for Dinamo crest using scale-75 */}
+                  <div className="relative w-full h-full scale-75">
+                    <Image
+                      src="/img/dinamozagreb.png"
+                      alt="GNK Dinamo Zagreb Logo"
+                      fill
+                      sizes="(min-width: 640px) 224px, 192px"
+                      className="object-contain filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 ease-in-out drop-shadow-sm group-hover:drop-shadow-xl"
+                    />
+                  </div>
                 </div>
-              </div>
+              </a>
               <h4 className="font-black text-gray-900 text-xl tracking-tight">GNK Dinamo Zagreb</h4>
+              <a
+                href="https://shop.gnkdinamo.hr/hr/p/710/miris-za-auto-fresh"
+                className="mt-4 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[#2d4ed8] transition-all duration-300 hover:border-blue-300 hover:bg-blue-100"
+                aria-label="Posjeti Dinamo webshop"
+              >
+                Posjeti službeni webshop
+                <ArrowRight className="h-3.5 w-3.5" />
+              </a>
               <p className="text-gray-500 text-sm mt-2">Službeni partner</p>
             </motion.div>
 
@@ -368,21 +381,34 @@ export default function Home() {
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
               className="flex flex-col items-center group cursor-pointer"
             >
-              <div className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56 mb-8 transition-transform duration-500 ease-out group-hover:-translate-y-4 group-hover:scale-105">
-                <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100"></div>
+              <a
+                href="https://webshop.nk-slaven-belupo.hr/navijacki-rekviziti/slaven-belupo-automiris-detail"
+                aria-label="Otvori NK Slaven Belupo automiris"
+              >
+                <div className="relative flex items-center justify-center w-48 h-48 sm:w-56 sm:h-56 mb-8 transition-transform duration-500 ease-out group-hover:-translate-y-4 group-hover:scale-105">
+                  <div className="absolute inset-0 bg-blue-500/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100"></div>
 
-                {/* Slaven is naturally wider, no scale reduction needed here relative to Dinamo's scale-75 */}
-                <div className="relative w-full h-full">
-                  <Image
-                    src="/img/SlavenBelupo.png"
-                    alt="NK Slaven Belupo Logo"
-                    fill
-                    sizes="(min-width: 640px) 224px, 192px"
-                    className="object-contain filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 ease-in-out drop-shadow-sm group-hover:drop-shadow-xl"
-                  />
+                  {/* Slaven is naturally wider, no scale reduction needed here relative to Dinamo's scale-75 */}
+                  <div className="relative w-full h-full">
+                    <Image
+                      src="/img/SlavenBelupo.png"
+                      alt="NK Slaven Belupo Logo"
+                      fill
+                      sizes="(min-width: 640px) 224px, 192px"
+                      className="object-contain filter grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-700 ease-in-out drop-shadow-sm group-hover:drop-shadow-xl"
+                    />
+                  </div>
                 </div>
-              </div>
+              </a>
               <h4 className="font-black text-gray-900 text-xl tracking-tight">NK Slaven Belupo</h4>
+              <a
+                href="https://webshop.nk-slaven-belupo.hr/navijacki-rekviziti/slaven-belupo-automiris-detail"
+                className="mt-4 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[#2d4ed8] transition-all duration-300 hover:border-blue-300 hover:bg-blue-100"
+                aria-label="Posjeti Slaven Belupo webshop"
+              >
+                Posjeti službeni webshop
+                <ArrowRight className="h-3.5 w-3.5" />
+              </a>
               <p className="text-gray-500 text-sm mt-2">Službeni partner</p>
             </motion.div>
           </div>
