@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Suspense, useEffect, useState } from "react";
-import { getProductBySlug } from "@/lib/products-db";
 
 function KontaktPageContent() {
   const searchParams = useSearchParams();
@@ -53,27 +52,54 @@ function KontaktPageContent() {
     const productSlugFromUrl = searchParams.get("product");
     if (!productSlugFromUrl || productSlugFromUrl === prefilledProductSlug) return;
 
-    const productFromTable = getProductBySlug(productSlugFromUrl);
-    const productName = productFromTable?.name ?? productSlugFromUrl.replace(/-/g, " ");
+    let cancelled = false;
     const shouldOpenModal = searchParams.get("open") !== "0";
+    const fallbackProductName = productSlugFromUrl.replace(/-/g, " ");
 
-    setPrefilledProductSlug(productSlugFromUrl);
-    setSelectedProductSlug(productSlugFromUrl);
-    setSelectedProductName(productName);
-    setTitle((current) =>
-      current.trim().length > 0 ? current : `Upit za proizvod: ${productName}`
-    );
-    setDescription((current) =>
-      current.trim().length > 0
-        ? current
-        : `Pozdrav, zanima me proizvod "${productName}". Molim vise informacija o dostupnosti, personalizaciji i roku isporuke.`
-    );
+    const preloadProductFromDatabase = async () => {
+      let productName = fallbackProductName;
 
-    if (shouldOpenModal) {
-      setFormError("");
-      setFormSuccess("");
-      setIsContactModalOpen(true);
-    }
+      try {
+        const response = await fetch(`/api/products/${encodeURIComponent(productSlugFromUrl)}`, {
+          cache: "no-store",
+        });
+        const payload = (await response.json().catch(() => null)) as
+          | { product?: { name?: string } }
+          | null;
+
+        if (response.ok && payload?.product?.name) {
+          productName = payload.product.name;
+        }
+      } catch {
+        // Keep fallback name from slug when API is not available.
+      }
+
+      if (cancelled) return;
+
+      setPrefilledProductSlug(productSlugFromUrl);
+      setSelectedProductSlug(productSlugFromUrl);
+      setSelectedProductName(productName);
+      setTitle((current) =>
+        current.trim().length > 0 ? current : `Upit za proizvod: ${productName}`
+      );
+      setDescription((current) =>
+        current.trim().length > 0
+          ? current
+          : `Pozdrav, zanima me proizvod "${productName}". Molim vise informacija o dostupnosti, personalizaciji i roku isporuke.`
+      );
+
+      if (shouldOpenModal) {
+        setFormError("");
+        setFormSuccess("");
+        setIsContactModalOpen(true);
+      }
+    };
+
+    preloadProductFromDatabase();
+
+    return () => {
+      cancelled = true;
+    };
   }, [prefilledProductSlug, searchParams]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

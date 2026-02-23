@@ -3,11 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, ArrowUpDown, Filter, Shirt, SprayCan, Wine } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
-import { getAllProducts, getPrimaryProductImage, type ProductCategory } from "@/lib/products-db";
+import { getPrimaryProductImage, type ProductCategory, type ProductRecord } from "@/lib/products-db";
 
 const categoryOptions: Array<"Sve" | ProductCategory> = [
   "Sve",
@@ -38,9 +38,54 @@ function CategoryIcon({ category }: { category: ProductCategory }) {
 }
 
 export default function ProductsPage() {
-  const products = getAllProducts();
+  const [products, setProducts] = useState<ProductRecord[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
   const [activeCategory, setActiveCategory] = useState<"Sve" | ProductCategory>("Sve");
   const [sortBy, setSortBy] = useState<SortOption>("featured");
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadProducts = async () => {
+      setIsLoading(true);
+      setLoadError("");
+
+      try {
+        const response = await fetch("/api/products", { cache: "no-store" });
+        const payload = (await response.json().catch(() => null)) as
+          | { products?: ProductRecord[]; error?: string }
+          | null;
+
+        if (!response.ok) {
+          if (!cancelled) {
+            setLoadError(payload?.error ?? "Neuspješno učitavanje proizvoda.");
+            setProducts([]);
+          }
+          return;
+        }
+
+        if (!cancelled) {
+          setProducts(payload?.products ?? []);
+        }
+      } catch {
+        if (!cancelled) {
+          setLoadError("Učitavanje proizvoda trenutno nije dostupno.");
+          setProducts([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    loadProducts();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const filteredProducts = useMemo(() => {
     const byCategory =
@@ -144,7 +189,15 @@ export default function ProductsPage() {
           </motion.div>
 
           <div>
-            {filteredProducts.length === 0 ? (
+            {isLoading ? (
+              <div className="rounded-3xl border border-gray-100 bg-white p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
+                <p className="text-lg font-bold text-gray-900">Učitavanje proizvoda...</p>
+              </div>
+            ) : loadError ? (
+              <div className="rounded-3xl border border-red-100 bg-red-50 p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
+                <p className="text-lg font-bold text-red-700">{loadError}</p>
+              </div>
+            ) : filteredProducts.length === 0 ? (
               <div className="rounded-3xl border border-gray-100 bg-white p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
                 <p className="text-lg font-bold text-gray-900">Nema proizvoda za odabrani filter.</p>
                 <p className="mt-2 text-sm text-gray-600">Odaberite drugu kategoriju ili sortiranje.</p>
