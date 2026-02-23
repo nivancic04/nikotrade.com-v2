@@ -16,10 +16,10 @@ const categoryOptions: Array<"Sve" | ProductCategory> = [
   "Case",
 ];
 
-type SortOption = "featured" | "priceAsc" | "priceDesc";
+type SortOption = "nameAsc" | "priceAsc" | "priceDesc";
 
 const sortLabels: Record<SortOption, string> = {
-  featured: "Istaknuti",
+  nameAsc: "Naziv: A-Z",
   priceAsc: "Cijena: niža",
   priceDesc: "Cijena: viša",
 };
@@ -34,7 +34,7 @@ export default function ProductsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [activeCategory, setActiveCategory] = useState<"Sve" | ProductCategory>("Sve");
-  const [sortBy, setSortBy] = useState<SortOption>("featured");
+  const [sortBy, setSortBy] = useState<SortOption>("nameAsc");
 
   useEffect(() => {
     let cancelled = false;
@@ -90,7 +90,7 @@ export default function ProductsPage() {
     } else if (sortBy === "priceDesc") {
       byCategory.sort((a, b) => b.priceEur - a.priceEur);
     } else {
-      byCategory.sort((a, b) => Number(b.featured) - Number(a.featured));
+      byCategory.sort((a, b) => a.name.localeCompare(b.name, "hr"));
     }
 
     return byCategory;
@@ -215,11 +215,6 @@ export default function ProductsPage() {
                           className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-72"
                         />
                         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/80 via-white/10 to-transparent"></div>
-                        {product.featured ? (
-                          <span className="absolute left-4 top-4 rounded-full border border-white/70 bg-white/90 px-3 py-1 text-xs font-bold uppercase tracking-[0.14em] text-[#2d4ed8] shadow-sm">
-                            Istaknuto
-                          </span>
-                        ) : null}
                       </div>
                       <div className="relative flex-1">
                         <h3 className="text-2xl font-black tracking-tight sm:text-3xl">{product.name}</h3>
@@ -261,6 +256,45 @@ export default function ProductsPage() {
               </div>
             )}
           </div>
+
+          {!isLoading && !loadError ? (
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="mt-14 overflow-hidden rounded-3xl border border-blue-100/80 bg-gradient-to-br from-white via-blue-50/50 to-white p-7 shadow-[0_14px_40px_rgba(15,23,42,0.10)] sm:p-9"
+            >
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+                <div className="max-w-3xl">
+                  <p className="inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#4a6bfe]">
+                    Prošireni katalog
+                  </p>
+                  <h2 className="mt-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">
+                    U ponudi imamo još puno više proizvoda brendova JOMA i GIVOVA.
+                  </h2>
+                  <p className="mt-4 max-w-2xl text-base leading-relaxed text-gray-600 sm:text-lg">
+                    Uz artikle prikazane na webu, dostupni su i dodatni modeli iz službenih
+                    kataloga. Za klubove, škole i tvrtke nudimo i uslugu tiska, odnosno
+                    štampanja na odabranu robu.
+                  </p>
+                  <p className="mt-3 text-sm font-semibold uppercase tracking-[0.12em] text-gray-500">
+                    Za kompletan katalog i personaliziranu ponudu, pošaljite upit.
+                  </p>
+                </div>
+
+                <div className="flex shrink-0 items-center">
+                  <Link
+                    href="/kontakt"
+                    className="group inline-flex items-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3b5af0]"
+                  >
+                    Pošalji upit
+                    <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </div>
+              </div>
+            </motion.section>
+          ) : null}
         </section>
       </main>
 
