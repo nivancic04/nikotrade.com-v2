@@ -51,7 +51,7 @@ export default function ProductsPage() {
 
         if (!response.ok) {
           if (!cancelled) {
-            setLoadError(payload?.error ?? "NeuspjeĂ„Ä…Ă‹â€ˇno uÄ‚â€žÄąÂ¤itavanje proizvoda.");
+            setLoadError(payload?.error ?? "Neuspješno učitavanje proizvoda.");
             setProducts([]);
           }
           return;
@@ -62,7 +62,7 @@ export default function ProductsPage() {
         }
       } catch {
         if (!cancelled) {
-          setLoadError("UÄ‚â€žÄąÂ¤itavanje proizvoda trenutno nije dostupno.");
+          setLoadError("Učitavanje proizvoda trenutno nije dostupno.");
           setProducts([]);
         }
       } finally {
@@ -183,7 +183,7 @@ export default function ProductsPage() {
           <div>
             {isLoading ? (
               <div className="rounded-3xl border border-gray-100 bg-white p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
-                <p className="text-lg font-bold text-gray-900">UÄ‚â€žÄąÂ¤itavanje proizvoda...</p>
+                <p className="text-lg font-bold text-gray-900">Učitavanje proizvoda...</p>
               </div>
             ) : loadError ? (
               <div className="rounded-3xl border border-red-100 bg-red-50 p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
