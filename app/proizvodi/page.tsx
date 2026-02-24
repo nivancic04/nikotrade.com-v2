@@ -212,9 +212,8 @@ export default function ProductsPage() {
                           alt={product.name}
                           width={1200}
                           height={900}
-                          className="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-[1.03] sm:h-72"
+                          className="h-64 w-full bg-[#f8fbff] object-contain p-3 transition-transform duration-700 group-hover:scale-[1.01] sm:h-72 sm:p-4"
                         />
-                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-white/80 via-white/10 to-transparent"></div>
                       </div>
                       <div className="relative flex-1">
                         <h3 className="text-2xl font-black tracking-tight sm:text-3xl">{product.name}</h3>

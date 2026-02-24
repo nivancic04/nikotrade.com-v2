@@ -25,8 +25,8 @@ export function ProductImageGallery({ productName, images }: ProductImageGallery
 
   return (
     <div className="relative overflow-hidden rounded-3xl border border-slate-200/80 bg-gradient-to-b from-[#f3f7ff] via-white to-white p-3 sm:p-4">
-      <div className="mx-auto w-full max-w-[260px] overflow-hidden rounded-2xl border border-blue-100/80 bg-[#f8fbff] shadow-[0_16px_36px_rgba(74,107,254,0.10)] sm:max-w-[300px] lg:max-w-[330px] xl:max-w-[360px]">
-        <div className="relative aspect-[3/5]">
+      <div className="mx-auto w-full max-w-[250px] overflow-hidden rounded-2xl border border-blue-100/80 bg-[#f8fbff] shadow-[0_16px_36px_rgba(74,107,254,0.10)] sm:max-w-[285px] lg:max-w-[315px] xl:max-w-[340px]">
+        <div className="relative aspect-[4/5]">
           <Image
             src={activeImage}
             alt={productName}
