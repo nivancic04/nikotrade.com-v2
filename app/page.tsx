@@ -166,14 +166,15 @@ export default function Home() {
               variants={fadeUp}
               className="text-6xl sm:text-7xl md:text-8xl font-black text-white tracking-tighter leading-[1.1] mb-8 drop-shadow-[0_0_30px_rgba(74,107,254,0.4)]"
             >
-              Mirisi <br />u bojama <br />
-              vaših najdražih.
+              Boje tvog tima. <br />
+              Oprema za teren, <br />
+              miris za vožnju.
             </motion.h1>
             <motion.p
               variants={fadeUp}
               className="text-lg md:text-2xl text-blue-50 font-medium mb-10 max-w-xl leading-relaxed drop-shadow-[0_0_15px_rgba(147,197,253,0.3)]"
             >
-              Jedina destinacija za personalizirane automirise u obliku Vašeg omiljenog dresa.
+              Sve za klub na jednom mjestu, plus jedini automirisi kakve ne nudi nitko drugi.
             </motion.p>
             <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4">
               <Link
@@ -192,7 +193,7 @@ export default function Home() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.5, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 hidden flex-col items-center gap-2 md:flex"
         >
           <motion.span
             animate={{ y: [0, -8, 0] }}
