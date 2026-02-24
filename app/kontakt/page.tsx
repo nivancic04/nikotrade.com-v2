@@ -592,7 +592,7 @@ function KontaktPageContent() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/kontakt" className="text-[#4a6bfe] transition-colors hover:text-[#6f88ff]">
+                  <Link href="/kontakt" className="transition-colors hover:text-white">
                     Kontakt
                   </Link>
                 </li>

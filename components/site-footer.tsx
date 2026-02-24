@@ -1,11 +1,5 @@
 import Link from "next/link";
-import type { NavKey } from "@/components/site-header";
-
-type SiteFooterProps = {
-  active?: NavKey;
-};
-
-export function SiteFooter({ active }: SiteFooterProps) {
+export function SiteFooter() {
   return (
     <footer className="w-full border-t border-white/10 bg-[#0A0A0A] px-4 pb-10 pt-16">
       <div className="mx-auto max-w-7xl">
@@ -30,7 +24,7 @@ export function SiteFooter({ active }: SiteFooterProps) {
               <li>
                 <Link
                   href="/proizvodi"
-                  className={`transition-colors hover:text-white ${active === "products" ? "text-[#4a6bfe]" : ""}`}
+                  className="transition-colors hover:text-white"
                 >
                   Svi proizvodi
                 </Link>
@@ -38,7 +32,7 @@ export function SiteFooter({ active }: SiteFooterProps) {
               <li>
                 <Link
                   href="/kontakt"
-                  className={`transition-colors hover:text-white ${active === "contact" ? "text-[#4a6bfe]" : ""}`}
+                  className="transition-colors hover:text-white"
                 >
                   Kontakt
                 </Link>

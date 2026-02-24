@@ -478,7 +478,7 @@ export default function Home() {
               <ul className="space-y-4 text-sm text-gray-400">
                 <li><Link href="/" className="hover:text-white transition-colors">Početna stranica</Link></li>
                 <li><Link href="/proizvodi" className="hover:text-white transition-colors">Svi proizvodi</Link></li>
-                <li><Link href="/o-nama" className="hover:text-white transition-colors">O nama</Link></li>
+                <li><Link href="/kontakt" className="hover:text-white transition-colors">Kontakt</Link></li>
               </ul>
             </div>
             <div>

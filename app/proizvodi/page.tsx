@@ -101,8 +101,8 @@ export default function ProductsPage() {
       <SiteHeader active="products" />
 
       <main className="relative flex-1 overflow-hidden pb-24 pt-36">
-        <div className="pointer-events-none absolute -left-16 top-24 h-64 w-64 rounded-full bg-blue-100/60 blur-3xl"></div>
-        <div className="pointer-events-none absolute -right-16 bottom-24 h-64 w-64 rounded-full bg-blue-200/30 blur-3xl"></div>
+        <div className="pointer-events-none absolute -left-16 top-24 hidden h-64 w-64 rounded-full bg-blue-100/60 blur-3xl sm:block"></div>
+        <div className="pointer-events-none absolute -right-16 bottom-24 hidden h-64 w-64 rounded-full bg-blue-200/30 blur-3xl sm:block"></div>
 
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -297,7 +297,7 @@ export default function ProductsPage() {
         </section>
       </main>
 
-      <SiteFooter active="products" />
+      <SiteFooter />
     </div>
   );
 }

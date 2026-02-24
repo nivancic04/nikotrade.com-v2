@@ -241,7 +241,7 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
         ) : null}
       </main>
 
-      <SiteFooter active="products" />
+      <SiteFooter />
     </div>
   );
 }
