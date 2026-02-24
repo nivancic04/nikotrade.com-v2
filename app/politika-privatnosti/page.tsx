@@ -210,7 +210,7 @@ export default function PrivacyPolicyPage() {
         </section>
       </main>
 
-      <SiteFooter active="contact" />
+      <SiteFooter />
     </div>
   );
 }

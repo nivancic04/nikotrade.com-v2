@@ -429,7 +429,7 @@ function MyInquiriesPageContent() {
         </section>
       </main>
 
-      <SiteFooter active="contact" />
+      <SiteFooter />
     </div>
   );
 }
