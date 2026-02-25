@@ -306,7 +306,7 @@ export default function ProductsPage() {
           <div className="relative z-10">
             {isLoading ? (
               <div className="rounded-3xl border border-gray-100 bg-white p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
-                <p className="text-lg font-bold text-gray-900">UĂ„Ĺ¤itavanje proizvoda...</p>
+                <p className="text-lg font-bold text-gray-900">Učitavanje proizvoda...</p>
               </div>
             ) : loadError ? (
               <div className="rounded-3xl border border-red-100 bg-red-50 p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
@@ -424,3 +424,4 @@ export default function ProductsPage() {
     </div>
   );
 }
+
