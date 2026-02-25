@@ -206,7 +206,8 @@ function KontaktPageContent() {
             </h2>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-gray-600 sm:text-lg">
               Treba vam posebna narudžba, timski dizajn ili pomoć oko izbora proizvoda?
-              Javite se direktno, odgovaramo brzo i precizno.
+              Javite se direktno, odgovaramo brzo i precizno te pripremamo ponudu prema vašim
+              potrebama, količini i roku isporuke.
             </p>
 
             <div className="mt-7 flex flex-wrap items-center gap-3 pt-1">
@@ -278,9 +279,6 @@ function KontaktPageContent() {
                     </p>
                     <p className="mt-1 text-base text-blue-50">
                       Odgovaramo na upite: <span className="font-bold">Pon - Pet, 08:00 - 16:00</span>
-                    </p>
-                    <p className="mt-1 text-sm text-blue-100/80">
-                      Upiti poslani izvan ovog vremena bit će obrađeni sljedeći radni dan.
                     </p>
                   </div>
                 </div>
