@@ -61,6 +61,7 @@ export async function POST(request: Request) {
     const productSlug = typeof body.productSlug === "string" ? body.productSlug.trim() : "";
     const productName = typeof body.productName === "string" ? body.productName.trim() : "";
     const website = typeof body.website === "string" ? body.website.trim() : "";
+    const isProductInquiry = productName.length > 0 || productSlug.length > 0;
     const title = productName ? `Upit za proizvod: ${productName}` : inputTitle;
 
     // Honeypot polje: legitimni korisnici ga nikad ne popunjavaju.
@@ -135,18 +136,21 @@ export async function POST(request: Request) {
 
     if (smtpClient) {
       try {
+        const mailHeading = isProductInquiry ? "Novi upit za proizvod" : "Novi upit kupca";
+        const subject = isProductInquiry
+          ? `[NikoTrade upit za proizvod] ${productName || title}`
+          : `[NikoTrade kontakt upit] ${title}`;
+
         mailSent = await sendMailWithRetry(smtpClient, {
           from: `"NikoTrade Kontakt Forma" <${smtpClient.smtpUser}>`,
           to: CONTACT_RECEIVER,
           replyTo: replyEmail,
-          subject: `[NikoTrade upit] ${productName ? `${productName} | ` : ""}${title}`,
+          subject,
           text: [
-            `Novi upit sa kontakt forme`,
+            mailHeading,
             ``,
-            `ID upita: ${inquiryId ?? "N/A"}`,
             `Naslov: ${title}`,
             productName ? `Proizvod: ${productName}` : null,
-            productSlug ? `Slug proizvoda: ${productSlug}` : null,
             `Email za odgovor: ${replyEmail}`,
             `Privola: DA`,
             ``,
@@ -156,11 +160,9 @@ export async function POST(request: Request) {
             .filter(Boolean)
             .join("\n"),
           html: `
-            <h2>Novi upit sa kontakt forme</h2>
-            <p><strong>ID upita:</strong> ${escapeHtml(inquiryId ?? "N/A")}</p>
+            <h2>${escapeHtml(mailHeading)}</h2>
             <p><strong>Naslov:</strong> ${escapeHtml(title)}</p>
             ${productName ? `<p><strong>Proizvod:</strong> ${escapeHtml(productName)}</p>` : ""}
-            ${productSlug ? `<p><strong>Slug proizvoda:</strong> ${escapeHtml(productSlug)}</p>` : ""}
             <p><strong>Email za odgovor:</strong> ${escapeHtml(replyEmail)}</p>
             <p><strong>Privola:</strong> DA</p>
             <hr />
