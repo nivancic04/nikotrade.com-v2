@@ -2,25 +2,14 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Shirt, Wine, Instagram, ArrowRight, Menu, X, SprayCan } from "lucide-react";
-import { motion, useScroll, useTransform, Variants, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { Shirt, Wine, Instagram, ArrowRight, SprayCan } from "lucide-react";
+import { motion, useScroll, useTransform, Variants } from "framer-motion";
+import { SiteHeader } from "@/components/site-header";
 
 export default function Home() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { scrollY } = useScroll();
   const yHeroText = useTransform(scrollY, [0, 500], [0, 200]);
   const opacityHeroText = useTransform(scrollY, [0, 300], [1, 0]);
-
-  // Handle header glassmorphism effect on scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const fadeUp: Variants = {
     hidden: { opacity: 0, y: 40 },
@@ -39,99 +28,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen font-sans bg-[#F9FAFB] text-gray-900 selection:bg-[#4a6bfe] selection:text-white">
-      {/* Header - Glassmorphism */}
-      <header
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ease-in-out bg-[#0a0a0a]/85 backdrop-blur-2xl border-b border-white/10 shadow-none md:shadow-lg ${isScrolled ? "py-4" : "py-6"}`}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center">
-            {/* Logo */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="flex-shrink-0 flex items-center z-50"
-            >
-              <Link
-                href="/"
-                className="font-black text-2xl tracking-tighter text-white hover:text-gray-200 transition-colors duration-300"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                NIKO<span className="text-[#4a6bfe]">TRADE</span>
-              </Link>
-            </motion.div>
-
-            {/* Desktop Navigation */}
-            <motion.nav
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="hidden md:flex space-x-10 text-gray-200 font-medium tracking-tight"
-            >
-              <Link href="/" className="text-[#4a6bfe] transition-colors relative group">
-                Početna
-                <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#4a6bfe]"></span>
-              </Link>
-              <Link href="/proizvodi" className="hover:text-white transition-colors relative group">
-                Proizvodi
-                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-white transition-all group-hover:w-full"></span>
-              </Link>
-              <Link href="/kontakt" className="hover:text-white transition-colors relative group">
-                Kontakt
-                <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-white transition-all group-hover:w-full"></span>
-              </Link>
-            </motion.nav>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center z-50">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-md focus:outline-none transition-colors text-white hover:text-gray-300"
-                aria-label="Toggle menu"
-              >
-                {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Dropdown Menu */}
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="md:hidden absolute top-full left-0 w-full bg-white border-b border-gray-200 shadow-xl overflow-hidden pointer-events-auto"
-            >
-              <nav className="flex flex-col px-4 pt-4 pb-8 space-y-4">
-                <Link
-                  href="/"
-                  className="text-lg font-bold text-[#4a6bfe] border-b border-gray-100 pb-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Početna stranica
-                </Link>
-                <Link
-                  href="/proizvodi"
-                  className="text-lg font-medium text-gray-700 hover:text-[#4a6bfe] border-b border-gray-100 pb-2 transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Svi Proizvodi
-                </Link>
-                <Link
-                  href="/kontakt"
-                  className="text-lg font-medium text-gray-700 hover:text-[#4a6bfe] border-b border-gray-100 pb-2 transition-colors"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Kontakt
-                </Link>
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+      <SiteHeader active="home" />
 
       {/* Hero Section */}
       <section className="relative w-full h-[100svh] min-h-[600px] flex items-center overflow-hidden">
