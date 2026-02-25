@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, ArrowUpDown, Filter } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowRight, ArrowUpDown, ChevronDown, Filter } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getPrimaryProductImage, type ProductCategory, type ProductRecord } from "@/lib/products-db";
@@ -20,15 +20,116 @@ type SortOption = "nameAsc" | "priceAsc" | "priceDesc";
 
 const sortLabels: Record<SortOption, string> = {
   nameAsc: "Naziv: A-Z",
-  priceAsc: "Cijena: niža",
-  priceDesc: "Cijena: viša",
+  priceAsc: "Cijena: niže",
+  priceDesc: "Cijena: više",
 };
 
 function getCategoryLabel(category: "Sve" | ProductCategory) {
-  if (category === "Case") return "Čaše";
+  if (category === "Case") return "Case";
   return category;
 }
 
+
+type MobileDropdownOption<T extends string> = {
+  value: T;
+  label: string;
+};
+
+type MobileDropdownProps<T extends string> = {
+  ariaLabel: string;
+  value: T;
+  options: MobileDropdownOption<T>[];
+  onChange: (value: T) => void;
+};
+
+function MobileDropdown<T extends string>({
+  ariaLabel,
+  value,
+  options,
+  onChange,
+}: MobileDropdownProps<T>) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (!containerRef.current?.contains(target)) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen]);
+
+  const activeOption = options.find((option) => option.value === value) ?? options[0];
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        type="button"
+        aria-label={ariaLabel}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen((previous) => !previous)}
+        className="flex w-full items-center justify-between rounded-2xl border border-gray-200 bg-white px-3 py-2.5 text-left text-sm font-semibold text-gray-700 outline-none ring-[#4a6bfe]/25 transition focus:border-[#4a6bfe] focus:ring-2"
+      >
+        <span>{activeOption.label}</span>
+        <ChevronDown
+          size={16}
+          className={`text-gray-500 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      {isOpen ? (
+        <div className="absolute left-0 right-0 top-[calc(100%+0.35rem)] z-50 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-[0_16px_36px_rgba(15,23,42,0.14)]">
+          <ul role="listbox" className="max-h-64 overflow-auto py-1">
+            {options.map((option) => {
+              const isSelected = option.value === value;
+              return (
+                <li key={option.value} role="presentation">
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={isSelected}
+                    onClick={() => {
+                      onChange(option.value);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full px-3 py-2 text-left text-sm transition-colors ${
+                      isSelected
+                        ? "bg-blue-50 font-semibold text-[#2d4ed8]"
+                        : "text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ) : null}
+    </div>
+  );
+}
 export default function ProductsPage() {
   const [products, setProducts] = useState<ProductRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +152,7 @@ export default function ProductsPage() {
 
         if (!response.ok) {
           if (!cancelled) {
-            setLoadError(payload?.error ?? "Neuspješno učitavanje proizvoda.");
+            setLoadError(payload?.error ?? "NeuspjeÄąË‡no uĂ„Ĺ¤itavanje proizvoda.");
             setProducts([]);
           }
           return;
@@ -62,7 +163,7 @@ export default function ProductsPage() {
         }
       } catch {
         if (!cancelled) {
-          setLoadError("Učitavanje proizvoda trenutno nije dostupno.");
+          setLoadError("UĂ„Ĺ¤itavanje proizvoda trenutno nije dostupno.");
           setProducts([]);
         }
       } finally {
@@ -127,17 +228,28 @@ export default function ProductsPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.08 }}
-            className="mb-10 rounded-3xl border border-blue-100/70 bg-gradient-to-br from-white via-blue-50/30 to-white p-5 shadow-[0_14px_40px_rgba(15,23,42,0.10)] backdrop-blur sm:p-6"
+            className="relative z-30 mb-10 rounded-3xl border border-blue-100/70 bg-gradient-to-br from-white via-blue-50/30 to-white p-5 shadow-[0_14px_40px_rgba(15,23,42,0.10)] backdrop-blur sm:p-6"
           >
             <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div>
+              <div className="relative z-10">
                 <div className="mb-3 flex items-center gap-2">
                   <Filter size={15} className="text-gray-500" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
                     Kategorija
                   </span>
                 </div>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="sm:hidden">
+                  <MobileDropdown
+                    ariaLabel="Odaberi kategoriju"
+                    value={activeCategory}
+                    onChange={(nextCategory) => setActiveCategory(nextCategory)}
+                    options={categoryOptions.map((category) => ({
+                      value: category,
+                      label: getCategoryLabel(category),
+                    }))}
+                  />
+                </div>
+                <div className="hidden flex-wrap items-center gap-2 sm:flex">
                   {categoryOptions.map((category) => (
                     <button
                       key={category}
@@ -161,7 +273,18 @@ export default function ProductsPage() {
                     Sortiranje
                   </span>
                 </div>
-                <div className="flex flex-wrap items-center gap-2 lg:justify-end">
+                <div className="sm:hidden">
+                  <MobileDropdown
+                    ariaLabel="Odaberi sortiranje"
+                    value={sortBy}
+                    onChange={(nextSort) => setSortBy(nextSort)}
+                    options={(Object.keys(sortLabels) as SortOption[]).map((sortOption) => ({
+                      value: sortOption,
+                      label: sortLabels[sortOption],
+                    }))}
+                  />
+                </div>
+                <div className="hidden flex-wrap items-center gap-2 lg:justify-end sm:flex">
                   {(Object.keys(sortLabels) as SortOption[]).map((sortOption) => (
                     <button
                       key={sortOption}
@@ -180,10 +303,10 @@ export default function ProductsPage() {
             </div>
           </motion.div>
 
-          <div>
+          <div className="relative z-10">
             {isLoading ? (
               <div className="rounded-3xl border border-gray-100 bg-white p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
-                <p className="text-lg font-bold text-gray-900">Učitavanje proizvoda...</p>
+                <p className="text-lg font-bold text-gray-900">UĂ„Ĺ¤itavanje proizvoda...</p>
               </div>
             ) : loadError ? (
               <div className="rounded-3xl border border-red-100 bg-red-50 p-10 text-center shadow-[0_10px_35px_rgba(15,23,42,0.08)]">
@@ -267,18 +390,18 @@ export default function ProductsPage() {
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="max-w-3xl">
                   <p className="inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#4a6bfe]">
-                    Prošireni katalog
+                    ProÄąË‡ireni katalog
                   </p>
                   <h2 className="mt-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">
-                    U ponudi imamo još puno više proizvoda brendova JOMA i GIVOVA.
+                    U ponudi imamo joÄąË‡ puno viÄąË‡e proizvoda brendova JOMA i GIVOVA.
                   </h2>
                   <p className="mt-4 max-w-2xl text-base leading-relaxed text-gray-600 sm:text-lg">
-                    Uz artikle prikazane na webu, dostupni su i dodatni modeli iz službenih
-                    kataloga. Za klubove, škole i tvrtke nudimo i uslugu tiska, odnosno
-                    štampanja na odabranu robu.
+                    Uz artikle prikazane na webu, dostupni su i dodatni modeli iz sluÄąÄľbenih
+                    kataloga. Za klubove, ÄąË‡kole i tvrtke nudimo i uslugu tiska, odnosno
+                    ÄąË‡tampanja na odabranu robu.
                   </p>
                   <p className="mt-3 text-sm font-semibold uppercase tracking-[0.12em] text-gray-500">
-                    Za kompletan katalog i personaliziranu ponudu, pošaljite upit.
+                    Za kompletan katalog i personaliziranu ponudu, poÄąË‡aljite upit.
                   </p>
                 </div>
 
@@ -287,7 +410,7 @@ export default function ProductsPage() {
                     href="/kontakt"
                     className="group inline-flex items-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3b5af0]"
                   >
-                    Pošalji upit
+                    PoÄąË‡alji upit
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </div>

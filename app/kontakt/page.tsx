@@ -178,7 +178,7 @@ function KontaktPageContent() {
   return (
     <div className="flex min-h-screen flex-col bg-[#F9FAFB] text-gray-900 selection:bg-[#4a6bfe] selection:text-white">
       <header
-        className={`fixed top-0 z-50 w-full border-b border-white/10 bg-[#0a0a0a]/85 shadow-lg backdrop-blur-2xl transition-all duration-300 ease-in-out ${isScrolled ? "py-4" : "py-6"}`}
+        className={`fixed top-0 z-50 w-full border-b border-white/10 bg-[#0a0a0a] shadow-none backdrop-blur-none transition-all duration-300 ease-in-out md:bg-[#0a0a0a]/85 md:backdrop-blur-2xl md:shadow-lg ${isScrolled ? "py-4" : "py-6"}`}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
@@ -267,8 +267,8 @@ function KontaktPageContent() {
       </header>
 
       <main className="relative flex-1 overflow-hidden pt-36 pb-24">
-        <div className="pointer-events-none absolute -left-16 top-24 h-64 w-64 rounded-full bg-blue-100/60 blur-3xl"></div>
-        <div className="pointer-events-none absolute -right-16 bottom-24 h-64 w-64 rounded-full bg-blue-200/30 blur-3xl"></div>
+        <div className="pointer-events-none absolute -left-16 top-24 hidden h-64 w-64 rounded-full bg-blue-100/60 blur-3xl sm:block"></div>
+        <div className="pointer-events-none absolute -right-16 bottom-24 hidden h-64 w-64 rounded-full bg-blue-200/30 blur-3xl sm:block"></div>
 
         <div className="mx-auto mb-12 max-w-3xl px-4 text-center sm:px-6 lg:px-8">
           <motion.h1
