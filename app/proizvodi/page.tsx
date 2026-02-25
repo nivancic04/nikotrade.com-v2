@@ -390,18 +390,18 @@ export default function ProductsPage() {
               <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
                 <div className="max-w-3xl">
                   <p className="inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#4a6bfe]">
-                    ProÄąË‡ireni katalog
+                    Prošireni katalog
                   </p>
                   <h2 className="mt-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">
-                    U ponudi imamo joÄąË‡ puno viÄąË‡e proizvoda brendova JOMA i GIVOVA.
+                    U ponudi imamo još puno više proizvoda brendova JOMA i GIVOVA.
                   </h2>
                   <p className="mt-4 max-w-2xl text-base leading-relaxed text-gray-600 sm:text-lg">
-                    Uz artikle prikazane na webu, dostupni su i dodatni modeli iz sluÄąÄľbenih
-                    kataloga. Za klubove, ÄąË‡kole i tvrtke nudimo i uslugu tiska, odnosno
-                    ÄąË‡tampanja na odabranu robu.
+                    Uz artikle prikazane na webu, dostupni su i dodatni modeli iz službenih
+                    kataloga. Za klubove, škole i tvrtke nudimo i uslugu tiska, odnosno
+                    štampanja na odabranu robu.
                   </p>
                   <p className="mt-3 text-sm font-semibold uppercase tracking-[0.12em] text-gray-500">
-                    Za kompletan katalog i personaliziranu ponudu, poÄąË‡aljite upit.
+                    Za kompletan katalog i personaliziranu ponudu, pošaljite upit.
                   </p>
                 </div>
 
@@ -410,7 +410,7 @@ export default function ProductsPage() {
                     href="/kontakt"
                     className="group inline-flex items-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3b5af0]"
                   >
-                    PoÄąË‡alji upit
+                    Pošalji upit
                     <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </div>

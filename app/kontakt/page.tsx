@@ -7,16 +7,14 @@ import {
   MapPin,
   Clock,
   ArrowRight,
-  Menu,
   X,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Suspense, useEffect, useState } from "react";
+import { SiteHeader } from "@/components/site-header";
 
 function KontaktPageContent() {
   const searchParams = useSearchParams();
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [replyEmail, setReplyEmail] = useState("");
@@ -29,15 +27,6 @@ function KontaktPageContent() {
   const [selectedProductSlug, setSelectedProductSlug] = useState("");
   const [selectedProductName, setSelectedProductName] = useState("");
   const [prefilledProductSlug, setPrefilledProductSlug] = useState<string | null>(null);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   useEffect(() => {
     if (!isContactModalOpen) return;
@@ -177,94 +166,7 @@ function KontaktPageContent() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F9FAFB] text-gray-900 selection:bg-[#4a6bfe] selection:text-white">
-      <header
-        className={`fixed top-0 z-50 w-full border-b border-white/10 bg-[#0a0a0a] shadow-none backdrop-blur-none transition-all duration-300 ease-in-out md:bg-[#0a0a0a]/85 md:backdrop-blur-2xl md:shadow-lg ${isScrolled ? "py-4" : "py-6"}`}
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7 }}
-              className="z-50 flex shrink-0 items-center"
-            >
-              <Link
-                href="/"
-                className="text-2xl font-black tracking-tighter text-white transition-colors duration-300 hover:text-gray-200"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                NIKO<span className="text-[#4a6bfe]">TRADE</span>
-              </Link>
-            </motion.div>
-
-            <motion.nav
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7 }}
-              className="hidden space-x-10 font-medium tracking-tight text-gray-200 md:flex"
-            >
-              <Link href="/" className="relative transition-colors hover:text-white group">
-                Početna
-                <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-white transition-all group-hover:w-full"></span>
-              </Link>
-              <Link href="/proizvodi" className="relative transition-colors hover:text-white group">
-                Proizvodi
-                <span className="absolute -bottom-1 left-0 h-[2px] w-0 bg-white transition-all group-hover:w-full"></span>
-              </Link>
-              <Link href="/kontakt" className="relative text-[#4a6bfe] transition-colors group">
-                Kontakt
-                <span className="absolute -bottom-1 left-0 h-[2px] w-full bg-[#4a6bfe]"></span>
-              </Link>
-            </motion.nav>
-
-            <div className="z-50 flex items-center md:hidden">
-              <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="rounded-md p-2 text-white transition-colors hover:text-gray-300 focus:outline-none"
-                aria-label="Toggle menu"
-              >
-                {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <AnimatePresence>
-          {isMobileMenuOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.25 }}
-              className="absolute left-0 top-full w-full overflow-hidden border-b border-gray-200 bg-white shadow-xl md:hidden"
-            >
-              <nav className="flex flex-col space-y-4 px-4 pb-8 pt-4">
-                <Link
-                  href="/"
-                  className="border-b border-gray-100 pb-2 text-lg font-medium text-gray-700 transition-colors hover:text-[#4a6bfe]"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Pocetna
-                </Link>
-                <Link
-                  href="/proizvodi"
-                  className="border-b border-gray-100 pb-2 text-lg font-medium text-gray-700 transition-colors hover:text-[#4a6bfe]"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Proizvodi
-                </Link>
-                <Link
-                  href="/kontakt"
-                  className="border-b border-gray-100 pb-2 text-lg font-bold text-[#4a6bfe]"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Kontakt
-                </Link>
-              </nav>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </header>
+      <SiteHeader active="contact" />
 
       <main className="relative flex-1 overflow-hidden pt-36 pb-24">
         <div className="pointer-events-none absolute -left-16 top-24 hidden h-64 w-64 rounded-full bg-blue-100/60 blur-3xl sm:block"></div>
@@ -370,6 +272,15 @@ function KontaktPageContent() {
                     </p>
                     <p className="mt-1 text-base text-blue-50">
                       Subota: <span className="font-bold">08:00 - 12:00</span>
+                    </p>
+                    <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-blue-100/60">
+                      Korisnička služba (odgovori)
+                    </p>
+                    <p className="mt-1 text-base text-blue-50">
+                      Odgovaramo na upite: <span className="font-bold">Pon - Pet, 08:00 - 16:00</span>
+                    </p>
+                    <p className="mt-1 text-sm text-blue-100/80">
+                      Upiti poslani izvan ovog vremena bit će obrađeni sljedeći radni dan.
                     </p>
                   </div>
                 </div>
