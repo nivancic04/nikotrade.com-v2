@@ -219,12 +219,9 @@ function MyInquiriesPageContent() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F8FAFC] text-gray-900 selection:bg-[#4a6bfe] selection:text-white">
-      <SiteHeader active="contact" />
+      <SiteHeader active="contact" noShadow />
 
       <main className="relative flex-1 overflow-hidden pb-20 pt-36">
-        <div className="pointer-events-none absolute -left-16 top-16 h-64 w-64 rounded-full bg-blue-100/70 blur-3xl"></div>
-        <div className="pointer-events-none absolute -right-16 bottom-16 h-64 w-64 rounded-full bg-cyan-100/70 blur-3xl"></div>
-
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 16 }}

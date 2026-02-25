@@ -9,6 +9,7 @@ export type NavKey = "home" | "products" | "contact";
 
 type SiteHeaderProps = {
   active: NavKey;
+  noShadow?: boolean;
 };
 
 const navItems: Array<{ key: NavKey; href: string; label: string }> = [
@@ -17,7 +18,7 @@ const navItems: Array<{ key: NavKey; href: string; label: string }> = [
   { key: "contact", href: "/kontakt", label: "Kontakt" },
 ];
 
-export function SiteHeader({ active }: SiteHeaderProps) {
+export function SiteHeader({ active, noShadow = false }: SiteHeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -29,7 +30,7 @@ export function SiteHeader({ active }: SiteHeaderProps) {
 
   return (
     <header
-      className={`fixed top-0 z-50 w-full border-b border-white/10 bg-[#0a0a0a]/85 shadow-none backdrop-blur-2xl transition-all duration-300 ease-in-out md:shadow-lg ${isScrolled ? "py-4" : "py-6"}`}
+      className={`fixed top-0 z-50 w-full border-b border-white/10 shadow-none transition-all duration-300 ease-in-out ${noShadow ? "bg-[#0a0a0a] backdrop-blur-none md:shadow-none" : "bg-[#0a0a0a]/85 backdrop-blur-2xl md:shadow-lg"} ${isScrolled ? "py-4" : "py-6"}`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
