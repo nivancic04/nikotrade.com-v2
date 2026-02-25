@@ -124,12 +124,12 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
   {
     id: 7,
     slug: "gravirana-casa-classic",
-    name: "Gravirana Casa Classic",
+    name: "Gravirana Čaša Classic",
     category: "Case",
     images: TEMPLATE_PRODUCT_IMAGES,
-    shortDescription: "Staklena casa sa personaliziranom gravurom.",
+    shortDescription: "Staklena čaša sa personaliziranom gravurom.",
     description:
-      "Elegantna casa sa preciznom gravurom po zelji. Pogodna za poklone, evente i posebne prigode.",
+      "Elegantna čaša sa preciznom gravurom po zelji. Pogodna za poklone, evente i posebne prigode.",
     scent: "N/A",
     material: "Premium glass",
     duration: "N/A",
@@ -140,7 +140,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
   {
     id: 8,
     slug: "gravirana-casa-deluxe",
-    name: "Gravirana Casa Deluxe",
+    name: "Gravirana Čaša Deluxe",
     category: "Case",
     images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Deblje staklo i detaljna personalizacija.",
@@ -156,12 +156,12 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
   {
     id: 9,
     slug: "gravirani-set-case-2x",
-    name: "Gravirani Set Casa 2x",
+    name: "Gravirani Set Čaša 2x",
     category: "Case",
     images: TEMPLATE_PRODUCT_IMAGES,
-    shortDescription: "Set od dvije case sa custom natpisom.",
+    shortDescription: "Set od dvije čaše sa custom natpisom.",
     description:
-      "Par case sa uskladjenom gravurom, idealan za poklon set. Moguce kombinirati logo, ime i datum.",
+      "Par čaša sa uskladjenom gravurom, idealan za poklon set. Moguce kombinirati logo, ime i datum.",
     scent: "N/A",
     material: "Premium glass set",
     duration: "N/A",
