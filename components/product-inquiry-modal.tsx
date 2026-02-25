@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowRight, MessageSquareText, X } from "lucide-react";
 
@@ -37,6 +38,11 @@ export function ProductInquiryModal({
   const [formError, setFormError] = useState("");
   const [formSuccess, setFormSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     setDescription(defaultDescription);
@@ -133,21 +139,23 @@ export function ProductInquiryModal({
         {triggerLabel}
       </button>
 
-      <AnimatePresence>
-        {isOpen ? (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[80] flex items-center justify-center bg-black/50 px-4 py-8 backdrop-blur-sm"
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 20, scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-              className="w-full max-w-2xl rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.28)] sm:p-8"
-            >
+      {isMounted
+        ? createPortal(
+            <AnimatePresence>
+              {isOpen ? (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-[120] flex items-center justify-center bg-black/50 px-4 py-8 backdrop-blur-sm"
+                >
+                  <motion.div
+                    initial={{ opacity: 0, y: 20, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 20, scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
+                    className="w-full max-w-2xl rounded-3xl border border-gray-200 bg-white p-6 shadow-[0_24px_80px_rgba(15,23,42,0.28)] sm:p-8"
+                  >
               <div className="mb-6 flex items-start justify-between gap-4">
                 <div>
                   <p className="inline-flex rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#4a6bfe]">
@@ -306,10 +314,13 @@ export function ProductInquiryModal({
                   </button>
                 </div>
               </form>
-            </motion.div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+                  </motion.div>
+                </motion.div>
+              ) : null}
+            </AnimatePresence>,
+            document.body
+          )
+        : null}
     </>
   );
 }
