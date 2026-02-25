@@ -29,7 +29,7 @@ export function SiteHeader({ active }: SiteHeaderProps) {
 
   return (
     <header
-      className={`fixed top-0 z-50 w-full border-b border-white/10 bg-[#0a0a0a]/85 shadow-lg backdrop-blur-2xl transition-all duration-300 ease-in-out ${isScrolled ? "py-4" : "py-6"}`}
+      className={`fixed top-0 z-50 w-full border-b border-white/10 bg-[#0a0a0a]/85 shadow-none backdrop-blur-2xl transition-all duration-300 ease-in-out md:shadow-lg ${isScrolled ? "py-4" : "py-6"}`}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">

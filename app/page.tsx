@@ -41,7 +41,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen font-sans bg-[#F9FAFB] text-gray-900 selection:bg-[#4a6bfe] selection:text-white">
       {/* Header - Glassmorphism */}
       <header
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ease-in-out bg-[#0a0a0a]/85 backdrop-blur-2xl border-b border-white/10 shadow-lg ${isScrolled ? "py-4" : "py-6"}`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ease-in-out bg-[#0a0a0a]/85 backdrop-blur-2xl border-b border-white/10 shadow-none md:shadow-lg ${isScrolled ? "py-4" : "py-6"}`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
