@@ -64,7 +64,7 @@ export default function PrivacyPolicyPage() {
                 <p className="mt-5 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
                   Ova politika detaljno objašnjava kako Niko Trade obraduje osobne podatke, posebno
                   podatke iz kontakt upita. Cilj je potpuna transparentnost, zakonitost obrade i
-                  zaštita vasih prava u skladu s GDPR uredbom.
+                  zaštita vaših prava u skladu s GDPR uredbom.
                 </p>
                 <p className="mt-4 text-sm font-semibold text-gray-500">
                   Zadnje ažuriranje: 22.02.2026.
@@ -123,7 +123,7 @@ export default function PrivacyPolicyPage() {
                     </p>
                     <p>
                       Nakon potvrde linka postavlja se sigurnosni sesijski kolačić isključivo radi
-                      prikaza vasih upita. Kolačić ne koristimo za oglašavanje niti profiliranje.
+                      prikaza vaših upita. Kolačić ne koristimo za oglašavanje niti profiliranje.
                     </p>
                     <p>
                       Pristupni token i sesija imaju vremensko ograničenje i služe samo za zaštitu

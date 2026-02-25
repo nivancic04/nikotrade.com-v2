@@ -13,7 +13,7 @@ const categoryOptions: Array<"Sve" | ProductCategory> = [
   "Sve",
   "Automirisi",
   "Sportska oprema",
-  "Case",
+  "Čaše", 
 ];
 
 type SortOption = "nameAsc" | "priceAsc" | "priceDesc";
