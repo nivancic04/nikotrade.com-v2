@@ -25,7 +25,7 @@ const sortLabels: Record<SortOption, string> = {
 };
 
 function getCategoryLabel(category: "Sve" | ProductCategory) {
-  if (category === "Case") return "Case";
+  if (category === "Case") return "Čaše";
   return category;
 }
 
