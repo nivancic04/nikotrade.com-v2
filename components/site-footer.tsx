@@ -31,6 +31,14 @@ export function SiteFooter() {
               </li>
               <li>
                 <Link
+                  href="/automirisi"
+                  className="transition-colors hover:text-white"
+                >
+                  Automirisi
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/kontakt"
                   className="transition-colors hover:text-white"
                 >

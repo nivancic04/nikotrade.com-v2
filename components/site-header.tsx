@@ -5,7 +5,7 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
 
-export type NavKey = "home" | "products" | "contact";
+export type NavKey = "home" | "products" | "air-fresheners" | "contact";
 
 type SiteHeaderProps = {
   active: NavKey;
@@ -15,6 +15,7 @@ type SiteHeaderProps = {
 const navItems: Array<{ key: NavKey; href: string; label: string }> = [
   { key: "home", href: "/", label: "Početna" },
   { key: "products", href: "/proizvodi", label: "Proizvodi" },
+  { key: "air-fresheners", href: "/automirisi", label: "Automirisi" },
   { key: "contact", href: "/kontakt", label: "Kontakt" },
 ];
 
