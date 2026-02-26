@@ -35,7 +35,7 @@ export default function Home() {
         {/* Background Image with Parallax & Gradient Overlay */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/img/hero-bg.png"
+            src="/img/home/hero-bg.png"
             alt="Hero Background"
             fill
             sizes="100vw"
@@ -175,7 +175,7 @@ export default function Home() {
               <p className="text-gray-500 text-base leading-relaxed mb-6 flex-grow transition-colors duration-300 group-hover:text-gray-700">
                 Apsolutni hit! Personalizirani mirisi za auto u obliku dresa Vašeg kluba. Dizajn i dugotrajnost mirisa zagarantirani.
               </p>
-              <Link href="/proizvodi" className="font-bold text-purple-600 flex items-center gap-2 transition-colors duration-300 group-hover:text-purple-900">
+              <Link href="/automirisi" className="font-bold text-purple-600 flex items-center gap-2 transition-colors duration-300 group-hover:text-purple-900">
                 Naruči odmah <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 group-hover:text-purple-900" />
               </Link>
             </motion.div>
@@ -241,7 +241,7 @@ export default function Home() {
                   {/* Visual size adjustment for Dinamo crest using scale-75 */}
                   <div className="relative w-full h-full scale-75">
                     <Image
-                      src="/img/dinamozagreb.png"
+                      src="/img/home/dinamozagreb.png"
                       alt="GNK Dinamo Zagreb Logo"
                       fill
                       sizes="(min-width: 640px) 224px, 192px"
@@ -289,7 +289,7 @@ export default function Home() {
                   {/* Slaven is naturally wider, no scale reduction needed here relative to Dinamo's scale-75 */}
                   <div className="relative w-full h-full">
                     <Image
-                      src="/img/SlavenBelupo.png"
+                      src="/img/home/SlavenBelupo.png"
                       alt="NK Slaven Belupo Logo"
                       fill
                       sizes="(min-width: 640px) 224px, 192px"
@@ -376,6 +376,7 @@ export default function Home() {
               <ul className="space-y-4 text-sm text-gray-400">
                 <li><Link href="/" className="hover:text-white transition-colors">Početna stranica</Link></li>
                 <li><Link href="/proizvodi" className="hover:text-white transition-colors">Svi proizvodi</Link></li>
+                <li><Link href="/automirisi" className="hover:text-white transition-colors">Automirisi</Link></li>
                 <li><Link href="/kontakt" className="hover:text-white transition-colors">Kontakt</Link></li>
               </ul>
             </div>

@@ -9,9 +9,10 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getPrimaryProductImage, type ProductCategory, type ProductRecord } from "@/lib/products-db";
 
-const categoryOptions: Array<"Sve" | ProductCategory> = [
+type CatalogCategory = Exclude<ProductCategory, "Automirisi">;
+
+const categoryOptions: Array<"Sve" | CatalogCategory> = [
   "Sve",
-  "Automirisi",
   "Sportska oprema",
   "Case",
 ];
@@ -134,7 +135,7 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<ProductRecord[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
-  const [activeCategory, setActiveCategory] = useState<"Sve" | ProductCategory>("Sve");
+  const [activeCategory, setActiveCategory] = useState<"Sve" | CatalogCategory>("Sve");
   const [sortBy, setSortBy] = useState<SortOption>("nameAsc");
 
   useEffect(() => {
@@ -180,11 +181,16 @@ export default function ProductsPage() {
     };
   }, []);
 
+  const catalogProducts = useMemo(
+    () => products.filter((product) => product.category !== "Automirisi"),
+    [products]
+  );
+
   const filteredProducts = useMemo(() => {
     const byCategory =
       activeCategory === "Sve"
-        ? [...products]
-        : products.filter((product) => product.category === activeCategory);
+        ? [...catalogProducts]
+        : catalogProducts.filter((product) => product.category === activeCategory);
 
     if (sortBy === "priceAsc") {
       byCategory.sort((a, b) => a.priceEur - b.priceEur);
@@ -195,16 +201,13 @@ export default function ProductsPage() {
     }
 
     return byCategory;
-  }, [activeCategory, products, sortBy]);
+  }, [activeCategory, catalogProducts, sortBy]);
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F9FAFB] text-gray-900 selection:bg-[#4a6bfe] selection:text-white">
       <SiteHeader active="products" />
 
       <main className="relative flex-1 overflow-hidden pb-24 pt-36">
-        <div className="pointer-events-none absolute -left-16 top-24 hidden h-64 w-64 rounded-full bg-blue-100/60 blur-3xl sm:block"></div>
-        <div className="pointer-events-none absolute -right-16 bottom-24 hidden h-64 w-64 rounded-full bg-blue-200/30 blur-3xl sm:block"></div>
-
         <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0 }}
