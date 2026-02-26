@@ -136,6 +136,7 @@ export default function ProductsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [activeCategory, setActiveCategory] = useState<"Sve" | CatalogCategory>("Sve");
+  const [activeSubcategory, setActiveSubcategory] = useState("Sve");
   const [sortBy, setSortBy] = useState<SortOption>("nameAsc");
 
   useEffect(() => {
@@ -153,7 +154,7 @@ export default function ProductsPage() {
 
         if (!response.ok) {
           if (!cancelled) {
-            setLoadError(payload?.error ?? "NeuspjeÄąË‡no uĂ„Ĺ¤itavanje proizvoda.");
+            setLoadError(payload?.error ?? "Neuspješno učitavanje proizvoda.");
             setProducts([]);
           }
           return;
@@ -164,7 +165,7 @@ export default function ProductsPage() {
         }
       } catch {
         if (!cancelled) {
-          setLoadError("UĂ„Ĺ¤itavanje proizvoda trenutno nije dostupno.");
+          setLoadError("Učitavanje proizvoda trenutno nije dostupno.");
           setProducts([]);
         }
       } finally {
@@ -186,22 +187,50 @@ export default function ProductsPage() {
     [products]
   );
 
+  const subcategoryOptions = useMemo(() => {
+    const inCategory =
+      activeCategory === "Sve"
+        ? catalogProducts
+        : catalogProducts.filter((product) => product.category === activeCategory);
+
+    const values = Array.from(
+      new Set(
+        inCategory
+          .map((product) => product.subcategory?.trim() ?? "")
+          .filter((subcategory) => subcategory.length > 0)
+      )
+    ).sort((a, b) => a.localeCompare(b, "hr"));
+
+    return ["Sve", ...values];
+  }, [activeCategory, catalogProducts]);
+
+  useEffect(() => {
+    if (!subcategoryOptions.includes(activeSubcategory)) {
+      setActiveSubcategory("Sve");
+    }
+  }, [activeSubcategory, subcategoryOptions]);
+
   const filteredProducts = useMemo(() => {
     const byCategory =
       activeCategory === "Sve"
         ? [...catalogProducts]
         : catalogProducts.filter((product) => product.category === activeCategory);
 
+    const bySubcategory =
+      activeSubcategory === "Sve"
+        ? byCategory
+        : byCategory.filter((product) => (product.subcategory?.trim() ?? "") === activeSubcategory);
+
     if (sortBy === "priceAsc") {
-      byCategory.sort((a, b) => a.priceEur - b.priceEur);
+      bySubcategory.sort((a, b) => a.priceEur - b.priceEur);
     } else if (sortBy === "priceDesc") {
-      byCategory.sort((a, b) => b.priceEur - a.priceEur);
+      bySubcategory.sort((a, b) => b.priceEur - a.priceEur);
     } else {
-      byCategory.sort((a, b) => a.name.localeCompare(b.name, "hr"));
+      bySubcategory.sort((a, b) => a.name.localeCompare(b.name, "hr"));
     }
 
-    return byCategory;
-  }, [activeCategory, catalogProducts, sortBy]);
+    return bySubcategory;
+  }, [activeCategory, activeSubcategory, catalogProducts, sortBy]);
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F9FAFB] text-gray-900 selection:bg-[#4a6bfe] selection:text-white">
@@ -231,12 +260,14 @@ export default function ProductsPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.08 }}
-            className="relative z-30 mb-10 rounded-3xl border border-blue-100/70 bg-gradient-to-br from-white via-blue-50/30 to-white p-5 shadow-[0_14px_40px_rgba(15,23,42,0.10)] backdrop-blur sm:p-6"
+            className="relative z-30 mb-10 overflow-hidden rounded-[2rem] border border-[#dbe6ff] bg-white/90 p-4 shadow-[0_18px_46px_rgba(15,23,42,0.10)] backdrop-blur sm:p-5 lg:p-6"
           >
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-              <div className="relative z-10">
+            <div className="pointer-events-none absolute -left-16 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-[#4a6bfe]/10 blur-3xl" />
+            <div className="pointer-events-none absolute -right-14 -top-10 h-40 w-40 rounded-full bg-[#14b8a6]/10 blur-3xl" />
+            <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-start lg:gap-8">
+              <div className="relative z-10 rounded-2xl border border-gray-200/80 bg-white/85 p-4">
                 <div className="mb-3 flex items-center gap-2">
-                  <Filter size={15} className="text-gray-500" />
+                  <Filter size={15} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
                     Kategorija
                   </span>
@@ -257,10 +288,10 @@ export default function ProductsPage() {
                     <button
                       key={category}
                       onClick={() => setActiveCategory(category)}
-                      className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-colors duration-200 ${
+                      className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                         activeCategory === category
-                          ? "border-transparent bg-[#4a6bfe] text-white shadow-[0_10px_20px_rgba(74,107,254,0.25)]"
-                          : "border-gray-200 bg-white text-gray-700 hover:border-[#4a6bfe]/40 hover:text-[#4a6bfe]"
+                          ? "border-transparent bg-[#4a6bfe] text-white shadow-[0_10px_18px_rgba(74,107,254,0.28)]"
+                          : "border-gray-200 bg-white text-gray-700 hover:-translate-y-0.5 hover:border-[#4a6bfe]/40 hover:text-[#2d4ed8]"
                       }`}
                     >
                       {getCategoryLabel(category)}
@@ -269,9 +300,43 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              <div className="lg:text-right">
+              <div className="relative z-10 rounded-2xl border border-gray-200/80 bg-white/85 p-4">
+                <div className="mb-3 flex items-center gap-2">
+                  <Filter size={15} className="text-gray-400" />
+                  <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
+                    Tip proizvoda
+                  </span>
+                </div>
+                <div className="sm:hidden">
+                  <MobileDropdown
+                    ariaLabel="Odaberi tip proizvoda"
+                    value={activeSubcategory}
+                    onChange={(nextSubcategory) => setActiveSubcategory(nextSubcategory)}
+                    options={subcategoryOptions.map((subcategory) => ({
+                      value: subcategory,
+                      label: subcategory,
+                    }))}
+                  />
+                </div>
+                <div className="hidden flex-wrap items-center gap-2 sm:flex">
+                  {subcategoryOptions.map((subcategory) => (
+                    <button
+                      key={subcategory}
+                      onClick={() => setActiveSubcategory(subcategory)}
+                      className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+                        activeSubcategory === subcategory
+                          ? "border-transparent bg-[#4a6bfe] text-white shadow-[0_10px_18px_rgba(74,107,254,0.28)]"
+                          : "border-gray-200 bg-white text-gray-700 hover:-translate-y-0.5 hover:border-[#4a6bfe]/40 hover:text-[#2d4ed8]"
+                      }`}
+                    >
+                      {subcategory}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:text-right">
                 <div className="mb-3 flex items-center gap-2 lg:justify-end">
-                  <ArrowUpDown size={15} className="text-gray-500" />
+                  <ArrowUpDown size={15} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
                     Sortiranje
                   </span>
@@ -292,10 +357,10 @@ export default function ProductsPage() {
                     <button
                       key={sortOption}
                       onClick={() => setSortBy(sortOption)}
-                      className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-colors duration-200 ${
+                      className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-200 ${
                         sortBy === sortOption
-                          ? "border-transparent bg-gray-900 text-white shadow-[0_10px_20px_rgba(15,23,42,0.18)]"
-                          : "border-gray-200 bg-white text-gray-600 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900"
+                          ? "border-transparent bg-[#111a34] text-white shadow-[0_10px_20px_rgba(17,26,52,0.24)]"
+                          : "border-gray-200 bg-white text-gray-600 hover:-translate-y-0.5 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900"
                       }`}
                     >
                       {sortLabels[sortOption]}
@@ -305,6 +370,7 @@ export default function ProductsPage() {
               </div>
             </div>
           </motion.div>
+
 
           <div className="relative z-10">
             {isLoading ? (
@@ -326,27 +392,32 @@ export default function ProductsPage() {
                   return (
                     <article
                       key={product.id}
-                      className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white p-5 text-gray-900 shadow-[0_10px_35px_rgba(15,23,42,0.08)] transition-all duration-300 hover:border-blue-100 hover:shadow-[0_18px_50px_rgba(15,23,42,0.18)] sm:p-6"
+                      className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-4 text-gray-900 shadow-[0_8px_30px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#cfdcff] hover:shadow-[0_20px_48px_rgba(15,23,42,0.12)] sm:p-5"
                     >
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-100/80 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-[#edf3ff] via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
 
                       <div
-                        className="relative -mx-5 -mt-5 mb-5 overflow-hidden border-b border-gray-100 sm:-mx-6 sm:-mt-6"
+                        className="relative mb-5 overflow-hidden rounded-2xl border border-gray-100 bg-gradient-to-b from-[#f8fbff] to-white"
                       >
                         <Image
                           src={getPrimaryProductImage(product)}
                           alt={product.name}
                           width={1200}
                           height={900}
-                          className="h-64 w-full bg-[#f8fbff] object-contain p-3 transition-transform duration-700 group-hover:scale-[1.01] sm:h-72 sm:p-4"
+                          className="h-60 w-full object-contain p-4 transition-transform duration-700 group-hover:scale-[1.03] sm:h-64"
                         />
                       </div>
                       <div className="relative flex-1">
-                        <h3 className="text-2xl font-black tracking-tight sm:text-3xl">{product.name}</h3>
-                        <p className="mt-2">
+                        <h3 className="text-[2rem] font-black leading-[1.05] tracking-tight text-[#111a34]">{product.name}</h3>
+                        <p className="mt-2 flex flex-wrap items-center gap-2">
                           <span className="rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-gray-500">
                             {getCategoryLabel(product.category)}
                           </span>
+                          {product.subcategory?.trim() ? (
+                            <span className="rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-[#2d4ed8]">
+                              {product.subcategory}
+                            </span>
+                          ) : null}
                         </p>
                         <p
                           className="mt-3 text-sm leading-relaxed text-gray-600 sm:text-base"
@@ -356,7 +427,7 @@ export default function ProductsPage() {
                       </div>
 
                       <div className="relative mt-5">
-                        <div className="rounded-2xl border border-blue-100 bg-blue-50/70 px-4 py-3">
+                        <div className="rounded-2xl border border-[#dce6ff] bg-gradient-to-br from-[#f7faff] to-[#eef4ff] px-4 py-3">
                           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
                             Cijena proizvoda
                           </p>
@@ -368,7 +439,7 @@ export default function ProductsPage() {
                         <div className="mt-3">
                           <Link
                             href={`/proizvodi/${product.slug}`}
-                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#4a6bfe]/20 bg-[#4a6bfe]/10 px-4 py-3 text-sm font-bold text-[#2d4ed8] transition-all duration-300 hover:border-[#4a6bfe]/40 hover:bg-[#4a6bfe]/15"
+                            className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-[#c9d8ff] bg-white px-4 py-3 text-sm font-bold text-[#2d4ed8] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#9db6ff] hover:bg-[#f3f7ff]"
                           >
                             Pogledaj detalje
                             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
