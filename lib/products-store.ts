@@ -8,7 +8,7 @@ type ProductRow = {
   category: ProductRecord["category"];
   shortDescription: string;
   description: string;
-  scent: string;
+  scent?: string | null;
   priceEur: string | number;
   stock: number;
 };
@@ -41,7 +41,7 @@ function mapProductRow(row: ProductRow): ProductRecord {
     images: [],
     shortDescription: row.shortDescription,
     description: row.description,
-    scent: row.scent,
+    scent: row.scent?.trim() ?? "",
     material: "",
     duration: "",
     priceEur: Number(row.priceEur),
@@ -57,24 +57,58 @@ async function getSqlClient() {
   return sql;
 }
 
+function isMissingColumnError(error: unknown, columnName: string) {
+  if (!error || typeof error !== "object") return false;
+  const maybe = error as { code?: string; message?: string };
+  if (maybe.code !== "42703") return false;
+  if (typeof maybe.message !== "string") return false;
+  return maybe.message.includes(`"${columnName}"`);
+}
+
+async function readProductRows(sql: Awaited<ReturnType<typeof getSqlClient>>) {
+  if (!sql) return [];
+
+  try {
+    return await sql<ProductRow[]>`
+      select
+        id,
+        slug,
+        name,
+        category,
+        short_description as "shortDescription",
+        description,
+        scent,
+        price_eur as "priceEur",
+        stock
+      from products
+      order by id asc
+    `;
+  } catch (error) {
+    if (!isMissingColumnError(error, "scent")) {
+      throw error;
+    }
+
+    return await sql<ProductRow[]>`
+      select
+        id,
+        slug,
+        name,
+        category,
+        short_description as "shortDescription",
+        description,
+        price_eur as "priceEur",
+        stock
+      from products
+      order by id asc
+    `;
+  }
+}
+
 async function readProductsFromDb(): Promise<ProductRecord[] | null> {
   const sql = await getSqlClient();
   if (!sql) return null;
 
-  const productRows = await sql<ProductRow[]>`
-    select
-      id,
-      slug,
-      name,
-      category,
-      short_description as "shortDescription",
-      description,
-      scent,
-      price_eur as "priceEur",
-      stock
-    from products
-    order by id asc
-  `;
+  const productRows = await readProductRows(sql);
 
   if (productRows.length === 0) return [];
 
