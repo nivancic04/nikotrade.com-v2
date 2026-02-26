@@ -137,7 +137,9 @@ export default function ProductsPage() {
   const [loadError, setLoadError] = useState("");
   const [activeCategory, setActiveCategory] = useState<"Sve" | CatalogCategory>("Sve");
   const [activeSubcategory, setActiveSubcategory] = useState("Sve");
+  const [isSubcategoryMenuOpen, setIsSubcategoryMenuOpen] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>("nameAsc");
+  const subcategoryMenuRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -210,6 +212,34 @@ export default function ProductsPage() {
     }
   }, [activeSubcategory, subcategoryOptions]);
 
+  useEffect(() => {
+    if (!isSubcategoryMenuOpen) return;
+
+    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (!subcategoryMenuRef.current?.contains(target)) {
+        setIsSubcategoryMenuOpen(false);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsSubcategoryMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isSubcategoryMenuOpen]);
+
   const filteredProducts = useMemo(() => {
     const byCategory =
       activeCategory === "Sve"
@@ -260,12 +290,12 @@ export default function ProductsPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.08 }}
-            className="relative z-30 mb-10 overflow-hidden rounded-[2rem] border border-[#dbe6ff] bg-white/90 p-4 shadow-[0_18px_46px_rgba(15,23,42,0.10)] backdrop-blur sm:p-5 lg:p-6"
+            className="relative z-30 mb-10 rounded-[2rem] border border-[#dbe6ff] bg-white/90 p-4 shadow-[0_18px_46px_rgba(15,23,42,0.10)] backdrop-blur sm:p-5 lg:p-6"
           >
             <div className="pointer-events-none absolute -left-16 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-[#4a6bfe]/10 blur-3xl" />
             <div className="pointer-events-none absolute -right-14 -top-10 h-40 w-40 rounded-full bg-[#14b8a6]/10 blur-3xl" />
             <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-start lg:gap-8">
-              <div className="relative z-10 rounded-2xl border border-gray-200/80 bg-white/85 p-4">
+              <div className="relative z-10 rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[124px]">
                 <div className="mb-3 flex items-center gap-2">
                   <Filter size={15} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
@@ -283,7 +313,7 @@ export default function ProductsPage() {
                     }))}
                   />
                 </div>
-                <div className="hidden flex-wrap items-center gap-2 sm:flex">
+                <div className="hidden items-center gap-2 sm:flex sm:flex-nowrap sm:overflow-x-auto">
                   {categoryOptions.map((category) => (
                     <button
                       key={category}
@@ -300,7 +330,7 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              <div className="relative z-10 rounded-2xl border border-gray-200/80 bg-white/85 p-4">
+              <div className="relative z-10 rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[124px]">
                 <div className="mb-3 flex items-center gap-2">
                   <Filter size={15} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
@@ -318,23 +348,73 @@ export default function ProductsPage() {
                     }))}
                   />
                 </div>
-                <div className="hidden flex-wrap items-center gap-2 sm:flex">
-                  {subcategoryOptions.map((subcategory) => (
+                <div className="hidden sm:block">
+                  <div ref={subcategoryMenuRef} className="relative">
                     <button
-                      key={subcategory}
-                      onClick={() => setActiveSubcategory(subcategory)}
-                      className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-200 ${
-                        activeSubcategory === subcategory
-                          ? "border-transparent bg-[#4a6bfe] text-white shadow-[0_10px_18px_rgba(74,107,254,0.28)]"
-                          : "border-gray-200 bg-white text-gray-700 hover:-translate-y-0.5 hover:border-[#4a6bfe]/40 hover:text-[#2d4ed8]"
-                      }`}
+                      type="button"
+                      onClick={() => setIsSubcategoryMenuOpen((previous) => !previous)}
+                      aria-haspopup="dialog"
+                      aria-expanded={isSubcategoryMenuOpen}
+                      className="inline-flex w-full items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition-all duration-200 hover:border-[#4a6bfe]/40 hover:text-[#2d4ed8]"
                     >
-                      {subcategory}
+                      <span>
+                        {activeSubcategory === "Sve"
+                          ? "Odaberi podkategoriju"
+                          : `Podkategorija: ${activeSubcategory}`}
+                      </span>
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform duration-200 ${isSubcategoryMenuOpen ? "rotate-180" : ""}`}
+                      />
                     </button>
-                  ))}
+
+                    {isSubcategoryMenuOpen ? (
+                      <div className="absolute left-0 top-[calc(100%+0.6rem)] z-[95] w-[min(640px,calc(100vw-3rem))] rounded-2xl border border-gray-200 bg-white p-4 shadow-[0_20px_55px_rgba(15,23,42,0.22)]">
+                        <div className="mb-3 flex items-center justify-between gap-3">
+                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
+                            Odaberi podkategoriju
+                          </p>
+                          {activeSubcategory !== "Sve" ? (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setActiveSubcategory("Sve");
+                                setIsSubcategoryMenuOpen(false);
+                              }}
+                              className="rounded-lg border border-[#c9d8ff] bg-[#f3f7ff] px-3 py-1.5 text-sm font-bold text-[#2d4ed8] transition-all duration-200 hover:border-[#9db6ff] hover:bg-[#eaf1ff]"
+                            >
+                              Očisti
+                            </button>
+                          ) : null}
+                        </div>
+
+                        <div className="max-h-[320px] overflow-y-auto py-1 pr-1">
+                          <div className="flex flex-wrap gap-2">
+                            {subcategoryOptions.map((subcategory) => (
+                              <button
+                                key={subcategory}
+                                type="button"
+                                onClick={() => {
+                                  setActiveSubcategory(subcategory);
+                                  setIsSubcategoryMenuOpen(false);
+                                }}
+                                className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+                                  activeSubcategory === subcategory
+                                    ? "border-transparent bg-[#4a6bfe] text-white shadow-[0_10px_18px_rgba(74,107,254,0.28)]"
+                                    : "border-gray-200 bg-white text-gray-700 hover:border-[#4a6bfe]/40 hover:bg-[#f8fbff] hover:text-[#2d4ed8]"
+                                }`}
+                              >
+                                {subcategory}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+                  </div>
                 </div>
               </div>
-              <div className="rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:text-right">
+              <div className="rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[124px] lg:text-right">
                 <div className="mb-3 flex items-center gap-2 lg:justify-end">
                   <ArrowUpDown size={15} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
@@ -352,7 +432,7 @@ export default function ProductsPage() {
                     }))}
                   />
                 </div>
-                <div className="hidden flex-wrap items-center gap-2 lg:justify-end sm:flex">
+                <div className="hidden items-center gap-2 sm:flex sm:flex-nowrap sm:overflow-x-auto lg:justify-end">
                   {(Object.keys(sortLabels) as SortOption[]).map((sortOption) => (
                     <button
                       key={sortOption}
