@@ -83,7 +83,7 @@ function MobileDropdown<T extends string>({
   const activeOption = options.find((option) => option.value === value) ?? options[0];
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className={`relative ${isOpen ? "z-40" : ""}`}>
       <button
         type="button"
         aria-label={ariaLabel}
@@ -295,7 +295,7 @@ export default function ProductsPage() {
             <div className="pointer-events-none absolute -left-16 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-[#4a6bfe]/10 blur-3xl" />
             <div className="pointer-events-none absolute -right-14 -top-10 h-40 w-40 rounded-full bg-[#14b8a6]/10 blur-3xl" />
             <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-start lg:gap-8">
-              <div className="relative z-10 rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[124px]">
+              <div className="relative rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[124px]">
                 <div className="mb-3 flex items-center gap-2">
                   <Filter size={15} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
@@ -330,7 +330,7 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              <div className="relative z-10 rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[124px]">
+              <div className="relative rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[124px]">
                 <div className="mb-3 flex items-center gap-2">
                   <Filter size={15} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
