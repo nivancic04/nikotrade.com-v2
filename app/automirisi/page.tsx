@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight, ChevronRight, Sparkles, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import type { AirFreshenerPageData } from "@/lib/air-fresheners-store";
@@ -35,11 +35,64 @@ const initialData: AirFreshenerPageData = {
 const primaryInquiryButtonClassName =
   "group inline-flex items-center justify-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3b5af0]";
 
+type ShowcaseScrollState = {
+  hasOverflow: boolean;
+  canScrollLeft: boolean;
+  canScrollRight: boolean;
+};
+
 export default function AirFreshenersPage() {
   const [data, setData] = useState<AirFreshenerPageData>(initialData);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [activeImage, setActiveImage] = useState<{ src: string; alt: string } | null>(null);
+  const showcaseTrackRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const [showcaseScrollState, setShowcaseScrollState] = useState<Record<number, ShowcaseScrollState>>({});
+
+  const updateShowcaseScrollState = useCallback((showcaseId: number) => {
+    const track = showcaseTrackRefs.current[showcaseId];
+    if (!track) return;
+
+    const threshold = 2;
+    const nextState = {
+      hasOverflow: track.scrollWidth > track.clientWidth + threshold,
+      canScrollLeft: track.scrollLeft > threshold,
+      canScrollRight: track.scrollLeft + track.clientWidth < track.scrollWidth - threshold,
+    };
+
+    setShowcaseScrollState((previousState) => {
+      const currentState = previousState[showcaseId];
+      if (
+        currentState &&
+        currentState.hasOverflow === nextState.hasOverflow &&
+        currentState.canScrollLeft === nextState.canScrollLeft &&
+        currentState.canScrollRight === nextState.canScrollRight
+      ) {
+        return previousState;
+      }
+
+      return {
+        ...previousState,
+        [showcaseId]: nextState,
+      };
+    });
+  }, []);
+
+  const scrollShowcaseTrack = useCallback(
+    (showcaseId: number, direction: "left" | "right") => {
+      const track = showcaseTrackRefs.current[showcaseId];
+      if (!track) return;
+
+      const step = Math.max(Math.round(track.clientWidth * 0.78), 220);
+      track.scrollBy({
+        left: direction === "left" ? -step : step,
+        behavior: "smooth",
+      });
+
+      window.setTimeout(() => updateShowcaseScrollState(showcaseId), 260);
+    },
+    [updateShowcaseScrollState],
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -86,6 +139,26 @@ export default function AirFreshenersPage() {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (data.showcases.length === 0) {
+      setShowcaseScrollState({});
+      return;
+    }
+
+    const showcaseIds = data.showcases.map((showcase) => showcase.id);
+
+    const syncScrollState = () => {
+      showcaseIds.forEach((showcaseId) => updateShowcaseScrollState(showcaseId));
+    };
+
+    syncScrollState();
+    window.addEventListener("resize", syncScrollState);
+
+    return () => {
+      window.removeEventListener("resize", syncScrollState);
+    };
+  }, [data.showcases, updateShowcaseScrollState]);
 
   useEffect(() => {
     if (!activeImage) return;
@@ -226,11 +299,41 @@ export default function AirFreshenersPage() {
 
                     <div className="relative mt-5">
                       <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 hidden w-20 bg-gradient-to-l from-white via-white/90 to-transparent sm:block"></div>
-                      <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2">
+                      {showcaseScrollState[showcase.id]?.hasOverflow ? (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => scrollShowcaseTrack(showcase.id, "left")}
+                            disabled={!showcaseScrollState[showcase.id]?.canScrollLeft}
+                            className="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[#4a6bfe]/35 bg-white/95 text-[#3a56ce] shadow-[0_10px_24px_rgba(74,107,254,0.22)] backdrop-blur-sm transition-all duration-200 hover:border-[#4a6bfe] hover:bg-[#4a6bfe] hover:text-white hover:shadow-[0_14px_30px_rgba(74,107,254,0.34)] disabled:cursor-default disabled:opacity-40"
+                            aria-label={`Pomakni izlozbu ${showcase.club.name} ulijevo`}
+                          >
+                            <ChevronRight className="h-5 w-5 rotate-180" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => scrollShowcaseTrack(showcase.id, "right")}
+                            disabled={!showcaseScrollState[showcase.id]?.canScrollRight}
+                            className="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-[#4a6bfe]/35 bg-white/95 text-[#3a56ce] shadow-[0_10px_24px_rgba(74,107,254,0.22)] backdrop-blur-sm transition-all duration-200 hover:border-[#4a6bfe] hover:bg-[#4a6bfe] hover:text-white hover:shadow-[0_14px_30px_rgba(74,107,254,0.34)] disabled:cursor-default disabled:opacity-40"
+                            aria-label={`Pomakni izlozbu ${showcase.club.name} udesno`}
+                          >
+                            <ChevronRight className="h-5 w-5" />
+                          </button>
+                        </>
+                      ) : null}
+                      <div
+                        ref={(node) => {
+                          showcaseTrackRefs.current[showcase.id] = node;
+                          if (!node) return;
+                          window.requestAnimationFrame(() => updateShowcaseScrollState(showcase.id));
+                        }}
+                        onScroll={() => updateShowcaseScrollState(showcase.id)}
+                        className="hide-scrollbar flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2 scroll-smooth"
+                      >
                         {showcase.images.map((image, imageIndex) => (
                           <article
                             key={`${showcase.id}-${image.imageUrl}-${imageIndex}`}
-                            className="min-w-[250px] snap-start overflow-hidden rounded-2xl border border-gray-200/80 bg-white sm:min-w-[300px]"
+                            className="group min-w-[250px] snap-start overflow-hidden rounded-2xl border border-gray-200/80 bg-white transition-[background-color,box-shadow,border-color] duration-200 hover:bg-[#fcfdff] hover:border-gray-200/80 hover:shadow-[0_8px_18px_rgba(15,23,42,0.08)] sm:min-w-[300px]"
                           >
                             <button
                               type="button"
