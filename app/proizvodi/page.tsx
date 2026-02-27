@@ -318,10 +318,10 @@ export default function ProductsPage() {
                     <button
                       key={category}
                       onClick={() => setActiveCategory(category)}
-                      className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+                      className={`rounded-xl border px-4 py-2 text-sm font-semibold ${
                         activeCategory === category
                           ? "border-transparent bg-[#4a6bfe] text-white shadow-[0_10px_18px_rgba(74,107,254,0.28)]"
-                          : "border-gray-200 bg-white text-gray-700 hover:-translate-y-0.5 hover:border-[#4a6bfe]/40 hover:text-[#2d4ed8]"
+                          : "border-gray-200 bg-white text-gray-700 hover:border-[#4a6bfe]/40 hover:bg-[#f8fbff] hover:text-[#2d4ed8]"
                       }`}
                     >
                       {getCategoryLabel(category)}
@@ -389,7 +389,7 @@ export default function ProductsPage() {
                         </div>
 
                         <div className="max-h-[320px] overflow-y-auto py-1 pr-1">
-                          <div className="flex flex-wrap gap-2">
+                          <div className="flex flex-wrap justify-center gap-2">
                             {subcategoryOptions.map((subcategory) => (
                               <button
                                 key={subcategory}
@@ -437,10 +437,10 @@ export default function ProductsPage() {
                     <button
                       key={sortOption}
                       onClick={() => setSortBy(sortOption)}
-                      className={`rounded-xl border px-4 py-2 text-sm font-semibold transition-all duration-200 ${
+                      className={`rounded-xl border px-4 py-2 text-sm font-semibold ${
                         sortBy === sortOption
-                          ? "border-transparent bg-[#111a34] text-white shadow-[0_10px_20px_rgba(17,26,52,0.24)]"
-                          : "border-gray-200 bg-white text-gray-600 hover:-translate-y-0.5 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900"
+                          ? "border-transparent bg-[#4a6bfe] text-white shadow-[0_10px_18px_rgba(74,107,254,0.28)]"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-[#4a6bfe]/40 hover:bg-[#f8fbff] hover:text-[#2d4ed8]"
                       }`}
                     >
                       {sortLabels[sortOption]}
