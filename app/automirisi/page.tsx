@@ -33,7 +33,7 @@ const initialData: AirFreshenerPageData = {
 };
 
 const primaryInquiryButtonClassName =
-  "group inline-flex items-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3b5af0]";
+  "group inline-flex items-center justify-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_10px_25px_rgba(74,107,254,0.28)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#3b5af0]";
 
 export default function AirFreshenersPage() {
   const [data, setData] = useState<AirFreshenerPageData>(initialData);
@@ -117,7 +117,7 @@ export default function AirFreshenersPage() {
             initial="hidden"
             animate="visible"
             variants={stagger}
-            className="rounded-[30px] border border-cyan-100/80 bg-gradient-to-br from-white via-cyan-50/45 to-sky-50/40 px-6 py-8 shadow-[0_18px_48px_rgba(15,23,42,0.11)] sm:px-9 sm:py-10"
+            className="rounded-[30px] border border-cyan-100/80 bg-white px-6 py-8 shadow-[0_18px_48px_rgba(15,23,42,0.11)] sm:px-9 sm:py-10"
           >
             <motion.p
               variants={fadeUp}
@@ -155,7 +155,13 @@ export default function AirFreshenersPage() {
         </section>
 
         <section id="klubovi" className="mx-auto mt-14 max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.14 }} variants={fadeUp}>
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.14 }}
+            variants={fadeUp}
+            className="overflow-hidden rounded-3xl border border-cyan-100/80 bg-white p-6 shadow-[0_14px_38px_rgba(15,23,42,0.09)] sm:p-8"
+          >
             <p className="inline-flex rounded-full border border-sky-200 bg-sky-50 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-sky-700">
               Po klubovima
             </p>
@@ -165,146 +171,152 @@ export default function AirFreshenersPage() {
             <p className="mt-3 max-w-3xl text-sm leading-relaxed text-gray-600 sm:text-base">
               Broj horizontalnih sekcija ovdje je direktno vezan uz broj redaka u tablici izložbe.
             </p>
-          </motion.div>
 
-          {isLoading ? (
-            <div className="mt-8 rounded-3xl border border-gray-200 bg-white p-7 text-sm font-semibold text-gray-600 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
-              Učitavanje izložbe klubskih mirisa...
-            </div>
-          ) : loadError ? (
-            <div className="mt-8 rounded-3xl border border-red-100 bg-red-50 p-7 text-sm font-semibold text-red-700 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
-              {loadError}
-            </div>
-          ) : data.showcases.length === 0 ? (
-            <div className="mt-8 rounded-3xl border border-gray-200 bg-white p-7 text-sm font-semibold text-gray-600 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
-              Trenutno nema aktivnih klupskih izložbi.
-            </div>
-          ) : (
-            <div className="mt-8 space-y-7">
-              {data.showcases.map((showcase, showcaseIndex) => (
-                <motion.article
-                  key={showcase.id}
-                  initial={{ opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.12 }}
-                  transition={{ duration: 0.55, delay: showcaseIndex * 0.05 }}
-                  className="overflow-hidden rounded-3xl border border-gray-200/80 bg-white p-5 shadow-[0_12px_32px_rgba(15,23,42,0.09)] sm:p-6"
-                >
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-gray-100 bg-gray-50">
-                        <Image
-                          src={showcase.club.logoImageUrl}
-                          alt={`${showcase.club.name} logo`}
-                          width={64}
-                          height={64}
-                          className="h-8 w-8 object-contain"
-                          style={{ transform: `scale(${showcase.club.logoScale})` }}
-                        />
+            {isLoading ? (
+              <div className="mt-7 rounded-3xl border border-gray-200 bg-white p-7 text-sm font-semibold text-gray-600 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
+                Učitavanje izložbe klubskih mirisa...
+              </div>
+            ) : loadError ? (
+              <div className="mt-7 rounded-3xl border border-red-100 bg-red-50 p-7 text-sm font-semibold text-red-700 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
+                {loadError}
+              </div>
+            ) : data.showcases.length === 0 ? (
+              <div className="mt-7 rounded-3xl border border-gray-200 bg-white p-7 text-sm font-semibold text-gray-600 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
+                Trenutno nema aktivnih klupskih izložbi.
+              </div>
+            ) : (
+              <div className="mt-7 space-y-7">
+                {data.showcases.map((showcase, showcaseIndex) => (
+                  <motion.article
+                    key={showcase.id}
+                    initial={{ opacity: 0, y: 18 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.12 }}
+                    transition={{ duration: 0.55, delay: showcaseIndex * 0.05 }}
+                    className="overflow-hidden rounded-3xl border border-gray-200/80 bg-white p-5 shadow-[0_12px_32px_rgba(15,23,42,0.09)] sm:p-6"
+                  >
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-gray-100 bg-gray-50">
+                          <Image
+                            src={showcase.club.logoImageUrl}
+                            alt={`${showcase.club.name} logo`}
+                            width={64}
+                            height={64}
+                            className="h-8 w-8 object-contain"
+                            style={{ transform: `scale(${showcase.club.logoScale})` }}
+                          />
+                        </div>
+                        <div>
+                          <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500">Klub</p>
+                          <h3 className="text-xl font-black tracking-tight text-cyan-800">{showcase.club.shortLabel}</h3>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-gray-500">Klub</p>
-                        <h3 className="text-xl font-black tracking-tight text-cyan-800">{showcase.club.shortLabel}</h3>
-                      </div>
+
+                      <Link
+                        href={showcase.club.websiteUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group inline-flex items-center gap-1.5 rounded-full border border-[#4a6bfe]/25 bg-white px-4 py-2 text-sm font-bold text-[#2d4ed8] shadow-[0_6px_16px_rgba(74,107,254,0.14)] transition-all duration-300 hover:border-[#4a6bfe]/35 hover:bg-[#f6f9ff] hover:text-[#2340be]"
+                      >
+                        Pogledaj na webshopu
+                        <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                      </Link>
                     </div>
 
-                    <Link
-                      href={showcase.club.websiteUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group inline-flex items-center gap-1.5 rounded-full border border-[#4a6bfe]/25 bg-white px-4 py-2 text-sm font-bold text-[#2d4ed8] shadow-[0_6px_16px_rgba(74,107,254,0.14)] transition-all duration-300 hover:border-[#4a6bfe]/35 hover:bg-[#f6f9ff] hover:text-[#2340be]"
-                    >
-                      Pogledaj na webshopu
-                      <ChevronRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                    </Link>
-                  </div>
-
-                  <div className="relative mt-5">
-                    <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 hidden w-20 bg-gradient-to-l from-white via-white/90 to-transparent sm:block"></div>
-                    <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2">
-                      {showcase.images.map((image, imageIndex) => (
-                        <article
-                          key={`${showcase.id}-${image.imageUrl}-${imageIndex}`}
-                          className="min-w-[250px] snap-start overflow-hidden rounded-2xl border border-gray-200/80 bg-white sm:min-w-[300px]"
-                        >
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setActiveImage({
-                                src: image.imageUrl,
-                                alt: `${showcase.club.name} izložba ${imageIndex + 1}`,
-                              })
-                            }
-                            className="block w-full text-left"
-                            aria-label={`Otvori sliku ${imageIndex + 1} za ${showcase.club.name}`}
+                    <div className="relative mt-5">
+                      <div className="pointer-events-none absolute bottom-0 right-0 top-0 z-10 hidden w-20 bg-gradient-to-l from-white via-white/90 to-transparent sm:block"></div>
+                      <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-2">
+                        {showcase.images.map((image, imageIndex) => (
+                          <article
+                            key={`${showcase.id}-${image.imageUrl}-${imageIndex}`}
+                            className="min-w-[250px] snap-start overflow-hidden rounded-2xl border border-gray-200/80 bg-white sm:min-w-[300px]"
                           >
-                            <div className="relative h-52 bg-gradient-to-br from-sky-50 via-cyan-50 to-white">
-                              <Image
-                                src={image.imageUrl}
-                                alt={`${showcase.club.name} izložba ${imageIndex + 1}`}
-                                fill
-                                sizes="(min-width: 640px) 300px, 250px"
-                                className="object-contain p-5"
-                              />
-                            </div>
-                          </button>
-                        </article>
-                      ))}
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setActiveImage({
+                                  src: image.imageUrl,
+                                  alt: `${showcase.club.name} izložba ${imageIndex + 1}`,
+                                })
+                              }
+                              className="block w-full text-left"
+                              aria-label={`Otvori sliku ${imageIndex + 1} za ${showcase.club.name}`}
+                            >
+                              <div className="relative h-52 bg-white">
+                                <Image
+                                  src={image.imageUrl}
+                                  alt={`${showcase.club.name} izložba ${imageIndex + 1}`}
+                                  fill
+                                  sizes="(min-width: 640px) 300px, 250px"
+                                  className="object-contain p-5"
+                                />
+                              </div>
+                            </button>
+                          </article>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </motion.article>
-              ))}
-            </div>
-          )}
+                  </motion.article>
+                ))}
+              </div>
+            )}
+          </motion.div>
         </section>
 
         <section className="mx-auto mt-14 max-w-7xl px-4 sm:px-6 lg:px-8">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.14 }} variants={fadeUp}>
-            <p className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-amber-700">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.14 }}
+            variants={fadeUp}
+            className="overflow-hidden rounded-3xl border border-cyan-100/80 bg-white p-6 shadow-[0_14px_38px_rgba(15,23,42,0.09)] sm:p-8"
+          >
+            <p className="inline-flex rounded-full border border-cyan-200 bg-cyan-50 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.16em] text-cyan-700">
               Klubovi partneri
             </p>
             <h2 className="mt-4 text-3xl font-black tracking-tight text-gray-900 sm:text-4xl">
               Klubovi s našim mirisima
             </h2>
-          </motion.div>
 
-          {isLoading ? (
-            <div className="mt-7 rounded-3xl border border-gray-200 bg-white p-7 text-sm font-semibold text-gray-600 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
-              Učitavanje logotipova...
-            </div>
-          ) : loadError ? (
-            <div className="mt-7 rounded-3xl border border-red-100 bg-red-50 p-7 text-sm font-semibold text-red-700 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
-              {loadError}
-            </div>
-          ) : data.clubs.length === 0 ? (
-            <div className="mt-7 rounded-3xl border border-gray-200 bg-white p-7 text-sm font-semibold text-gray-600 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
-              Trenutno nema aktivnih klubova za prikaz.
-            </div>
-          ) : (
-            <div className="mt-7 grid grid-cols-2 gap-4 md:grid-cols-4">
-              {data.clubs.map((club) => (
-                <article
-                  key={club.id}
-                  className="group relative overflow-hidden rounded-2xl border border-gray-200/80 bg-white p-5 shadow-[0_10px_24px_rgba(15,23,42,0.07)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_30px_rgba(15,23,42,0.11)]"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-cyan-50/70 via-transparent to-sky-50/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-                  <div className="relative flex h-20 items-center justify-center">
-                    <Image
-                      src={club.logoImageUrl}
-                      alt={`${club.name} logo`}
-                      width={120}
-                      height={120}
-                      className="max-h-16 w-auto object-contain"
-                      style={{ transform: `scale(${club.logoScale})` }}
-                    />
-                  </div>
-                  <p className="relative mt-3 text-center text-xs font-bold uppercase tracking-[0.12em] text-gray-600">
-                    {club.name}
-                  </p>
-                </article>
-              ))}
-            </div>
-          )}
+            {isLoading ? (
+              <div className="mt-7 rounded-3xl border border-gray-200 bg-white p-7 text-sm font-semibold text-gray-600 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
+                Učitavanje logotipova...
+              </div>
+            ) : loadError ? (
+              <div className="mt-7 rounded-3xl border border-red-100 bg-red-50 p-7 text-sm font-semibold text-red-700 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
+                {loadError}
+              </div>
+            ) : data.clubs.length === 0 ? (
+              <div className="mt-7 rounded-3xl border border-gray-200 bg-white p-7 text-sm font-semibold text-gray-600 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">
+                Trenutno nema aktivnih klubova za prikaz.
+              </div>
+            ) : (
+              <div className="mt-7 grid grid-cols-2 gap-4 md:grid-cols-4">
+                {data.clubs.map((club) => (
+                  <article
+                    key={club.id}
+                    className="group relative overflow-hidden rounded-2xl border border-gray-200/80 bg-white p-5 shadow-[0_10px_24px_rgba(15,23,42,0.07)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_30px_rgba(15,23,42,0.11)]"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-cyan-50/70 via-transparent to-sky-50/80 opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+                    <div className="relative flex h-20 items-center justify-center">
+                      <Image
+                        src={club.logoImageUrl}
+                        alt={`${club.name} logo`}
+                        width={120}
+                        height={120}
+                        className="max-h-16 w-auto object-contain"
+                        style={{ transform: `scale(${club.logoScale})` }}
+                      />
+                    </div>
+                    <p className="relative mt-3 text-center text-xs font-bold uppercase tracking-[0.12em] text-gray-600">
+                      {club.name}
+                    </p>
+                  </article>
+                ))}
+              </div>
+            )}
+          </motion.div>
         </section>
 
         <section className="mx-auto mt-14 max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -313,7 +325,7 @@ export default function AirFreshenersPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.16 }}
             transition={{ duration: 0.58 }}
-            className="overflow-hidden rounded-3xl border border-cyan-100/80 bg-gradient-to-br from-white via-cyan-50/45 to-blue-50/45 p-6 shadow-[0_14px_38px_rgba(15,23,42,0.09)] sm:p-8"
+            className="overflow-hidden rounded-3xl border border-cyan-100/80 bg-white p-6 shadow-[0_14px_38px_rgba(15,23,42,0.09)] sm:p-8"
           >
             <div className="grid grid-cols-1 items-center gap-7 lg:grid-cols-[0.92fr_1.08fr]">
               <div className="overflow-hidden rounded-2xl border border-white/80 bg-white p-4 shadow-[0_10px_28px_rgba(15,23,42,0.08)]">

@@ -5,6 +5,7 @@ export type ProductRecord = {
   slug: string;
   name: string;
   category: ProductCategory;
+  subcategory?: string;
   // Putanje slika iz /public direktorija (npr. /img/products/moj-proizvod.jpg)
   images: string[];
   shortDescription: string;
@@ -30,6 +31,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "dinamo-plavi-automiris",
     name: "Dinamo Plavi Automiris",
     category: "Automirisi",
+    subcategory: "Klupski",
     images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Personalizirani dres automiris u plavoj varijanti.",
     description:
@@ -46,6 +48,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "slaven-belupo-automiris",
     name: "Slaven Belupo Automiris",
     category: "Automirisi",
+    subcategory: "Klupski",
     images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Klupski automiris sa prepoznatljivim detaljima.",
     description:
@@ -62,6 +65,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "personalizirani-dres-automiris",
     name: "Personalizirani Dres Automiris",
     category: "Automirisi",
+    subcategory: "Personalizirani",
     images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Model sa custom imenom i brojem.",
     description:
@@ -78,6 +82,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "sport-majica-performance",
     name: "Sport Majica Performance",
     category: "Sportska oprema",
+    subcategory: "Majice",
     images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Lagana i prozracna majica za trening.",
     description:
@@ -94,6 +99,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "sportski-ruksak-team",
     name: "Sportski Ruksak Team",
     category: "Sportska oprema",
+    subcategory: "Torbe",
     images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Ruksak s vise pretinaca i jacim dnom.",
     description:
@@ -110,6 +116,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "fitness-boca-pro",
     name: "Fitness Boca Pro",
     category: "Sportska oprema",
+    subcategory: "Boce",
     images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Izolirana boca za trening i teretanu.",
     description:
@@ -126,6 +133,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "gravirana-casa-classic",
     name: "Gravirana Čaša Classic",
     category: "Case",
+    subcategory: "Case",
     images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Staklena čaša sa personaliziranom gravurom.",
     description:
@@ -142,6 +150,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "gravirana-casa-deluxe",
     name: "Gravirana Čaša Deluxe",
     category: "Case",
+    subcategory: "Case",
     images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Deblje staklo i detaljna personalizacija.",
     description:
@@ -158,6 +167,7 @@ export const PRODUCTS_TABLE: ProductRecord[] = [
     slug: "gravirani-set-case-2x",
     name: "Gravirani Set Čaša 2x",
     category: "Case",
+    subcategory: "Setovi",
     images: TEMPLATE_PRODUCT_IMAGES,
     shortDescription: "Set od dvije čaše sa custom natpisom.",
     description:
@@ -192,3 +202,5 @@ export function getProductImages(product: ProductRecord) {
 export function getPrimaryProductImage(product: ProductRecord) {
   return getProductImages(product)[0];
 }
+
+

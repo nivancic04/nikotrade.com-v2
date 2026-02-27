@@ -6,6 +6,7 @@ type ProductRow = {
   slug: string;
   name: string;
   category: ProductRecord["category"];
+  subcategory?: string | null;
   shortDescription: string;
   description: string;
   scent?: string | null;
@@ -33,11 +34,13 @@ function withImages(product: ProductRecord, imagesByProduct: Map<number, string[
 }
 
 function mapProductRow(row: ProductRow): ProductRecord {
+  const normalizedSubcategory = row.subcategory?.trim() ?? "";
   return {
     id: row.id,
     slug: row.slug,
     name: row.name,
     category: row.category,
+    subcategory: normalizedSubcategory.length > 0 ? normalizedSubcategory : undefined,
     images: [],
     shortDescription: row.shortDescription,
     description: row.description,
@@ -75,6 +78,7 @@ async function readProductRows(sql: Awaited<ReturnType<typeof getSqlClient>>) {
         slug,
         name,
         category,
+        subcategory,
         short_description as "shortDescription",
         description,
         scent,
@@ -84,23 +88,100 @@ async function readProductRows(sql: Awaited<ReturnType<typeof getSqlClient>>) {
       order by id asc
     `;
   } catch (error) {
-    if (!isMissingColumnError(error, "scent")) {
+    const isScentMissing = isMissingColumnError(error, "scent");
+    const isSubcategoryMissing = isMissingColumnError(error, "subcategory");
+
+    if (!isScentMissing && !isSubcategoryMissing) {
       throw error;
     }
 
-    return await sql<ProductRow[]>`
-      select
-        id,
-        slug,
-        name,
-        category,
-        short_description as "shortDescription",
-        description,
-        price_eur as "priceEur",
-        stock
-      from products
-      order by id asc
-    `;
+    if (isScentMissing && isSubcategoryMissing) {
+      return await sql<ProductRow[]>`
+        select
+          id,
+          slug,
+          name,
+          category,
+          short_description as "shortDescription",
+          description,
+          price_eur as "priceEur",
+          stock
+        from products
+        order by id asc
+      `;
+    }
+
+    if (isScentMissing) {
+      try {
+        return await sql<ProductRow[]>`
+          select
+            id,
+            slug,
+            name,
+            category,
+            subcategory,
+            short_description as "shortDescription",
+            description,
+            price_eur as "priceEur",
+            stock
+          from products
+          order by id asc
+        `;
+      } catch (fallbackError) {
+        if (!isMissingColumnError(fallbackError, "subcategory")) {
+          throw fallbackError;
+        }
+
+        return await sql<ProductRow[]>`
+          select
+            id,
+            slug,
+            name,
+            category,
+            short_description as "shortDescription",
+            description,
+            price_eur as "priceEur",
+            stock
+          from products
+          order by id asc
+        `;
+      }
+    }
+
+    try {
+      return await sql<ProductRow[]>`
+        select
+          id,
+          slug,
+          name,
+          category,
+          short_description as "shortDescription",
+          description,
+          scent,
+          price_eur as "priceEur",
+          stock
+        from products
+        order by id asc
+      `;
+    } catch (fallbackError) {
+      if (!isMissingColumnError(fallbackError, "scent")) {
+        throw fallbackError;
+      }
+
+      return await sql<ProductRow[]>`
+        select
+          id,
+          slug,
+          name,
+          category,
+          short_description as "shortDescription",
+          description,
+          price_eur as "priceEur",
+          stock
+        from products
+        order by id asc
+      `;
+    }
   }
 }
 
