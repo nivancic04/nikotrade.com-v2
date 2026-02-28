@@ -420,10 +420,9 @@ export default function AirFreshenersPage() {
                   ))}
                 </div>
 
-                <div className="mt-6 rounded-2xl border border-cyan-200 bg-gradient-to-r from-cyan-50 to-sky-50 p-5 text-center shadow-[0_10px_24px_rgba(15,23,42,0.07)] sm:p-6">
-                  <p className="text-sm font-bold uppercase tracking-[0.14em] text-cyan-800">I mnogi drugi</p>
-                  <p className="mt-2 text-sm text-gray-700 sm:text-base">
-                    Uz prikazane partnere, jos klubova koristi nase automirise kroz suradnje i posebne serije.
+                <div className="mt-5 text-center">
+                  <p className="text-xs font-medium text-gray-500 sm:text-sm">
+                    Prikazani su neki od partnera, a naše automirise koristi i više drugih klubova kroz suradnje i posebne serije.
                   </p>
                 </div>
               </div>

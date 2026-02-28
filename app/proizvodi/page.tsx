@@ -295,7 +295,7 @@ export default function ProductsPage() {
             <div className="pointer-events-none absolute -left-16 top-1/2 h-40 w-40 -translate-y-1/2 rounded-full bg-[#4a6bfe]/10 blur-3xl" />
             <div className="pointer-events-none absolute -right-14 -top-10 h-40 w-40 rounded-full bg-[#14b8a6]/10 blur-3xl" />
             <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-start lg:gap-8">
-              <div className="relative rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[124px]">
+              <div className="relative rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[108px]">
                 <div className="mb-3 flex items-center gap-2">
                   <Filter size={15} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
@@ -330,7 +330,7 @@ export default function ProductsPage() {
                 </div>
               </div>
 
-              <div className="relative rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[124px]">
+              <div className="relative rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[108px]">
                 <div className="mb-3 flex items-center gap-2">
                   <Filter size={15} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
@@ -369,7 +369,7 @@ export default function ProductsPage() {
                     </button>
 
                     {isSubcategoryMenuOpen ? (
-                      <div className="absolute left-0 top-[calc(100%+0.6rem)] z-[95] w-[min(640px,calc(100vw-3rem))] rounded-2xl border border-gray-200 bg-white p-4 shadow-[0_20px_55px_rgba(15,23,42,0.22)]">
+                      <div className="absolute left-0 top-[calc(100%+0.6rem)] z-[95] w-[min(580px,calc(100vw-3rem))] rounded-2xl border border-gray-200 bg-white p-4 shadow-[0_20px_55px_rgba(15,23,42,0.22)]">
                         <div className="mb-3 flex items-center justify-between gap-3">
                           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
                             Odaberi podkategoriju
@@ -389,7 +389,7 @@ export default function ProductsPage() {
                         </div>
 
                         <div className="max-h-[320px] overflow-y-auto py-1 pr-1">
-                          <div className="flex flex-wrap justify-center gap-2">
+                          <div className="flex flex-wrap justify-start gap-2">
                             {subcategoryOptions.map((subcategory) => (
                               <button
                                 key={subcategory}
@@ -414,7 +414,7 @@ export default function ProductsPage() {
                   </div>
                 </div>
               </div>
-              <div className="rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[124px] lg:text-right">
+              <div className="rounded-2xl border border-gray-200/80 bg-white/85 p-4 lg:h-[108px] lg:text-right">
                 <div className="mb-3 flex items-center gap-2 lg:justify-end">
                   <ArrowUpDown size={15} className="text-gray-400" />
                   <span className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
