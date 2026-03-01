@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowRight, Clock3, Package, Shirt, Sparkles, SprayCan, Wine } from "lucide-react";
+import { ArrowLeft, ArrowRight, Printer, Shirt, SprayCan, Wine } from "lucide-react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { ProductImageGallery } from "@/components/product-image-gallery";
@@ -89,6 +89,7 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
 
   const availability = getAvailability(product.stock);
   const showScent = hasMeaningfulValue(product.scent);
+  const isSportsEquipment = product.category === "Sportska oprema";
 
   return (
     <div className="flex min-h-screen flex-col bg-[#F7F9FD] text-gray-900 selection:bg-[#4a6bfe] selection:text-white">
@@ -154,20 +155,23 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
                     triggerClassName="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#4a6bfe] px-6 py-3 font-bold text-white shadow-[0_8px_22px_rgba(74,107,254,0.24)] transition-colors duration-300 hover:bg-[#3b5af0]"
                   />
 
-                  <div className="mt-3 grid grid-cols-3 gap-2">
-                    <div className="rounded-xl border border-gray-200/70 bg-slate-50 p-2 text-center">
-                      <Sparkles size={16} className="mx-auto text-[#4a6bfe]" />
-                      <p className="mt-1 text-xs font-semibold text-gray-600">Premium</p>
+                  {isSportsEquipment ? (
+                    <div className="mt-2.5 rounded-lg border border-[#dbe5ff] bg-[#f8faff] px-3 py-2">
+                      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
+                        <div className="flex min-w-0 items-center gap-2.5">
+                          <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-md border border-[#cfe0ff] bg-[#edf3ff] text-[#2d4ed8]">
+                            <Printer size={13} />
+                          </span>
+                          <p className="truncate text-sm font-semibold text-[#25356b]">
+                            Tisak je dostupan za sve artikle sportske opreme.
+                          </p>
+                        </div>
+                        <span className="inline-flex shrink-0 items-center rounded-full border border-[#cdddff] bg-white px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-[0.08em] text-[#3658da]">
+                          Dodatna naplata
+                        </span>
+                      </div>
                     </div>
-                    <div className="rounded-xl border border-gray-200/70 bg-slate-50 p-2 text-center">
-                      <Clock3 size={16} className="mx-auto text-[#4a6bfe]" />
-                      <p className="mt-1 text-xs font-semibold text-gray-600">Brza obrada</p>
-                    </div>
-                    <div className="rounded-xl border border-gray-200/70 bg-slate-50 p-2 text-center">
-                      <Package size={16} className="mx-auto text-[#4a6bfe]" />
-                      <p className="mt-1 text-xs font-semibold text-gray-600">Sigurna dostava</p>
-                    </div>
-                  </div>
+                  ) : null}
                 </div>
               </aside>
             </div>
