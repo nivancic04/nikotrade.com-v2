@@ -83,9 +83,13 @@ export default async function ProductDetailsPage({ params }: ProductDetailsPageP
     notFound();
   }
 
-  const relatedProducts = (await getAllProductsFromStore())
-    .filter((item) => item.category === product.category && item.slug !== product.slug)
-    .slice(0, 3);
+  const currentSubcategory = product.subcategory?.trim() ?? "";
+  const relatedProducts =
+    currentSubcategory.length > 0
+      ? (await getAllProductsFromStore())
+          .filter((item) => item.slug !== product.slug && (item.subcategory?.trim() ?? "") === currentSubcategory)
+          .slice(0, 3)
+      : [];
 
   const availability = getAvailability(product.stock);
   const showScent = hasMeaningfulValue(product.scent);
